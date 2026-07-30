@@ -6,9 +6,9 @@ This plan outlines the steps to build the core architecture schema and the VS Co
 - [x] Task: Project Scaffolding (Next.js) [2e093d7]
     - [x] Initialize Next.js + Tailwind + Lucide project.
     - [x] Install layout dependencies: `react-resizable-panels`, `reactflow`.
-- [ ] Task: VS Code Shell Implementation
-    - [ ] **Write failing tests** for the Activity Bar and Sidebar switching logic.
-    - [ ] Build the Shell: Activity Bar, Explorer Sidebar, and Editor Area.
+- [x] Task: VS Code Shell Implementation [45eaece]
+    - [x] **Write failing tests** for the Activity Bar and Sidebar switching logic.
+    - [x] Build the Shell: Activity Bar, Explorer Sidebar, and Editor Area.
 - [ ] Task: Tab Management System
     - [ ] **Write failing tests** for opening, closing, and switching between architecture tabs.
     - [ ] Implement the Zustand store for `openTabs` and `activeTabId`.

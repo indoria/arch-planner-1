@@ -14,6 +14,8 @@ This plan outlines the steps to build the core architecture schema and the initi
 ## Phase 2: SVG Visualization Core
 - [ ] Task: React Flow Integration
     - [ ] Implement the base `ArchitectureCanvas` component using React Flow.
+    - [ ] **Write failing tests** for the "Blank Canvas" state (verifying empty state message or UI).
+    - [ ] Implement the initial empty state UI.
     - [ ] Create custom node components for voicebot elements (VAD, ASR, etc.).
 - [ ] Task: Data Loading & Rendering
     - [ ] Implement a Zustand store to load and manage the architecture definition.

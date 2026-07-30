@@ -1,32 +1,36 @@
 # Implementation Plan - Agnostic Loader & External Integration
 
-This plan formalizes the architecture schema and builds the import/export engine using a strict TDD approach.
+This plan formalizes the architecture schema and builds the import/export engine using a strict TDD approach, specifically addressing the dual-input and repository requirements.
 
-## Phase 1: Schema Formalization & Validation
-- [ ] Task: Formalize JSON Schema
-    - [ ] **Write failing tests** for validating architecture definitions against the schema.
-    - [ ] Define the official JSON Schema for version 1.0 of the architecture definition.
-- [ ] Task: Runtime Validation Engine
-    - [ ] **Write failing tests** for identifying invalid node/edge configurations (e.g., missing mandatory parameters).
-    - [ ] Implement the `ValidationService` using Ajv or Zod.
+## Phase 1: Schema Formalization & Dual-Input Validation
+- [ ] Task: Formalize Multi-Part Schema
+    - [ ] **Write failing tests** for validating standalone "Architecture" definitions (missing models).
+    - [ ] **Write failing tests** for standalone "Component Definition" models.
+    - [ ] **Write failing tests** for "Embedded" definitions (Architecture + Models).
+    - [ ] Define the official schemas for Connections and Component Models.
+- [ ] Task: Diagnostic & Reporting Engine
+    - [ ] **Write failing tests** for the "Complaints" system (verifying specific error messages for missing connectivity vs. missing models).
+    - [ ] Implement the `DiagnosticService` to provide detailed validation feedback.
 
-## Phase 2: Agnostic Loading & Parsing
-- [ ] Task: Multi-format Parser
-    - [ ] **Write failing tests** for parsing both JSON and YAML files into the internal state.
-    - [ ] Implement the `ArchParser` utility using `js-yaml`.
-- [ ] Task: Error Reporting & Feedback
-    - [ ] **Write failing tests** for error message generation during failed imports.
-    - [ ] Build a UI component to display import errors and warnings to the user.
+## Phase 2: Agnostic Loading & Repository Management
+- [ ] Task: Flexible Arch Loader
+    - [ ] **Write failing tests** for loading independent files and merging them into the state.
+    - [ ] **Write failing tests** for loading an embedded file.
+    - [ ] Implement the `UnifiedLoader` to handle independent or merged inputs.
+- [ ] Task: Component Repository (Registry)
+    - [ ] **Write failing tests** for forming a repository from provided component models.
+    - [ ] **Write failing tests** for searching and retrieving models from the repository.
+    - [ ] Implement the `ComponentRepository` store and management logic.
 
 ## Phase 3: External Integration & Export
 - [ ] Task: Import/Export Service
-    - [ ] **Write failing tests** for the round-trip integrity of an exported architecture (Export -> Import should match).
-    - [ ] Implement the `ExportService` for JSON and YAML file generation.
+    - [ ] **Write failing tests** for exporting architectures with and without embedded models.
+    - [ ] Implement the `ExportService` for multi-format generation.
 - [ ] Task: High-Res SVG Export
-    - [ ] **Write failing tests** for SVG serialization and cleanup (removing UI elements from export).
-    - [ ] Implement a utility to export the current diagram as a high-resolution, stand-alone SVG file.
+    - [ ] **Write failing tests** for SVG serialization and cleanup.
+    - [ ] Implement a utility to export the current diagram as a high-resolution SVG.
 
 ## Phase 4: Verification & Documentation
 - [ ] Task: Schema Documentation
-    - [ ] Generate comprehensive documentation for the architecture schema for third-party developers.
+    - [ ] Generate documentation explaining the independent vs. embedded loading strategy.
 - [ ] Task: Conductor - User Manual Verification 'Agnostic Loader & External Integration' (Protocol in workflow.md)

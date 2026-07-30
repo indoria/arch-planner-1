@@ -8,6 +8,7 @@ This track focuses on the foundational work required to define and visualize arc
 - Set up the React/TypeScript environment with React Flow.
 - Implement a basic visualization engine that can render a multi-component voicebot architecture.
 - Enable interactive "View State" features: panning, zooming, and non-destructive node movement.
+- Ensure the system correctly handles and represents a "blank" initial state before any architecture or component models are loaded.
 
 ## Technical Details
 - **Schema:** JSON/TypeScript interfaces for `Node`, `Edge`, and `ComponentMetadata`.

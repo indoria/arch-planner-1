@@ -1,24 +1,28 @@
 # Specification - Onboarding & Visualization Polish
 
 ## Overview
-The final track focused on creating a seamless user experience through sample data, tutorials, and high-fidelity visual polishing.
+The final track focused on creating a seamless user experience through sample data, tutorials, and a robust Enterprise Knowledge Base.
 
 ## Goals
-- Bake in **Sample Components & Architectures**:
-    - A library of "Standard Voicebot" components (VAD, ASR, LLM, TTS).
-    - Example architectures for common use cases (e.g., "Customer Support Agent").
+- Populate the **Enterprise Knowledge Base**:
+    - Implement the "Progressive Disclosure" repository for core concepts:
+        1. **Semantic Endpointing** (LLM-based silence detection)
+        2. **Sentence-Boundary Streaming** (Chunking & TTS streaming)
+        3. **Backchannel Filtering** (Handling "uh-huh" without barge-in)
+        4. **Latency Masking** (Pre-fetching filler words like "Hmm, let me check")
+        5. **Acoustic Echo Cancellation** (AEC)
+        6. **Speculative Execution** (Pre-prompting before user finishes)
+- Bake in **Sample Architectures**:
+    - **"Cheapest 650ms Setup"**: Focused on cost-efficiency.
+    - **"Ultra-Low Latency 200ms Setup"**: Focused on speed.
 - Implement **Interactive Onboarding**:
-    - A guided tour of the VS Code-style UI.
-    - Tutorial on how to edit scripts and simulate a call.
+    - A guided tour of the Activity Bar, Explorer, Tab system, and Inspector.
 - Final **Visual Polish**:
-    - Refine the SVG animations for "ripple effects" and "congestion."
-    - Ensure the UI matches the "Modern Technical" guidelines perfectly.
+    - Refine SVG animations for data flow, ripple effects, and congestion.
 
 ## Technical Details
-- **Data:** Bundled JSON/YAML definitions for samples.
-- **Tutorial:** An overlay-based onboarding system (e.g., using `react-joyride`).
-- **Polish:** Final CSS/SVG tuning for a professional finish.
+- **Data:** Bundled JSON repository for the Knowledge Base and Baseline Architectures.
+- **UI:** `react-joyride` or custom tour overlay for the IDE shell.
 
 ## Constraints
-- Samples must be fully functional and demonstrate all simulation features.
-- Onboarding must be dismissible for returning users.
+- Knowledge Base entries must strictly follow the "Summary -> Deep Dive" progressive disclosure mandate.

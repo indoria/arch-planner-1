@@ -18,3 +18,5 @@ This file tracks all major tracks for the project. Each track has its own detail
   *Link: [./tracks/agnostic_integration_20260730/](./tracks/agnostic_integration_20260730/)*
 - [ ] **Track: Backend & Collaboration: API foundation, Auth, and sharing features**
   *Link: [./tracks/backend_collaboration_20260730/](./tracks/backend_collaboration_20260730/)*
+- [ ] **Track: Onboarding & Visualization Polish: Samples, tutorials, and final UI refinement**
+  *Link: [./tracks/onboarding_polish_20260730/](./tracks/onboarding_polish_20260730/)*

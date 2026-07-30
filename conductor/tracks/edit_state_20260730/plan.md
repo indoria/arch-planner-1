@@ -1,31 +1,30 @@
 # Implementation Plan - Edit State Implementation
 
-This plan focuses on building the component library and enforcing architectural constraints using a TDD approach.
+This plan focuses on building the component interactions and constraints using a TDD approach.
 
-## Phase 1: Component Library & Sidebar
-- [ ] Task: VS Code-style Component Library
-    - [ ] **Write failing tests** for component searching and filtering in the library.
-    - [ ] Build the sidebar UI for browsing the Component Repository.
-- [ ] Task: Drag-and-Drop Implementation
-    - [ ] **Write failing tests** for node creation upon valid drop events.
-    - [ ] Implement React Flow native drag-and-drop from the sidebar to the canvas.
+## Phase 1: Extensions Sidebar & Drag-and-Drop
+- [ ] Task: Left Sidebar Component Extensions
+    - [ ] **Write failing tests** for the extension-style list rendering and search.
+    - [ ] Build the Left Sidebar "Component Repository" UI.
+- [ ] Task: Drag-and-Drop to Canvas
+    - [ ] Implement node creation in the active tab upon drop.
 
-## Phase 2: Architectural Guardrails (Validation)
-- [ ] Task: Connection Validation Engine
-    - [ ] **Write failing tests** for Compatibility List enforcement.
-    - [ ] **Write failing tests** for Socket Count (min/max) and Type validation.
-    - [ ] Implement the `GuardrailService` to intercept and validate connection events.
-- [ ] Task: "Complaints" UI Feedback
-    - [ ] **Write failing tests** for error message generation during invalid connections.
-    - [ ] Implement toast or tooltip feedback for architectural violations.
+## Phase 2: Inspector & Click-to-Replace
+- [ ] Task: Right Sidebar Inspector
+    - [ ] **Write failing tests** for node selection and data binding in the inspector.
+    - [ ] Build the Inspector UI (specs, description, script editor).
+- [ ] Task: Click-to-Replace Shortcut
+    - [ ] **Write failing tests** for the `replaceComponent` function (verifying state update and connection preservation).
+    - [ ] Implement the list of alternatives in the inspector with instant swap functionality.
 
-## Phase 3: Script & Parameter Editor
-- [ ] Task: Component Script Editor
-    - [ ] **Write failing tests** for script updates in the component state.
-    - [ ] Integrate a code editor component for editing component behavior scripts.
+## Phase 3: Guardrails & Feedback
+- [ ] Task: Guardrail Enforcement
+    - [ ] **Write failing tests** for preventing incompatible swaps/connections.
+    - [ ] Implement real-time validation for drag-and-drop and click-to-replace actions.
+- [ ] Task: "Complaints" System UI
+    - [ ] Build the visual feedback for architectural violations.
 
 ## Phase 4: Persistence & Verification
-- [ ] Task: Persistence Service
-    - [ ] **Write failing tests** for saving/loading architectures with custom scripts.
-    - [ ] Implement IndexedDB persistence.
+- [ ] Task: IndexedDB Persistence
+    - [ ] Implement save/load for the tab-based architecture array.
 - [ ] Task: Conductor - User Manual Verification 'Edit State Implementation' (Protocol in workflow.md)

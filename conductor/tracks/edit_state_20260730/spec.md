@@ -1,23 +1,23 @@
 # Specification - Edit State Implementation
 
 ## Overview
-This track enables the "Edit State," focusing on modifying architecture definitions within a VS Code-style sidebar and enforcing strict architectural constraints.
+This track enables the "Edit State," focusing on modifying architecture definitions within a VS Code-style UI using direct manipulation and specific interaction shortcuts.
 
 ## Goals
-- Build the **Component Library Sidebar**:
-    - A searchable list of components similar to the VS Code Extensions view.
-    - Drag-and-drop components into the canvas.
+- Build the **Component Extensions Sidebar (Left)**:
+    - A library of available components in the left sidebar, mimicking the VS Code Extensions view.
+    - Support for dragging components into the active tab's canvas.
+- Build the **Inspector & Click-to-Replace (Right)**:
+    - A dedicated right sidebar (Inspector) that appears when a node is selected.
+    - Displays component specs (Cost, Latency, Description).
+    - **Click-to-Replace Interaction**: A list of alternative/equivalent components that instantly swaps the selected node in the active tab when clicked.
 - Implement **Architectural Guardrails**:
-    - Enforce **Compatibility Lists**: Prevent invalid connections between incompatible components.
-    - Enforce **Socket Constraints**: Prevent connections that exceed min/max socket limits or type mismatches.
-- Build the **Property Inspector**:
-    - A dedicated pane (VS Code style) for editing component scripts and parameters.
+    - Enforce compatibility and socket constraints during drag-and-drop and click-to-replace events.
 
 ## Technical Details
-- **UI:** Sidebar component utilizing React Flow's drag-and-drop hooks.
-- **Logic:** A `ConnectionValidationEngine` to check compatibility and socket rules in real-time.
-- **Script Editing:** Integration of a lightweight code editor (e.g., Monaco or CodeMirror) for component scripts.
+- **UI:** Right sidebar utilizing a `replaceComponent(nodeId, newComponentData)` function.
+- **Interaction:** Sidebar list for alternatives, instantly updating the Zustand tab state.
+- **Validation:** Guardrail logic that validates a "replace" action before applying it.
 
 ## Constraints
-- Invalid connection attempts must provide clear visual and text feedback (the "Complaints" system).
-- The sidebar must handle a large number of components efficiently.
+- "Click-to-replace" must maintain existing valid connections where possible or "complain" if the replacement is incompatible.

@@ -6,3 +6,15 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [ ] **Track: Establish the core Architecture Schema and build the SVG Visualizer foundation (View State)**
   *Link: [./tracks/visualizer_foundation_20260730/](./tracks/visualizer_foundation_20260730/)*
+- [ ] **Track: Implement the Edit State: Parameter tuning, component swapping, and persistence**
+  *Link: [./tracks/edit_state_20260730/](./tracks/edit_state_20260730/)*
+- [ ] **Track: Build the Simulation Engine: Event loop, latency modeling, and parallel channels**
+  *Link: [./tracks/simulation_engine_20260730/](./tracks/simulation_engine_20260730/)*
+- [ ] **Track: Analysis & Metrics Dashboard: Real-time telemetry, cost analysis, and reporting**
+  *Link: [./tracks/analysis_dashboard_20260730/](./tracks/analysis_dashboard_20260730/)*
+- [ ] **Track: Advanced UI Features: Simulation Time-Travel and Drag-and-Drop Builder**
+  *Link: [./tracks/advanced_ui_20260730/](./tracks/advanced_ui_20260730/)*
+- [ ] **Track: Agnostic Loader & External Integration: Schema validation and import/export**
+  *Link: [./tracks/agnostic_integration_20260730/](./tracks/agnostic_integration_20260730/)*
+- [ ] **Track: Backend & Collaboration: API foundation, Auth, and sharing features**
+  *Link: [./tracks/backend_collaboration_20260730/](./tracks/backend_collaboration_20260730/)*

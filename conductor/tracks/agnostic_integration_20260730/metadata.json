@@ -1,0 +1,8 @@
+{
+  "track_id": "agnostic_integration_20260730",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-07-30T21:20:00Z",
+  "updated_at": "2026-07-30T21:20:00Z",
+  "description": "Agnostic Loader & External Integration: Schema validation and import/export"
+}

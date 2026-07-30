@@ -9,10 +9,10 @@ This plan outlines the steps to build the core architecture schema and the VS Co
 - [x] Task: VS Code Shell Implementation [45eaece]
     - [x] **Write failing tests** for the Activity Bar and Sidebar switching logic.
     - [x] Build the Shell: Activity Bar, Explorer Sidebar, and Editor Area.
-- [ ] Task: Tab Management System
-    - [ ] **Write failing tests** for opening, closing, and switching between architecture tabs.
-    - [ ] Implement the Zustand store for `openTabs` and `activeTabId`.
-    - [ ] Build the Top Tab Bar UI.
+- [x] Task: Tab Management System [39d6040]
+    - [x] **Write failing tests** for opening, closing, and switching between architecture tabs.
+    - [x] Implement the Zustand store for `openTabs` and `activeTabId`.
+    - [x] Build the Top Tab Bar UI.
 
 ## Phase 2: Typed Schema & Progressive Disclosure
 - [ ] Task: Define Typed Architecture Schema

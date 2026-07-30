@@ -3,9 +3,9 @@
 This plan outlines the steps to build the core architecture schema and the VS Code-style UI foundation.
 
 ## Phase 1: IDE Shell & Tab Management
-- [ ] Task: Project Scaffolding (Next.js)
-    - [ ] Initialize Next.js + Tailwind + Lucide project.
-    - [ ] Install layout dependencies: `react-resizable-panels`, `react-flow-renderer`.
+- [x] Task: Project Scaffolding (Next.js)
+    - [x] Initialize Next.js + Tailwind + Lucide project.
+    - [x] Install layout dependencies: `react-resizable-panels`, `reactflow`.
 - [ ] Task: VS Code Shell Implementation
     - [ ] **Write failing tests** for the Activity Bar and Sidebar switching logic.
     - [ ] Build the Shell: Activity Bar, Explorer Sidebar, and Editor Area.

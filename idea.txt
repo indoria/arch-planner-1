@@ -1,0 +1,50 @@
+**Role & Objective:**
+Act as an Expert Frontend Engineer and an AI Voice Architecture Specialist. Your task is to build a "Voice AI Architecture Playground"—a web-based interactive learning tool and architecture builder. 
+
+**Design & UI/UX Requirements:**
+The UI must be highly minimalist, clean, and heavily inspired by **VS Code Online / Desktop IDEs**. Use a dark mode theme (slate/gray/monokai), sharp borders, and monospaced fonts for technical data.
+
+**Layout Structure:**
+1. **Left Sidebar (The Explorer):**
+   * Two main sections: "Architectures" and "Enterprise Knowledge Base".
+   * Use an accordion/collapsible UI. 
+2. **Center Area (The Editor Canvas):**
+   * **Top Tab Bar:** Just like VS Code files, architectures should open in tabs. Users can have multiple tabs open to quickly switch and compare different setups.
+   * **Canvas:** Displays the visual architecture (SVG or CSS-grid based graph) of the active tab. It should show nodes connected by data-flow lines.
+3. **Right Sidebar (The Inspector):**
+   * When a node is clicked in the canvas, its details appear here.
+   * Shows current component specs (Cost, Latency, Description).
+   * **Crucial Interaction:** Shows a list of alternative components. **Instead of drag-and-drop**, clicking an alternative instantly replaces the selected component in the active architecture on the canvas.
+
+**Data & Progressive Disclosure (Expandable Content):**
+The app must be an educational tool. Every piece of data must follow "Progressive Disclosure" (e.g., using Accordions or `<details>`/`<summary>` tags). 
+* Start with a 1-sentence high-level summary. 
+* Allow the user to expand it to read a "Deep Dive" explanation with code logic or advanced strategies.
+
+**Content Repository to Include:**
+Populate the JSON state with a robust "Knowledge Base" containing these enterprise voicebot concepts (all expandable):
+1. Semantic Endpointing (LLM-based silence detection)
+2. Sentence-Boundary Streaming (Chunking & TTS streaming)
+3. Backchannel Filtering (Handling "uh-huh" without barge-in)
+4. Latency Masking (Pre-fetching filler words like "Hmm, let me check")
+5. Acoustic Echo Cancellation (AEC)
+6. Speculative Execution (Pre-prompting before user finishes)
+
+**Tech Stack:**
+* Use **Next.js** with scaffolding commands.
+* Use **Tailwind CSS** for the minimalist VS Code-like styling.
+* Use **Lucide React** (or FontAwesome) for minimalist IDE icons.
+
+**Key Features to Implement:**
+1. **Tab Management:** State should handle an array of `openTabs` and an `activeTabId`.
+2. **Click-to-Replace:** A function `replaceComponent(nodeId, newComponentData)` that updates the architecture state for the active tab.
+3. **Data Structure:** Create a robust JSON object containing: `architectures`, `alternatives`, and `knowledgeBase`.
+
+**Step-by-Step Instructions for You:**
+1. First, define the complete JSON data structure with the detailed knowledge base and at least 2 complete architectures (e.g., "Cheapest 650ms Setup" vs "Ultra-Low Latency 200ms Setup").
+2. Build the main layout shell (Left Sidebar, Editor Center, Right Sidebar).
+3. Implement the Tab system in the Center Editor.
+4. Implement the progressive disclosure UI components for the Knowledge Base.
+5. Implement the visual graph renderer and the click-to-replace logic in the Right Sidebar.
+
+Please provide the complete, functional code. If using React via CDN for a single HTML file, ensure all scripts and Tailwind configs are properly included so I can double-click and run it instantly.

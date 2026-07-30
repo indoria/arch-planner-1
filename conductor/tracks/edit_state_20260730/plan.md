@@ -1,35 +1,31 @@
 # Implementation Plan - Edit State Implementation
 
-This plan focuses on building the interactive editing and persistence features, following a strict TDD approach.
+This plan focuses on building the component library and enforcing architectural constraints using a TDD approach.
 
-## Phase 1: Parameter Editing & State Updates
-- [ ] Task: Property Editor UI & State
-    - [ ] **Write failing tests** for the architecture state update actions.
-    - [ ] Implement Zustand actions to update node and edge properties.
-    - [ ] **Write failing tests** for the `PropertyEditor` component rendering and input handling.
-    - [ ] Build the `PropertyEditor` React component (sidebar).
-- [ ] Task: Live Parameter Tuning
-    - [ ] **Write failing tests** for parameter validation logic (e.g., latency must be positive).
-    - [ ] Implement real-time parameter validation and sanitization.
+## Phase 1: Component Library & Sidebar
+- [ ] Task: VS Code-style Component Library
+    - [ ] **Write failing tests** for component searching and filtering in the library.
+    - [ ] Build the sidebar UI for browsing the Component Repository.
+- [ ] Task: Drag-and-Drop Implementation
+    - [ ] **Write failing tests** for node creation upon valid drop events.
+    - [ ] Implement React Flow native drag-and-drop from the sidebar to the canvas.
 
-## Phase 2: Component Swapping & Architecture Modification
-- [ ] Task: Node Swapping Logic
-    - [ ] **Write failing tests** for component compatibility checks.
-    - [ ] Implement logic to swap a node type while maintaining its connections (edges).
-- [ ] Task: Add/Remove Components
-    - [ ] **Write failing tests** for adding and deleting nodes/edges in the state.
-    - [ ] Implement UI buttons and state actions for adding/removing architecture elements.
+## Phase 2: Architectural Guardrails (Validation)
+- [ ] Task: Connection Validation Engine
+    - [ ] **Write failing tests** for Compatibility List enforcement.
+    - [ ] **Write failing tests** for Socket Count (min/max) and Type validation.
+    - [ ] Implement the `GuardrailService` to intercept and validate connection events.
+- [ ] Task: "Complaints" UI Feedback
+    - [ ] **Write failing tests** for error message generation during invalid connections.
+    - [ ] Implement toast or tooltip feedback for architectural violations.
 
-## Phase 3: Persistence Layer
-- [ ] Task: LocalStorage & IndexedDB Integration
-    - [ ] **Write failing tests** for the persistence service (save/load/list).
-    - [ ] Implement the `PersistenceService` using Browser LocalStorage (for small configs) and IndexedDB (for large ones).
-- [ ] Task: Auto-save Feature
-    - [ ] **Write failing tests** for the auto-save debouncing logic.
-    - [ ] Implement background auto-save to prevent data loss.
+## Phase 3: Script & Parameter Editor
+- [ ] Task: Component Script Editor
+    - [ ] **Write failing tests** for script updates in the component state.
+    - [ ] Integrate a code editor component for editing component behavior scripts.
 
-## Phase 4: Verification & Integration
-- [ ] Task: Undo/Redo Support
-    - [ ] **Write failing tests** for the undo/redo stack management.
-    - [ ] Integrate `zustand-middleware-computed-state` or custom middleware for undo/redo.
+## Phase 4: Persistence & Verification
+- [ ] Task: Persistence Service
+    - [ ] **Write failing tests** for saving/loading architectures with custom scripts.
+    - [ ] Implement IndexedDB persistence.
 - [ ] Task: Conductor - User Manual Verification 'Edit State Implementation' (Protocol in workflow.md)

@@ -1,20 +1,23 @@
 # Specification - Simulation Engine
 
 ## Overview
-This track builds the core simulation engine responsible for modeling the data flow, latency, and performance of the software architecture. It enables the "Simulate State" by executing call flows through the defined architecture.
+This track builds the core simulation engine responsible for executing the logic defined in component scripts and visualizing the complex "ripple effects" of performance and errors.
 
 ## Goals
-- Develop a decoupled, event-driven simulation engine.
-- Model component-specific performance metrics (TTFT, TTLT, latency ranges, jitter).
-- Support parallel channels (simulating multiple simultaneous calls/websockets).
-- Provide real-time event hooks for the UI to visualize data flow.
+- Develop a **Scriptable Execution Engine**:
+    - Execute component behavior defined in scripts (JS/TS-based).
+    - Handle complex logic for data transformation and decision-making within a node.
+- Implement **Error Propagation & Ripple Effects**:
+    - Model how a failure in one component affects downstream nodes.
+    - Visualize **Congestion**: Show back-pressure or slowed data flow when a bottleneck occurs.
+- Support **High-Density Parallel Channels**:
+    - Simulate hundreds of parallel "calls" with independent telemetry.
 
 ## Technical Details
-- **Architecture:** Event loop based on `requestAnimationFrame` or a dedicated Worker thread for high-precision timing.
-- **Latency Modeling:** Normal/Gaussian distribution functions for jitter and latency variation.
-- **Concurrency:** Support for multiple active "transaction" IDs flowing through the graph.
-- **State Integration:** Push real-time telemetry data to the Zustand store.
+- **Execution:** A sandboxed or isolated runtime for component scripts (to prevent simulation crashes).
+- **Ripple Logic:** A graph-traversal algorithm that propagates state changes (latency, error) down the chain.
+- **Visualization:** Integration with D3.js to animate the "congestion" (e.g., slowing down packet animations on edges).
 
 ## Constraints
-- The engine must be pure logic, decoupled from the React/DOM layer.
-- Must handle cycles in the architecture graph (if defined) or prevent them during simulation.
+- Script execution must be performant enough to not lag the UI thread.
+- Error propagation must be traceable via the Simulation Time-Travel feature.

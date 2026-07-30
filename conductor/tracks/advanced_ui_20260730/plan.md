@@ -1,33 +1,28 @@
 # Implementation Plan - Advanced UI Features
 
-This plan builds the advanced interactivity features using a strict TDD approach.
+This plan builds the time-travel and parallel simulation features using a strict TDD approach.
 
 ## Phase 1: Simulation Time-Travel
-- [ ] Task: State Snapshotting Engine
-    - [ ] **Write failing tests** for capturing and restoring simulation state snapshots.
-    - [ ] Implement the `HistoryManager` to store and navigate simulation state over time.
-- [ ] Task: Time-Travel UI Controls
-    - [ ] **Write failing tests** for the timeline scrubber and playback controls logic.
-    - [ ] Build the UI controls for pausing, rewinding, and fast-forwarding simulations.
+- [ ] Task: History Manager & State Snapshots
+    - [ ] **Write failing tests** for state capture and restoration logic.
+    - [ ] Implement the `HistoryService` to store simulation snapshots.
+- [ ] Task: Playback Controls UI
+    - [ ] Build the time-travel UI (scrubber, play/pause).
 
-## Phase 2: Drag-and-Drop Builder
-- [ ] Task: Component Library UI
-    - [ ] **Write failing tests** for component categorization and searching logic.
-    - [ ] Build the sidebar library containing pre-defined and custom components.
-- [ ] Task: Drag-and-Drop Interaction
-    - [ ] **Write failing tests** for dropping components onto the canvas and automatic node creation.
-    - [ ] Implement the drag-and-drop interface between the library and the React Flow canvas.
+## Phase 2: Parallel Split-Screen Simulations
+- [ ] Task: Multi-Canvas Manager
+    - [ ] **Write failing tests** for spawning and managing multiple canvas instances.
+    - [ ] Implement the `SplitViewManager` in the VS Code shell.
+- [ ] Task: Synchronized Playback Logic
+    - [ ] **Write failing tests** for sync commands (Play/Pause/Seek) across instances.
+    - [ ] Implement the `PlaybackCoordinator` for multi-instance sync.
 
-## Phase 3: Advanced Visualizations & Snapshots
-- [ ] Task: Interactive Data Packets
-    - [ ] **Write failing tests** for packet movement logic and collision detection (if needed).
-    - [ ] Implement enhanced D3.js animations for data flow visualization.
-- [ ] Task: Snapshot Comparison Tool
-    - [ ] **Write failing tests** for the architecture diffing logic (identifying changes between snapshots).
-    - [ ] Build a UI mode to compare two simulation runs or architectures side-by-side.
+## Phase 3: Comparative Analysis UI
+- [ ] Task: Side-by-Side Metrics
+    - [ ] **Write failing tests** for comparing metrics from two simulation engines.
+    - [ ] Build the UI to display comparison delta (e.g., "Arch A is 20ms faster than Arch B").
 
-## Phase 4: Verification & Final Polish
-- [ ] Task: Performance Optimization
-    - [ ] **Write failing tests** for memory leaks during long time-travel sessions.
-    - [ ] Optimize the snapshot storage and diagram rendering for large histories.
+## Phase 4: Verification & Integration
+- [ ] Task: Stress Test Parallel Sims
+    - [ ] Verify performance stability with two active high-density simulations.
 - [ ] Task: Conductor - User Manual Verification 'Advanced UI Features' (Protocol in workflow.md)

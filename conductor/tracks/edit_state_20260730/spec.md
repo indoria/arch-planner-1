@@ -1,20 +1,23 @@
 # Specification - Edit State Implementation
 
 ## Overview
-This track enables the "Edit State" of the playground, allowing users to modify the architecture definition interactively. This includes changing component parameters, swapping compatible components, and persisting changes.
+This track enables the "Edit State," focusing on modifying architecture definitions within a VS Code-style sidebar and enforcing strict architectural constraints.
 
 ## Goals
-- Implement a sidebar or modal for editing node/edge properties.
-- Enable live parameter tuning for simulation variables (latency, cost, LLM settings).
-- Implement component swapping logic (e.g., replacing one ASR provider with another).
-- Add persistence support using Browser LocalStorage and IndexedDB.
+- Build the **Component Library Sidebar**:
+    - A searchable list of components similar to the VS Code Extensions view.
+    - Drag-and-drop components into the canvas.
+- Implement **Architectural Guardrails**:
+    - Enforce **Compatibility Lists**: Prevent invalid connections between incompatible components.
+    - Enforce **Socket Constraints**: Prevent connections that exceed min/max socket limits or type mismatches.
+- Build the **Property Inspector**:
+    - A dedicated pane (VS Code style) for editing component scripts and parameters.
 
 ## Technical Details
-- **UI:** React components for property editors and parameter sliders.
-- **State Management:** Zustand actions for updating the architecture schema.
-- **Persistence:** `idb` library for IndexedDB interactions.
-- **Validation:** Zod or similar for runtime schema validation during edits.
+- **UI:** Sidebar component utilizing React Flow's drag-and-drop hooks.
+- **Logic:** A `ConnectionValidationEngine` to check compatibility and socket rules in real-time.
+- **Script Editing:** Integration of a lightweight code editor (e.g., Monaco or CodeMirror) for component scripts.
 
 ## Constraints
-- Edits must be non-destructive and easily reversible (undo/redo).
-- Parameter changes should propagate to the simulation engine foundation.
+- Invalid connection attempts must provide clear visual and text feedback (the "Complaints" system).
+- The sidebar must handle a large number of components efficiently.

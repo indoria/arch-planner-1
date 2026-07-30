@@ -1,35 +1,30 @@
 # Implementation Plan - Visualizer Foundation
 
-This plan outlines the steps to build the core architecture schema and the initial SVG visualization engine.
+This plan outlines the steps to build the core architecture schema and the VS Code-style UI foundation.
 
-## Phase 1: Core Schema & Project Setup
+## Phase 1: VS Code Layout & Project Setup
 - [ ] Task: Project Scaffolding
-    - [ ] Initialize React + TypeScript + Vite project structure.
-    - [ ] Install dependencies: `react-flow-renderer`, `zustand`, `d3`.
-- [ ] Task: Define Architecture Schema
-    - [ ] Create TypeScript interfaces for `ArchNode`, `ArchEdge`, and `ArchDefinition`.
-    - [ ] Define metadata structures for component parameters (latency, cost, etc.).
-    - [ ] Create a sample JSON definition for a standard voicebot architecture.
+    - [ ] Initialize React + TypeScript + Vite project.
+    - [ ] Install layout dependencies: `react-resizable-panels`, `react-flow-renderer`.
+- [ ] Task: VS Code Shell Implementation
+    - [ ] **Write failing tests** for layout responsiveness and pane toggling.
+    - [ ] Build the Shell: Activity Bar, Sidebar, and Resizable Panel groups.
+    - [ ] Implement the "Blank State" splash screen in the editor area.
 
-## Phase 2: SVG Visualization Core
-- [ ] Task: React Flow Integration
-    - [ ] Implement the base `ArchitectureCanvas` component using React Flow.
-    - [ ] **Write failing tests** for the "Blank Canvas" state (verifying empty state message or UI).
-    - [ ] Implement the initial empty state UI.
-    - [ ] Create custom node components for voicebot elements (VAD, ASR, etc.).
-- [ ] Task: Data Loading & Rendering
-    - [ ] Implement a Zustand store to load and manage the architecture definition.
-    - [ ] Create a loader to transform the JSON schema into React Flow nodes and edges.
+## Phase 2: Typed Schema & Socket Foundation
+- [ ] Task: Define Typed Architecture Schema
+    - [ ] **Write failing tests** for socket count and type validation logic.
+    - [ ] Implement TypeScript interfaces for `Socket`, `TypedConnection`, and `CompatibilityList`.
+- [ ] Task: React Flow Multi-Socket Nodes
+    - [ ] **Write failing tests** for custom node rendering with dynamic socket counts.
+    - [ ] Create custom React Flow nodes that render input/output handles based on the schema.
 
-## Phase 3: Interactive View State
-- [ ] Task: Enhance UI Interactivity
-    - [ ] Enable panning, zooming, and smooth node dragging.
-    - [ ] Implement a "Reset View" and "Auto-layout" feature (using D3-force or similar).
-- [ ] Task: Basic Animation Stubs
-    - [ ] Create placeholder animations for data packets moving along edges.
+## Phase 3: Data Loading & View State
+- [ ] Task: Zustand Store for Typed Arch
+    - [ ] **Write failing tests** for loading a multi-socket architecture into the state.
+    - [ ] Implement the core store to manage the visual and logical state.
 
 ## Phase 4: Verification & Integration
 - [ ] Task: Documentation & Cleanup
-    - [ ] Document the schema and component usage.
-    - [ ] Verify that the visualizer meets the "Modern Technical" visual guidelines.
+    - [ ] Document the typed schema and UI layout patterns.
 - [ ] Task: Conductor - User Manual Verification 'Visualizer Foundation' (Protocol in workflow.md)

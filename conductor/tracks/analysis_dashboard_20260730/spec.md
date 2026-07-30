@@ -1,20 +1,22 @@
 # Specification - Analysis & Metrics Dashboard
 
 ## Overview
-This track implements the analytical features of the playground, providing users with insights into the performance and cost of their architectures based on simulation data.
+This track implements the analytical features of the playground, including real-time metrics and a VS Code-style "Call Log" transcript view.
 
 ## Goals
-- Build a real-time dashboard for key performance indicators (KPIs).
-- Implement cost analysis modeling (calculating total cost based on component usage).
-- Create a telemetry overlay for the SVG diagram to show real-time metrics.
-- Develop a reporting system to export simulation summaries.
+- Build the **Call Log / Transcript Pane**:
+    - A resizable and collapsible pane at the bottom (VS Code style).
+    - Real-time display of text/data as it flows through components (e.g., ASR output, LLM response).
+- Implement **Telemetry Visualization**:
+    - Overlay metrics directly onto nodes and edges in the visualizer.
+- Build the **Analysis Dashboard**:
+    - A resizable pane or sidebar for aggregated metrics (latency, cost, throughput).
 
 ## Technical Details
-- **UI:** Chart.js or D3.js for performance graphs.
-- **Metrics:** Logic to aggregate latency, TTFT, cost, and error rates across simulation runs.
-- **Overlay:** React Flow custom edge labels and node status indicators for telemetry.
-- **Reporting:** `jsPDF` or `html2canvas` for generating PDF/image reports.
+- **UI:** Virtualized list for the Call Log to handle high-volume simulation data.
+- **Visuals:** React Flow overlays for telemetry; Chart.js for dashboard graphs.
+- **Layout:** Integration with the `react-resizable-panels` layout from the foundation.
 
 ## Constraints
-- Metrics must update in real-time without impacting simulation performance.
-- Cost analysis must be configurable to different provider pricing models.
+- The Call Log must support filtering by transaction ID or component.
+- The UI must remain responsive even with rapid simulation event updates.

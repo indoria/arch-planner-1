@@ -20,3 +20,5 @@ This file tracks all major tracks for the project. Each track has its own detail
   *Link: [./tracks/backend_collaboration_20260730/](./tracks/backend_collaboration_20260730/)*
 - [ ] **Track: Onboarding & Visualization Polish: Samples, tutorials, and final UI refinement**
   *Link: [./tracks/onboarding_polish_20260730/](./tracks/onboarding_polish_20260730/)*
+- [ ] **Track: Interactive Ideas Library: Uploadable concept library with interactive diagrams**
+  *Link: [./tracks/interactive_library_20260730/](./tracks/interactive_library_20260730/)*

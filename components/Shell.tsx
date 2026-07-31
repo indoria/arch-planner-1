@@ -37,9 +37,9 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
       </div>
 
       {/* Main Panel Group */}
-      <PanelGroup direction="horizontal">
+      <PanelGroup direction="horizontal" className="flex-1">
         {/* Sidebar */}
-        <Panel defaultSize={20} minSize={15} maxSize={40} data-testid="sidebar" className="bg-[#252526] border-r border-[#2b2b2b]">
+        <Panel defaultSize={15} minSize={10} maxSize={40} data-testid="sidebar" className="bg-[#252526] border-r border-[#2b2b2b]">
           <div className="p-3 uppercase text-xs font-bold tracking-wider text-[#bbbbbb]">
             {activeView === 'explorer' ? 'Explorer' : 'Interactive Library'}
           </div>
@@ -56,13 +56,28 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
 
         {/* Editor Area */}
         <Panel data-testid="editor-area" className="flex flex-col h-full overflow-hidden">
-          {children || (
-            <div className="flex flex-col items-center justify-center h-full text-[#858585]">
-              <Box size={64} className="mb-4 opacity-20" />
-              <h1 className="text-2xl font-light tracking-tight mb-2 text-[#cccccc]">Voice AI Playground</h1>
-              <p className="text-sm">Open an architecture to start or explore the library</p>
-            </div>
-          )}
+          <PanelGroup direction="vertical">
+            <Panel defaultSize={70} minSize={20} className="flex flex-col overflow-hidden">
+              {children || (
+                <div className="flex flex-col items-center justify-center h-full text-[#858585]">
+                  <Box size={64} className="mb-4 opacity-20" />
+                  <h1 className="text-2xl font-light tracking-tight mb-2 text-[#cccccc]">Voice AI Playground</h1>
+                  <p className="text-sm">Open an architecture to start or explore the library</p>
+                </div>
+              )}
+            </Panel>
+            
+            <PanelResizeHandle className="h-1 bg-[#1e1e1e] hover:bg-[#007acc] transition-colors" />
+            
+            <Panel defaultSize={30} minSize={10} className="bg-[#1e1e1e] border-t border-[#2b2b2b]">
+              <div className="flex items-center h-9 px-4 border-b border-[#2b2b2b]">
+                <div className="text-[11px] uppercase tracking-wider font-bold text-[#bbbbbb]">Output / Call Log</div>
+              </div>
+              <div className="p-4 text-[13px] font-mono text-[#858585] italic">
+                Logs will appear here during simulation...
+              </div>
+            </Panel>
+          </PanelGroup>
         </Panel>
       </PanelGroup>
     </div>

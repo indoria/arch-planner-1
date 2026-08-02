@@ -16,6 +16,8 @@ This file tracks all major tracks for the project. Each track has its own detail
   *Link: [./tracks/advanced_ui_20260730/](./tracks/advanced_ui_20260730/)*
 - [ ] **Track: Agnostic Loader & External Integration: Schema validation and import/export**
   *Link: [./tracks/agnostic_integration_20260730/](./tracks/agnostic_integration_20260730/)*
+- [ ] **Track: System of Systems: Hierarchical architecture support and drill-down simulation**
+  *Link: [./tracks/system_of_systems_20260802/](./tracks/system_of_systems_20260802/)*
 - [ ] **Track: Backend & Collaboration: API foundation, Auth, and sharing features**
   *Link: [./tracks/backend_collaboration_20260730/](./tracks/backend_collaboration_20260730/)*
 - [ ] **Track: Onboarding & Visualization Polish: Samples, tutorials, and final UI refinement**

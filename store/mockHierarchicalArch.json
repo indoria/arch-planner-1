@@ -1,0 +1,70 @@
+{
+  "nodes": [
+    {
+      "id": "gateway-1",
+      "type": "architectureNode",
+      "label": "Voice Gateway",
+      "position": { "x": 100, "y": 100 },
+      "sockets": [
+        { "id": "g-in-1", "type": "audio", "direction": "input", "label": "Phone Line" },
+        { "id": "g-out-1", "type": "audio", "direction": "output", "label": "Processed Audio" }
+      ],
+      "data": {},
+      "subArchitecture": {
+        "nodes": [
+          {
+            "id": "vad-1",
+            "type": "architectureNode",
+            "label": "VAD Engine",
+            "position": { "x": 50, "y": 50 },
+            "sockets": [
+              { "id": "v-in-1", "type": "audio", "direction": "input", "label": "Raw" },
+              { "id": "v-out-1", "type": "audio", "direction": "output", "label": "Speech Only" }
+            ],
+            "data": {}
+          },
+          {
+            "id": "asr-1",
+            "type": "architectureNode",
+            "label": "ASR Engine",
+            "position": { "x": 250, "y": 50 },
+            "sockets": [
+              { "id": "a-in-1", "type": "audio", "direction": "input", "label": "Speech" },
+              { "id": "a-out-1", "type": "text", "direction": "output", "label": "Transcript" }
+            ],
+            "data": {}
+          }
+        ],
+        "connections": [
+          {
+            "id": "c-sub-1",
+            "sourceNodeId": "vad-1",
+            "sourceSocketId": "v-out-1",
+            "targetNodeId": "asr-1",
+            "targetSocketId": "a-in-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "llm-1",
+      "type": "architectureNode",
+      "label": "Orchestrator (LLM)",
+      "position": { "x": 400, "y": 100 },
+      "sockets": [
+        { "id": "l-in-1", "type": "text", "direction": "input", "label": "User Text" },
+        { "id": "l-out-1", "type": "text", "direction": "output", "label": "Bot Response" }
+      ],
+      "data": {}
+    }
+  ],
+  "connections": [
+    {
+      "id": "c-main-1",
+      "sourceNodeId": "gateway-1",
+      "sourceSocketId": "g-out-1",
+      "targetNodeId": "llm-1",
+      "targetSocketId": "l-in-1"
+    }
+  ]
+}

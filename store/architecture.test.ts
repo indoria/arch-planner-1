@@ -1,4 +1,5 @@
 import { Socket, validateSocket, validateConnection, validateArchitecture } from './architecture'
+import mockArch from './mockHierarchicalArch.json'
 
 describe('Architecture Schema Validation', () => {
   describe('validateSocket', () => {
@@ -84,6 +85,10 @@ describe('Architecture Schema Validation', () => {
     it('should handle invalid architecture input', () => {
       expect(validateArchitecture(null as any)).toBe(false)
       expect(validateArchitecture('not an arch' as any)).toBe(false)
+    })
+
+    it('should validate the mock hierarchical data', () => {
+      expect(validateArchitecture(mockArch as any)).toBe(true)
     })
   })
 })

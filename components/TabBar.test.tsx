@@ -13,8 +13,8 @@ describe('TabBar Component', () => {
   })
 
   it('renders open tabs', () => {
-    useTabStore.getState().openTab({ id: '1', title: 'Arch 1', content: {} })
-    useTabStore.getState().openTab({ id: '2', title: 'Arch 2', content: {} })
+    useTabStore.getState().openTab({ id: '1', title: 'Arch 1', content: { nodes: [], connections: [] } })
+    useTabStore.getState().openTab({ id: '2', title: 'Arch 2', content: { nodes: [], connections: [] } })
     
     render(<TabBar />)
     expect(screen.getByText('Arch 1')).toBeInTheDocument()
@@ -22,8 +22,8 @@ describe('TabBar Component', () => {
   })
 
   it('sets active tab when clicked', () => {
-    useTabStore.getState().openTab({ id: '1', title: 'Arch 1', content: {} })
-    useTabStore.getState().openTab({ id: '2', title: 'Arch 2', content: {} })
+    useTabStore.getState().openTab({ id: '1', title: 'Arch 1', content: { nodes: [], connections: [] } })
+    useTabStore.getState().openTab({ id: '2', title: 'Arch 2', content: { nodes: [], connections: [] } })
     
     render(<TabBar />)
     fireEvent.click(screen.getByText('Arch 1'))
@@ -32,7 +32,7 @@ describe('TabBar Component', () => {
   })
 
   it('closes tab when close button is clicked', () => {
-    useTabStore.getState().openTab({ id: '1', title: 'Arch 1', content: {} })
+    useTabStore.getState().openTab({ id: '1', title: 'Arch 1', content: { nodes: [], connections: [] } })
     
     render(<TabBar />)
     const closeButton = screen.getByTestId('close-tab-1')

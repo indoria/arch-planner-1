@@ -1,9 +1,10 @@
 import { create } from 'zustand'
+import { Architecture } from './architecture'
 
 export interface Tab {
   id: string
   title: string
-  content: any
+  content: Architecture
 }
 
 interface TabState {

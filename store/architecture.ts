@@ -9,8 +9,25 @@ export interface Socket {
 }
 
 export interface TypedConnection {
+  id: string
+  sourceNodeId: string
   sourceSocketId: string
+  targetNodeId: string
   targetSocketId: string
+}
+
+export interface Node {
+  id: string
+  type: string
+  label: string
+  sockets: Socket[]
+  position: { x: number, y: number }
+  data: any
+}
+
+export interface Architecture {
+  nodes: Node[]
+  connections: TypedConnection[]
 }
 
 export interface CompatibilityList {

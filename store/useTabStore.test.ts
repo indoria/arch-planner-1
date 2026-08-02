@@ -16,7 +16,7 @@ describe('useTabStore', () => {
 
   it('should open a new tab', () => {
     const { result } = renderHook(() => useTabStore())
-    const newTab = { id: '1', title: 'Test Arch', content: {} }
+    const newTab = { id: '1', title: 'Test Arch', content: { nodes: [], connections: [] } }
     
     act(() => {
       result.current.openTab(newTab)
@@ -29,8 +29,8 @@ describe('useTabStore', () => {
   it('should switch between tabs', () => {
     const { result } = renderHook(() => useTabStore())
     act(() => {
-      result.current.openTab({ id: '1', title: 'Arch 1', content: {} })
-      result.current.openTab({ id: '2', title: 'Arch 2', content: {} })
+      result.current.openTab({ id: '1', title: 'Arch 1', content: { nodes: [], connections: [] } })
+      result.current.openTab({ id: '2', title: 'Arch 2', content: { nodes: [], connections: [] } })
     })
 
     expect(result.current.activeTabId).toBe('2')
@@ -45,7 +45,7 @@ describe('useTabStore', () => {
   it('should close a tab', () => {
     const { result } = renderHook(() => useTabStore())
     act(() => {
-      result.current.openTab({ id: '1', title: 'Arch 1', content: {} })
+      result.current.openTab({ id: '1', title: 'Arch 1', content: { nodes: [], connections: [] } })
     })
 
     act(() => {
@@ -59,8 +59,8 @@ describe('useTabStore', () => {
   it('should set the next tab active when the current active tab is closed', () => {
     const { result } = renderHook(() => useTabStore())
     act(() => {
-      result.current.openTab({ id: '1', title: 'Arch 1', content: {} })
-      result.current.openTab({ id: '2', title: 'Arch 2', content: {} })
+      result.current.openTab({ id: '1', title: 'Arch 1', content: { nodes: [], connections: [] } })
+      result.current.openTab({ id: '2', title: 'Arch 2', content: { nodes: [], connections: [] } })
     })
 
     act(() => {

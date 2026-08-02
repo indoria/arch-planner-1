@@ -18,9 +18,9 @@ This plan outlines the steps to build the core architecture schema and the VS Co
 - [x] Task: Define Typed Architecture Schema [b042325]
     - [x] **Write failing tests** for socket count and type validation logic.
     - [x] Implement TypeScript interfaces for `Socket`, `TypedConnection`, and `CompatibilityList`.
-- [ ] Task: Progressive Disclosure Components
-    - [ ] **Write failing tests** for the summary/deep-dive expansion logic.
-    - [ ] Build a reusable `KnowledgeAccordion` component using Tailwind.
+- [x] Task: Progressive Disclosure Components [1bf3c89]
+    - [x] **Write failing tests** for the summary/deep-dive expansion logic.
+    - [x] Build a reusable `KnowledgeAccordion` component using Tailwind.
 
 ## Phase 3: Canvas & Rendering
 - [ ] Task: React Flow Integration

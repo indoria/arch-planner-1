@@ -3,9 +3,9 @@
 This plan outlines the steps to implement hierarchical architectures and drill-down simulation.
 
 ## Phase 1: Recursive Schema & Data Model
-- [ ] Task: Update Architecture Schema
-    - [ ] **Write failing tests** for recursive schema validation (detecting cycles, validating sub-architecture links).
-    - [ ] Update `Architecture` and `Node` interfaces to support `subArchitectureId`.
+- [x] Task: Update Architecture Schema [2d0d538]
+    - [x] **Write failing tests** for recursive schema validation (detecting cycles, validating sub-architecture links).
+    - [x] Update `Architecture` and `Node` interfaces to support `subArchitectureId`.
 - [ ] Task: Mock Data for Hierarchical Systems
     - [ ] Create a sample "System of Systems" JSON configuration for a Voice Gateway containing an internal ASR and VAD system.
 

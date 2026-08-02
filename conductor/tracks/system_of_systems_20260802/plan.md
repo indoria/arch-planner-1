@@ -2,7 +2,7 @@
 
 This plan outlines the steps to implement hierarchical architectures and drill-down simulation.
 
-## Phase 1: Recursive Schema & Data Model
+## Phase 1: Recursive Schema & Data Model [checkpoint: c935401]
 - [x] Task: Update Architecture Schema [2d0d538]
     - [x] **Write failing tests** for recursive schema validation (detecting cycles, validating sub-architecture links).
     - [x] Update `Architecture` and `Node` interfaces to support `subArchitectureId`.

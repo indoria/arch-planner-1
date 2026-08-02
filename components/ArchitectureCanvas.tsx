@@ -4,6 +4,11 @@ import React, { useMemo } from 'react'
 import ReactFlow from 'reactflow'
 import 'reactflow/dist/style.css'
 import { useTabStore } from '@/store/useTabStore'
+import ArchitectureNode from './ArchitectureNode'
+
+const nodeTypes = {
+  architectureNode: ArchitectureNode,
+}
 
 export default function ArchitectureCanvas() {
   const activeTabId = useTabStore((state) => state.activeTabId)
@@ -18,9 +23,9 @@ export default function ArchitectureCanvas() {
     if (!activeTab) return []
     return activeTab.content.nodes.map((node) => ({
       id: node.id,
-      type: node.type,
+      type: 'architectureNode',
       position: node.position,
-      data: { ...node.data, label: node.label, sockets: node.sockets }
+      data: { label: node.label, sockets: node.sockets }
     }))
   }, [activeTab])
 
@@ -40,6 +45,7 @@ export default function ArchitectureCanvas() {
       <ReactFlow
         nodes={nodes}
         edges={edges}
+        nodeTypes={nodeTypes}
       />
     </div>
   )

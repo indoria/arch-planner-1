@@ -14,7 +14,7 @@ This plan outlines the steps to build the core architecture schema and the VS Co
     - [x] Implement the Zustand store for `openTabs` and `activeTabId`.
     - [x] Build the Top Tab Bar UI.
 
-## Phase 2: Typed Schema & Progressive Disclosure
+## Phase 2: Typed Schema & Progressive Disclosure [checkpoint: 9094164]
 - [x] Task: Define Typed Architecture Schema [b042325]
     - [x] **Write failing tests** for socket count and type validation logic.
     - [x] Implement TypeScript interfaces for `Socket`, `TypedConnection`, and `CompatibilityList`.

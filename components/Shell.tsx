@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 import { Files, Library, Settings, Search, Box } from 'lucide-react'
+import KnowledgeAccordion from './KnowledgeAccordion'
 
 type View = 'explorer' | 'library'
 
@@ -37,49 +38,99 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
       </div>
 
       {/* Main Panel Group */}
-      <PanelGroup direction="horizontal" className="flex-1">
-        {/* Sidebar */}
-        <Panel defaultSize={15} minSize={10} maxSize={40} data-testid="sidebar" className="bg-[#252526] border-r border-[#2b2b2b]">
-          <div className="p-3 uppercase text-xs font-bold tracking-wider text-[#bbbbbb]">
-            {activeView === 'explorer' ? 'Explorer' : 'Interactive Library'}
-          </div>
-          <div className="p-2">
-            {activeView === 'explorer' ? (
-              <div className="text-sm">Architectures Explorer Content</div>
-            ) : (
-              <div className="text-sm">Library Content</div>
-            )}
-          </div>
-        </Panel>
-
-        <PanelResizeHandle className="w-1 bg-[#1e1e1e] hover:bg-[#007acc] transition-colors" />
-
-        {/* Editor Area */}
-        <Panel data-testid="editor-area" className="flex flex-col h-full overflow-hidden">
-          <PanelGroup direction="vertical">
-            <Panel defaultSize={70} minSize={20} className="flex flex-col overflow-hidden">
-              {children || (
-                <div className="flex flex-col items-center justify-center h-full text-[#858585]">
-                  <Box size={64} className="mb-4 opacity-20" />
-                  <h1 className="text-2xl font-light tracking-tight mb-2 text-[#cccccc]">Voice AI Playground</h1>
-                  <p className="text-sm">Open an architecture to start or explore the library</p>
+      <div className="flex-1 flex flex-col min-w-0">
+        <PanelGroup direction="horizontal">
+          {/* Left Sidebar */}
+          <Panel defaultSize={15} minSize={10} maxSize={30} data-testid="sidebar" className="bg-[#252526] border-r border-[#2b2b2b]">
+            <div className="p-3 uppercase text-[11px] font-bold tracking-wider text-[#bbbbbb] flex items-center justify-between">
+              <span>{activeView === 'explorer' ? 'Explorer' : 'Interactive Library'}</span>
+            </div>
+            <div className="overflow-y-auto h-full">
+              {activeView === 'explorer' ? (
+                <div className="flex flex-col">
+                  <div className="p-2 text-sm text-[#858585] border-b border-[#2b2b2b]">Architectures Explorer</div>
+                  <KnowledgeAccordion title="Architecture Basics">
+                    <p className="text-[12px] text-[#858585]">
+                      Learn about sockets, connections, and component types.
+                    </p>
+                  </KnowledgeAccordion>
+                  <KnowledgeAccordion title="Enterprise Knowledge">
+                    <p className="text-[12px] text-[#858585]">
+                      Best practices for voicebot architecture design.
+                    </p>
+                  </KnowledgeAccordion>
                 </div>
+              ) : (
+                <div className="p-2 text-sm text-[#858585]">Library Concepts</div>
               )}
-            </Panel>
-            
-            <PanelResizeHandle className="h-1 bg-[#1e1e1e] hover:bg-[#007acc] transition-colors" />
-            
-            <Panel defaultSize={30} minSize={10} className="bg-[#1e1e1e] border-t border-[#2b2b2b]">
-              <div className="flex items-center h-9 px-4 border-b border-[#2b2b2b]">
-                <div className="text-[11px] uppercase tracking-wider font-bold text-[#bbbbbb]">Output / Call Log</div>
-              </div>
-              <div className="p-4 text-[13px] font-mono text-[#858585] italic">
-                Logs will appear here during simulation...
-              </div>
-            </Panel>
-          </PanelGroup>
-        </Panel>
-      </PanelGroup>
+            </div>
+          </Panel>
+
+          <PanelResizeHandle className="w-1 bg-[#1e1e1e] hover:bg-[#007acc] transition-colors" />
+
+          {/* Editor & Bottom Panel Area */}
+          <Panel defaultSize={65} minSize={40} className="flex flex-col h-full overflow-hidden" data-testid="editor-area">
+            <PanelGroup direction="vertical">
+              <Panel defaultSize={70} minSize={20} className="flex flex-col overflow-hidden bg-[#1e1e1e]">
+                {children || (
+                  <div className="flex flex-col items-center justify-center h-full text-[#858585]">
+                    <Box size={64} className="mb-4 opacity-20" />
+                    <h1 className="text-2xl font-light tracking-tight mb-2 text-[#cccccc]">Architecture Planner</h1>
+                    <p className="text-sm">Open an architecture to start or explore the library</p>
+                  </div>
+                )}
+              </Panel>
+              
+              <PanelResizeHandle className="h-1 bg-[#1e1e1e] hover:bg-[#007acc] transition-colors" />
+              
+              <Panel defaultSize={30} minSize={10} className="bg-[#1e1e1e] border-t border-[#2b2b2b]">
+                <div className="flex items-center h-9 px-4 border-b border-[#2b2b2b] bg-[#252526]">
+                  <div className="flex gap-4 h-full">
+                    <button className="text-[11px] uppercase tracking-wider font-bold text-white border-b border-white h-full">Output</button>
+                    <button className="text-[11px] uppercase tracking-wider font-bold text-[#858585] hover:text-[#cccccc] h-full">Call Log</button>
+                    <button className="text-[11px] uppercase tracking-wider font-bold text-[#858585] hover:text-[#cccccc] h-full">Debug Console</button>
+                  </div>
+                </div>
+                <div className="p-4 text-[13px] font-mono text-[#858585] italic">
+                  Waiting for simulation...
+                </div>
+              </Panel>
+            </PanelGroup>
+          </Panel>
+
+          <PanelResizeHandle className="w-1 bg-[#1e1e1e] hover:bg-[#007acc] transition-colors" />
+
+          {/* Right Sidebar (Inspector) */}
+          <Panel defaultSize={20} minSize={15} maxSize={30} className="bg-[#252526] border-l border-[#2b2b2b]">
+            <div className="p-3 uppercase text-[11px] font-bold tracking-wider text-[#bbbbbb]">
+              Inspector
+            </div>
+            <div className="p-4 text-sm text-[#858585] italic">
+              Select a component to view properties
+            </div>
+          </Panel>
+        </PanelGroup>
+
+        {/* Status Bar */}
+        <div className="h-6 bg-[#007acc] text-white flex items-center px-3 text-[11px] justify-between z-50">
+          <div className="flex items-center gap-3">
+            <span className="flex items-center gap-1">
+              <Box size={12} />
+              Main
+            </span>
+            <span>0 Errors</span>
+            <span>0 Warnings</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span>UTF-8</span>
+            <span>TypeScript JSX</span>
+            <span className="flex items-center gap-1">
+              <Settings size={12} />
+              Layout: IDE
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

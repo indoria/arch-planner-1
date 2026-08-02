@@ -15,9 +15,9 @@ This plan outlines the steps to build the core architecture schema and the VS Co
     - [x] Build the Top Tab Bar UI.
 
 ## Phase 2: Typed Schema & Progressive Disclosure
-- [ ] Task: Define Typed Architecture Schema
-    - [ ] **Write failing tests** for socket count and type validation logic.
-    - [ ] Implement TypeScript interfaces for `Socket`, `TypedConnection`, and `CompatibilityList`.
+- [x] Task: Define Typed Architecture Schema [b042325]
+    - [x] **Write failing tests** for socket count and type validation logic.
+    - [x] Implement TypeScript interfaces for `Socket`, `TypedConnection`, and `CompatibilityList`.
 - [ ] Task: Progressive Disclosure Components
     - [ ] **Write failing tests** for the summary/deep-dive expansion logic.
     - [ ] Build a reusable `KnowledgeAccordion` component using Tailwind.

@@ -1,4 +1,4 @@
-import { Socket, validateSocket, validateConnection } from './architecture'
+import { Socket, validateSocket, validateConnection, validateArchitecture } from './architecture'
 
 describe('Architecture Schema Validation', () => {
   describe('validateSocket', () => {
@@ -30,6 +30,60 @@ describe('Architecture Schema Validation', () => {
 
       expect(validateConnection(outputSocket, inputSocket)).toBe(true)
       expect(validateConnection(inputSocket, outputSocket)).toBe(false) // Input to Output not allowed
+    })
+  })
+
+  describe('validateArchitecture (Recursive)', () => {
+    it('should validate an architecture with sub-architectures', () => {
+      const subArch = {
+        nodes: [
+          { id: 'sn1', type: 'architectureNode', label: 'Sub Node', sockets: [], position: { x: 0, y: 0 }, data: {} }
+        ],
+        connections: []
+      }
+
+      const mainArch = {
+        nodes: [
+          { 
+            id: 'n1', 
+            type: 'architectureNode', 
+            label: 'Parent Node', 
+            sockets: [], 
+            position: { x: 0, y: 0 }, 
+            data: {},
+            subArchitecture: subArch 
+          }
+        ],
+        connections: []
+      }
+
+      expect(validateArchitecture(mainArch)).toBe(true)
+    })
+
+    it('should detect circular sub-architecture references', () => {
+      const archA: any = {
+        nodes: [
+          { id: 'n1', type: 'architectureNode', label: 'Node 1', sockets: [], position: { x: 0, y: 0 }, data: {} }
+        ],
+        connections: []
+      }
+
+      const archB: any = {
+        nodes: [
+          { id: 'n2', type: 'architectureNode', label: 'Node 2', sockets: [], position: { x: 0, y: 0 }, data: {}, subArchitecture: archA }
+        ],
+        connections: []
+      }
+
+      // Create a cycle: A -> B -> A
+      archA.nodes[0].subArchitecture = archB
+
+      expect(validateArchitecture(archA)).toBe(false)
+    })
+
+    it('should handle invalid architecture input', () => {
+      expect(validateArchitecture(null as any)).toBe(false)
+      expect(validateArchitecture('not an arch' as any)).toBe(false)
     })
   })
 })

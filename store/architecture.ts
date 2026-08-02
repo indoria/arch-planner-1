@@ -23,6 +23,7 @@ export interface Node {
   sockets: Socket[]
   position: { x: number, y: number }
   data: any
+  subArchitecture?: Architecture
 }
 
 export interface Architecture {
@@ -47,4 +48,21 @@ export const validateConnection = (source: Socket, target: Socket): boolean => {
   }
   // Types must match (simplification for now, could use CompatibilityList)
   return source.type === target.type
+}
+
+export const validateArchitecture = (arch: Architecture, seenArches: Set<Architecture> = new Set()): boolean => {
+  if (!arch || typeof arch !== 'object') return false
+  if (seenArches.has(arch)) return false // Circular reference
+  
+  seenArches.add(arch)
+
+  for (const node of arch.nodes) {
+    if (node.subArchitecture) {
+      if (!validateArchitecture(node.subArchitecture, seenArches)) {
+        return false
+      }
+    }
+  }
+
+  return true
 }

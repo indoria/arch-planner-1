@@ -6,8 +6,8 @@ This plan outlines the steps to implement hierarchical architectures and drill-d
 - [x] Task: Update Architecture Schema [2d0d538]
     - [x] **Write failing tests** for recursive schema validation (detecting cycles, validating sub-architecture links).
     - [x] Update `Architecture` and `Node` interfaces to support `subArchitectureId`.
-- [ ] Task: Mock Data for Hierarchical Systems
-    - [ ] Create a sample "System of Systems" JSON configuration for a Voice Gateway containing an internal ASR and VAD system.
+- [x] Task: Mock Data for Hierarchical Systems [09e674a]
+    - [x] Create a sample "System of Systems" JSON configuration for a Voice Gateway containing an internal ASR and VAD system.
 
 ## Phase 2: Drill-down UI & Navigation
 - [ ] Task: Breadcrumb Component

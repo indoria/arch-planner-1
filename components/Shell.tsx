@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 import { Files, Library, Settings, Search, Box } from 'lucide-react'
 import KnowledgeAccordion from './KnowledgeAccordion'
+import BlankState from './BlankState'
 
 type View = 'explorer' | 'library'
 
@@ -72,13 +73,7 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
           <Panel defaultSize={65} minSize={40} className="flex flex-col h-full overflow-hidden" data-testid="editor-area">
             <PanelGroup direction="vertical">
               <Panel defaultSize={70} minSize={20} className="flex flex-col overflow-hidden bg-[#1e1e1e]">
-                {children || (
-                  <div className="flex flex-col items-center justify-center h-full text-[#858585]">
-                    <Box size={64} className="mb-4 opacity-20" />
-                    <h1 className="text-2xl font-light tracking-tight mb-2 text-[#cccccc]">Architecture Planner</h1>
-                    <p className="text-sm">Open an architecture to start or explore the library</p>
-                  </div>
-                )}
+                {children || <BlankState />}
               </Panel>
               
               <PanelResizeHandle className="h-1 bg-[#1e1e1e] hover:bg-[#007acc] transition-colors" />

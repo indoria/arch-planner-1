@@ -7,6 +7,13 @@ jest.mock('react-resizable-panels', () => ({
   PanelResizeHandle: () => <div data-testid="resize-handle" />,
 }))
 
+// Mock BlankState to verify it's rendered
+jest.mock('./BlankState', () => {
+  return function MockBlankState() {
+    return <div data-testid="mock-blank-state">Mock Blank State</div>
+  }
+})
+
 describe('Shell Component', () => {
   it('renders activity bar with explorer and library icons', () => {
     render(<Shell />)
@@ -35,5 +42,10 @@ describe('Shell Component', () => {
   it('renders editor area', () => {
     render(<Shell />)
     expect(screen.getByTestId('editor-area')).toBeInTheDocument()
+  })
+
+  it('renders BlankState when no children are provided', () => {
+    render(<Shell />)
+    expect(screen.getByTestId('mock-blank-state')).toBeInTheDocument()
   })
 })

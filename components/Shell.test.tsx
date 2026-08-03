@@ -14,11 +14,19 @@ jest.mock('./BlankState', () => {
   }
 })
 
+// Mock ComponentLibrary to verify it's rendered
+jest.mock('./ComponentLibrary', () => {
+  return function MockComponentLibrary() {
+    return <div data-testid="mock-component-library">Mock Component Library</div>
+  }
+})
+
 describe('Shell Component', () => {
-  it('renders activity bar with explorer and library icons', () => {
+  it('renders activity bar with explorer, components, and library icons', () => {
     render(<Shell />)
     expect(screen.getByTestId('activity-bar')).toBeInTheDocument()
     expect(screen.getByTestId('icon-explorer')).toBeInTheDocument()
+    expect(screen.getByTestId('icon-components')).toBeInTheDocument()
     expect(screen.getByTestId('icon-library')).toBeInTheDocument()
   })
 
@@ -30,6 +38,12 @@ describe('Shell Component', () => {
 
   it('switches sidebar content when activity bar icons are clicked', () => {
     render(<Shell />)
+    
+    const componentsIcon = screen.getByTestId('icon-components')
+    fireEvent.click(componentsIcon)
+    expect(screen.getByText('Components')).toBeInTheDocument()
+    expect(screen.getByTestId('mock-component-library')).toBeInTheDocument()
+
     const libraryIcon = screen.getByTestId('icon-library')
     fireEvent.click(libraryIcon)
     expect(screen.getByText('Interactive Library')).toBeInTheDocument()

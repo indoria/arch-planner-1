@@ -5,8 +5,9 @@ import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 import { Files, Library, Settings, Search, Box } from 'lucide-react'
 import KnowledgeAccordion from './KnowledgeAccordion'
 import BlankState from './BlankState'
+import ComponentLibrary from './ComponentLibrary'
 
-type View = 'explorer' | 'library'
+type View = 'explorer' | 'library' | 'components'
 
 export default function Shell({ children }: { children?: React.ReactNode }) {
   const [activeView, setActiveView] = useState<View>('explorer')
@@ -22,6 +23,14 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
           aria-label="Explorer"
         >
           <Files size={24} />
+        </button>
+        <button
+          onClick={() => setActiveView('components')}
+          className={`p-2 mb-2 hover:text-white transition-colors ${activeView === 'components' ? 'text-white border-l-2 border-white' : 'text-[#858585]'}`}
+          data-testid="icon-components"
+          aria-label="Components"
+        >
+          <Box size={24} />
         </button>
         <button
           onClick={() => setActiveView('library')}
@@ -44,10 +53,14 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
           {/* Left Sidebar */}
           <Panel defaultSize={15} minSize={10} maxSize={30} data-testid="sidebar" className="bg-[#252526] border-r border-[#2b2b2b]">
             <div className="p-3 uppercase text-[11px] font-bold tracking-wider text-[#bbbbbb] flex items-center justify-between">
-              <span>{activeView === 'explorer' ? 'Explorer' : 'Interactive Library'}</span>
+              <span>
+                {activeView === 'explorer' && 'Explorer'}
+                {activeView === 'components' && 'Components'}
+                {activeView === 'library' && 'Interactive Library'}
+              </span>
             </div>
             <div className="overflow-y-auto h-full">
-              {activeView === 'explorer' ? (
+              {activeView === 'explorer' && (
                 <div className="flex flex-col">
                   <div className="p-2 text-sm text-[#858585] border-b border-[#2b2b2b]">Architectures Explorer</div>
                   <KnowledgeAccordion title="Architecture Basics">
@@ -61,7 +74,9 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
                     </p>
                   </KnowledgeAccordion>
                 </div>
-              ) : (
+              )}
+              {activeView === 'components' && <ComponentLibrary />}
+              {activeView === 'library' && (
                 <div className="p-2 text-sm text-[#858585]">Library Concepts</div>
               )}
             </div>

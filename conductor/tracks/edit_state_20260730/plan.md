@@ -2,15 +2,16 @@
 
 This plan focuses on building the component interactions and constraints using a TDD approach.
 
-## Phase 1: Extensions Sidebar & Drag-and-Drop
+## Phase 1: Extensions Sidebar & Drag-and-Drop [checkpoint: 05c77a1]
 - [x] Task: Left Sidebar Component Extensions [384f772]
     - [x] **Write failing tests** for the extension-style list rendering and search.
     - [x] Build the Left Sidebar "Component Repository" UI.
-- [~] Task: Drag-and-Drop to Canvas
-    - [ ] Implement node creation in the active tab upon drop.
+- [x] Task: Drag-and-Drop to Canvas [05c77a1]
+    - [x] Implement node creation in the active tab upon drop.
 
 ## Phase 2: Inspector & Click-to-Replace
 ...
+
 
     - [ ] **Write failing tests** for node selection and data binding in the inspector.
     - [ ] Build the Inspector UI (specs, description, script editor).

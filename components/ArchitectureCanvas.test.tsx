@@ -1,11 +1,15 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import ArchitectureCanvas from './ArchitectureCanvas'
 import { useTabStore } from '@/store/useTabStore'
 
 // Mock ReactFlow
 jest.mock('reactflow', () => {
-  const ReactFlow = ({ nodes, edges, children }: any) => (
-    <div data-testid="rf-mock">
+  const ReactFlow = ({ nodes, edges, onDrop, onDragOver, children }: any) => (
+    <div 
+      data-testid="rf-mock" 
+      onDrop={onDrop} 
+      onDragOver={onDragOver}
+    >
       <div data-testid="rf-nodes">{nodes?.length || 0}</div>
       <div data-testid="rf-edges">{edges?.length || 0}</div>
       {children}
@@ -55,5 +59,21 @@ describe('ArchitectureCanvas', () => {
     render(<ArchitectureCanvas />)
     
     expect(screen.getByTestId('rf-edges')).toHaveTextContent('1')
+  })
+
+  it('should handle drop events', () => {
+    // This is a minimal test to verify the onDrop handler exists and can be called.
+    // Full drop testing would require mocking getBoundingClientRect and project()
+    useTabStore.getState().openTab({ id: '1', title: 'Arch 1', content: { nodes: [], connections: [] } })
+    
+    render(<ArchitectureCanvas />)
+    const canvas = screen.getByTestId('rf-mock')
+    
+    // We expect it not to crash when dropped
+    fireEvent.drop(canvas, {
+      dataTransfer: {
+        getData: () => JSON.stringify({ type: 'asr', label: 'ASR', sockets: [] })
+      }
+    })
   })
 })

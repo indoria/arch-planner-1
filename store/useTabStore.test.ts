@@ -1,5 +1,6 @@
 import { renderHook, act } from '@testing-library/react'
 import { useTabStore } from './useTabStore'
+import { Node } from './architecture'
 
 describe('useTabStore', () => {
   beforeEach(() => {
@@ -68,5 +69,28 @@ describe('useTabStore', () => {
     })
 
     expect(result.current.activeTabId).toBe('1')
+  })
+
+  it('should add a node to a specific tab', () => {
+    const { result } = renderHook(() => useTabStore())
+    act(() => {
+      result.current.openTab({ id: '1', title: 'Arch 1', content: { nodes: [], connections: [] } })
+    })
+
+    const newNode: Node = { 
+      id: 'node-1', 
+      type: 'asr', 
+      label: 'ASR', 
+      sockets: [], 
+      position: { x: 100, y: 100 }, 
+      data: {} 
+    }
+    
+    act(() => {
+      result.current.addNode('1', newNode)
+    })
+
+    const tab = result.current.openTabs.find(t => t.id === '1')
+    expect(tab?.content.nodes).toContainEqual(newNode)
   })
 })

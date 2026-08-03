@@ -1,10 +1,11 @@
 'use client'
 
-import React, { useMemo } from 'react'
-import ReactFlow from 'reactflow'
+import React, { useMemo, useCallback, useRef, useState } from 'react'
+import ReactFlow, { ReactFlowInstance } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { useTabStore } from '@/store/useTabStore'
 import ArchitectureNode from './ArchitectureNode'
+import { ComponentDef } from '@/store/components'
 
 const nodeTypes = {
   architectureNode: ArchitectureNode,
@@ -13,6 +14,10 @@ const nodeTypes = {
 export default function ArchitectureCanvas() {
   const activeTabId = useTabStore((state) => state.activeTabId)
   const openTabs = useTabStore((state) => state.openTabs)
+  const addNode = useTabStore((state) => state.addNode)
+  
+  const reactFlowWrapper = useRef<HTMLDivElement>(null)
+  const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null)
 
   const activeTab = useMemo(() => 
     openTabs.find((t) => t.id === activeTabId),
@@ -40,12 +45,56 @@ export default function ArchitectureCanvas() {
     }))
   }, [activeTab])
 
+  const onDragOver = useCallback((event: React.DragEvent) => {
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'move'
+  }, [])
+
+  const onDrop = useCallback(
+    (event: React.DragEvent) => {
+      event.preventDefault()
+
+      if (!activeTabId || !reactFlowInstance || !reactFlowWrapper.current) return
+
+      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect()
+      const data = event.dataTransfer.getData('application/reactflow')
+
+      if (!data) return
+
+      try {
+        const component: ComponentDef = JSON.parse(data)
+
+        const position = reactFlowInstance.project({
+          x: event.clientX - reactFlowBounds.left,
+          y: event.clientY - reactFlowBounds.top,
+        })
+        
+        const newNode = {
+          id: `${component.type}-${Date.now()}`,
+          type: 'architectureNode', // Use our custom node type
+          label: component.label,
+          sockets: component.sockets,
+          position,
+          data: { label: component.label, sockets: component.sockets },
+        }
+
+        addNode(activeTabId, newNode)
+      } catch (err) {
+        console.error('Failed to parse dropped component data', err)
+      }
+    },
+    [reactFlowInstance, activeTabId, addNode]
+  )
+
   return (
-    <div className="w-full h-full bg-[#1e1e1e]" data-testid="architecture-canvas">
+    <div className="w-full h-full bg-[#1e1e1e]" data-testid="architecture-canvas" ref={reactFlowWrapper}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
+        onInit={setReactFlowInstance}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
       />
     </div>
   )

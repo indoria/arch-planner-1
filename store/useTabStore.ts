@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Architecture } from './architecture'
+import { Architecture, Node } from './architecture'
 
 export interface Tab {
   id: string
@@ -14,6 +14,7 @@ interface TabState {
   setActiveTab: (id: string | null) => void
   closeTab: (id: string) => void
   closeAllTabs: () => void
+  addNode: (tabId: string, node: Node) => void
 }
 
 export const useTabStore = create<TabState>((set) => ({
@@ -53,4 +54,18 @@ export const useTabStore = create<TabState>((set) => ({
       }
     }),
   closeAllTabs: () => set({ openTabs: [], activeTabId: null }),
+  addNode: (tabId, node) =>
+    set((state) => ({
+      openTabs: state.openTabs.map((tab) =>
+        tab.id === tabId
+          ? {
+              ...tab,
+              content: {
+                ...tab.content,
+                nodes: [...tab.content.nodes, node],
+              },
+            }
+          : tab
+      ),
+    })),
 }))

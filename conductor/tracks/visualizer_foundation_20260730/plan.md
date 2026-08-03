@@ -26,8 +26,8 @@ This plan outlines the steps to build the core architecture schema and the VS Co
 - [x] Task: React Flow Integration [a674292]
     - [x] **Write failing tests** for rendering a multi-socket architecture from the tab state.
     - [x] Implement the `ArchitectureCanvas` with custom multi-socket nodes.
-- [ ] Task: Blank State UI
-    - [ ] Build the editor splash screen for the blank state.
+- [x] Task: Blank State UI [3a69f77]
+    - [x] Build the editor splash screen for the blank state.
 
 ## Phase 4: Verification & Integration
 - [ ] Task: Documentation & Cleanup

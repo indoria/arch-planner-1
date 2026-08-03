@@ -22,7 +22,7 @@ This plan outlines the steps to build the core architecture schema and the VS Co
     - [x] **Write failing tests** for the summary/deep-dive expansion logic.
     - [x] Build a reusable `KnowledgeAccordion` component using Tailwind.
 
-## Phase 3: Canvas & Rendering
+## Phase 3: Canvas & Rendering [checkpoint: a355c5e]
 - [x] Task: React Flow Integration [a674292]
     - [x] **Write failing tests** for rendering a multi-socket architecture from the tab state.
     - [x] Implement the `ArchitectureCanvas` with custom multi-socket nodes.

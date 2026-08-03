@@ -3,6 +3,7 @@
 ## Frontend & Core Framework
 - **Language:** **TypeScript** for strict typing across architectural models and simulation events.
 - **Framework:** **Next.js** for a robust, scalable React environment with efficient routing.
+- **Layout:** **react-resizable-panels** for the IDE-style VS Code shell layout.
 - **Styling:** **Tailwind CSS** for a minimalist, VS Code-like dark mode aesthetic.
 
 ## Visualization & Diagramming

@@ -2,12 +2,13 @@
 
 import React, { useMemo } from 'react'
 import { useTabStore } from '@/store/useTabStore'
-import { AVAILABLE_COMPONENTS } from '@/store/components'
+import { AVAILABLE_COMPONENTS, ComponentDef } from '@/store/components'
 
 export default function Inspector() {
   const activeTabId = useTabStore((state) => state.activeTabId)
   const openTabs = useTabStore((state) => state.openTabs)
   const selectedNodeId = useTabStore((state) => state.selectedNodeId)
+  const replaceComponent = useTabStore((state) => state.replaceComponent)
 
   const activeTab = useMemo(() => 
     openTabs.find((t) => t.id === activeTabId),
@@ -23,6 +24,22 @@ export default function Inspector() {
     if (!selectedNode) return null
     return AVAILABLE_COMPONENTS.find((c) => c.type === selectedNode.type) || null
   }, [selectedNode])
+
+  const alternatives = useMemo(() => {
+    if (!selectedNode) return []
+    // Show components of the same type or all other components as potential swaps
+    return AVAILABLE_COMPONENTS.filter((c) => c.type !== selectedNode.type)
+  }, [selectedNode])
+
+  const handleReplace = (newComp: ComponentDef) => {
+    if (!activeTabId || !selectedNodeId) return
+    replaceComponent(activeTabId, selectedNodeId, {
+      type: newComp.type,
+      label: newComp.label,
+      sockets: newComp.sockets,
+      data: { label: newComp.label, sockets: newComp.sockets }
+    })
+  }
 
   if (!selectedNode) {
     return (
@@ -76,6 +93,25 @@ export default function Inspector() {
               {socket.label || socket.id}
             </div>
           ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-[#333]">
+        <div className="text-[10px] uppercase text-[#666] font-bold">Alternatives (Click to Swap)</div>
+        <div className="flex flex-col gap-1">
+          {alternatives.map((alt) => (
+            <button
+              key={alt.id}
+              onClick={() => handleReplace(alt)}
+              className="text-left p-2 rounded hover:bg-[#333] transition-colors group border border-transparent hover:border-[#444]"
+            >
+              <div className="text-xs font-bold text-[#aaa] group-hover:text-white">{alt.label}</div>
+              <div className="text-[10px] text-[#666]">{alt.type} • {alt.latency}</div>
+            </button>
+          ))}
+          {alternatives.length === 0 && (
+            <div className="text-[10px] italic text-[#555]">No alternatives available</div>
+          )}
         </div>
       </div>
 

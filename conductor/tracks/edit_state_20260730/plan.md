@@ -21,8 +21,8 @@ This plan focuses on building the component interactions and constraints using a
 - [x] Task: Guardrail Enforcement [7a5ff3f]
     - [x] **Write failing tests** for preventing incompatible swaps/connections.
     - [x] Implement real-time validation for drag-and-drop and click-to-replace actions.
-- [ ] Task: "Complaints" System UI
-    - [ ] Build the visual feedback for architectural violations.
+- [x] Task: "Complaints" System UI [e2663be]
+    - [x] Build the visual feedback for architectural violations.
 
 ## Phase 4: Persistence & Verification
 - [ ] Task: IndexedDB Persistence

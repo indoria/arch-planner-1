@@ -9,7 +9,7 @@ This plan focuses on building the component interactions and constraints using a
 - [x] Task: Drag-and-Drop to Canvas [05c77a1]
     - [x] Implement node creation in the active tab upon drop.
 
-## Phase 2: Inspector & Click-to-Replace
+## Phase 2: Inspector & Click-to-Replace [checkpoint: ebd9ab0]
 - [x] Task: Inspector UI Foundation [7aa7140]
     - [x] **Write failing tests** for node selection and data binding in the inspector.
     - [x] Build the Inspector UI (specs, description, script editor).

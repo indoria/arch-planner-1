@@ -18,9 +18,9 @@ This plan focuses on building the component interactions and constraints using a
     - [x] Implement the list of alternatives in the inspector with instant swap functionality.
 
 ## Phase 3: Guardrails & Feedback
-- [ ] Task: Guardrail Enforcement
-    - [ ] **Write failing tests** for preventing incompatible swaps/connections.
-    - [ ] Implement real-time validation for drag-and-drop and click-to-replace actions.
+- [x] Task: Guardrail Enforcement [7a5ff3f]
+    - [x] **Write failing tests** for preventing incompatible swaps/connections.
+    - [x] Implement real-time validation for drag-and-drop and click-to-replace actions.
 - [ ] Task: "Complaints" System UI
     - [ ] Build the visual feedback for architectural violations.
 

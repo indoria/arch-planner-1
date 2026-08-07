@@ -10,11 +10,9 @@ This plan focuses on building the component interactions and constraints using a
     - [x] Implement node creation in the active tab upon drop.
 
 ## Phase 2: Inspector & Click-to-Replace
-...
-
-
-    - [ ] **Write failing tests** for node selection and data binding in the inspector.
-    - [ ] Build the Inspector UI (specs, description, script editor).
+- [x] Task: Inspector UI Foundation [7aa7140]
+    - [x] **Write failing tests** for node selection and data binding in the inspector.
+    - [x] Build the Inspector UI (specs, description, script editor).
 - [ ] Task: Click-to-Replace Shortcut
     - [ ] **Write failing tests** for the `replaceComponent` function (verifying state update and connection preservation).
     - [ ] Implement the list of alternatives in the inspector with instant swap functionality.

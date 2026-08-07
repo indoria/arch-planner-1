@@ -1,11 +1,12 @@
 'use client'
 
 import React, { useMemo, useCallback, useRef, useState } from 'react'
-import ReactFlow, { ReactFlowInstance, OnSelectionChangeParams } from 'reactflow'
+import ReactFlow, { ReactFlowInstance, OnSelectionChangeParams, Connection, addEdge, Edge } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { useTabStore } from '@/store/useTabStore'
 import ArchitectureNode from './ArchitectureNode'
 import { ComponentDef } from '@/store/components'
+import { canConnect } from '@/store/architecture'
 
 const nodeTypes = {
   architectureNode: ArchitectureNode,
@@ -95,6 +96,23 @@ export default function ArchitectureCanvas() {
     }
   }, [setSelectedNodeId])
 
+  const isValidConnection = useCallback((connection: Connection) => {
+    if (!activeTab) return false
+    
+    const sourceNode = activeTab.content.nodes.find(n => n.id === connection.source)
+    const targetNode = activeTab.content.nodes.find(n => n.id === connection.target)
+    
+    if (!sourceNode || !targetNode || !connection.sourceHandle || !connection.targetHandle) return false
+    
+    return canConnect(sourceNode, connection.sourceHandle, targetNode, connection.targetHandle)
+  }, [activeTab])
+
+  const onConnect = useCallback((params: Connection) => {
+    // This is where we would normally call a store action to add a connection
+    // For now, we just log it as the store doesn't have an addConnection action yet
+    console.log('New connection:', params)
+  }, [])
+
   return (
     <div className="w-full h-full bg-[#1e1e1e]" data-testid="architecture-canvas" ref={reactFlowWrapper}>
       <ReactFlow
@@ -105,6 +123,8 @@ export default function ArchitectureCanvas() {
         onDrop={onDrop}
         onDragOver={onDragOver}
         onSelectionChange={onSelectionChange}
+        isValidConnection={isValidConnection}
+        onConnect={onConnect}
       />
     </div>
   )

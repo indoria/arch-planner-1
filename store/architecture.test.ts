@@ -1,4 +1,4 @@
-import { Socket, validateSocket, validateConnection, validateArchitecture } from './architecture'
+import { Socket, Node, validateSocket, validateConnection, validateArchitecture, canConnect } from './architecture'
 import mockArch from './mockHierarchicalArch.json'
 
 describe('Architecture Schema Validation', () => {
@@ -31,6 +31,33 @@ describe('Architecture Schema Validation', () => {
 
       expect(validateConnection(outputSocket, inputSocket)).toBe(true)
       expect(validateConnection(inputSocket, outputSocket)).toBe(false) // Input to Output not allowed
+    })
+  })
+
+  describe('canConnect', () => {
+    const node1: Node = {
+      id: 'n1', type: 'asr', label: 'ASR', position: { x: 0, y: 0 }, data: {},
+      sockets: [{ id: 's1', type: 'audio', direction: 'output' }]
+    }
+    const node2: Node = {
+      id: 'n2', type: 'llm', label: 'LLM', position: { x: 0, y: 0 }, data: {},
+      sockets: [{ id: 's2', type: 'audio', direction: 'input' }]
+    }
+    const node3: Node = {
+      id: 'n3', type: 'tts', label: 'TTS', position: { x: 0, y: 0 }, data: {},
+      sockets: [{ id: 's3', type: 'text', direction: 'input' }]
+    }
+
+    it('should return true for valid connections', () => {
+      expect(canConnect(node1, 's1', node2, 's2')).toBe(true)
+    })
+
+    it('should return false for incompatible types', () => {
+      expect(canConnect(node1, 's1', node3, 's3')).toBe(false)
+    })
+
+    it('should return false if sockets do not exist', () => {
+      expect(canConnect(node1, 'invalid', node2, 's2')).toBe(false)
     })
   })
 

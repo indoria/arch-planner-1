@@ -50,6 +50,15 @@ export const validateConnection = (source: Socket, target: Socket): boolean => {
   return source.type === target.type
 }
 
+export const canConnect = (sourceNode: Node, sourceSocketId: string, targetNode: Node, targetSocketId: string): boolean => {
+  const sourceSocket = sourceNode.sockets.find(s => s.id === sourceSocketId)
+  const targetSocket = targetNode.sockets.find(s => s.id === targetSocketId)
+  
+  if (!sourceSocket || !targetSocket) return false
+  
+  return validateConnection(sourceSocket, targetSocket)
+}
+
 export const validateArchitecture = (arch: Architecture, seenArches: Set<Architecture> = new Set()): boolean => {
   if (!arch || typeof arch !== 'object') return false
   if (seenArches.has(arch)) return false // Circular reference

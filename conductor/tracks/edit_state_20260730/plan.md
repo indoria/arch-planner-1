@@ -17,7 +17,7 @@ This plan focuses on building the component interactions and constraints using a
     - [x] **Write failing tests** for the `replaceComponent` function (verifying state update and connection preservation).
     - [x] Implement the list of alternatives in the inspector with instant swap functionality.
 
-## Phase 3: Guardrails & Feedback
+## Phase 3: Guardrails & Feedback [checkpoint: 53f6853]
 - [x] Task: Guardrail Enforcement [7a5ff3f]
     - [x] **Write failing tests** for preventing incompatible swaps/connections.
     - [x] Implement real-time validation for drag-and-drop and click-to-replace actions.

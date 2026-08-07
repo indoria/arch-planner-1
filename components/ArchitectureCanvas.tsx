@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo, useCallback, useRef, useState } from 'react'
-import ReactFlow, { ReactFlowInstance } from 'reactflow'
+import ReactFlow, { ReactFlowInstance, OnSelectionChangeParams } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { useTabStore } from '@/store/useTabStore'
 import ArchitectureNode from './ArchitectureNode'
@@ -15,6 +15,7 @@ export default function ArchitectureCanvas() {
   const activeTabId = useTabStore((state) => state.activeTabId)
   const openTabs = useTabStore((state) => state.openTabs)
   const addNode = useTabStore((state) => state.addNode)
+  const setSelectedNodeId = useTabStore((state) => state.setSelectedNodeId)
   
   const reactFlowWrapper = useRef<HTMLDivElement>(null)
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null)
@@ -71,7 +72,7 @@ export default function ArchitectureCanvas() {
         
         const newNode = {
           id: `${component.type}-${Date.now()}`,
-          type: 'architectureNode', // Use our custom node type
+          type: component.type, // Store the component type correctly
           label: component.label,
           sockets: component.sockets,
           position,
@@ -86,6 +87,14 @@ export default function ArchitectureCanvas() {
     [reactFlowInstance, activeTabId, addNode]
   )
 
+  const onSelectionChange = useCallback((params: OnSelectionChangeParams) => {
+    if (params.nodes.length === 1) {
+      setSelectedNodeId(params.nodes[0].id)
+    } else if (params.nodes.length === 0) {
+      setSelectedNodeId(null)
+    }
+  }, [setSelectedNodeId])
+
   return (
     <div className="w-full h-full bg-[#1e1e1e]" data-testid="architecture-canvas" ref={reactFlowWrapper}>
       <ReactFlow
@@ -95,6 +104,7 @@ export default function ArchitectureCanvas() {
         onInit={setReactFlowInstance}
         onDrop={onDrop}
         onDragOver={onDragOver}
+        onSelectionChange={onSelectionChange}
       />
     </div>
   )

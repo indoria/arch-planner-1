@@ -10,16 +10,19 @@ export interface Tab {
 interface TabState {
   openTabs: Tab[]
   activeTabId: string | null
+  selectedNodeId: string | null
   openTab: (tab: Tab) => void
   setActiveTab: (id: string | null) => void
   closeTab: (id: string) => void
   closeAllTabs: () => void
   addNode: (tabId: string, node: Node) => void
+  setSelectedNodeId: (id: string | null) => void
 }
 
 export const useTabStore = create<TabState>((set) => ({
   openTabs: [],
   activeTabId: null,
+  selectedNodeId: null,
   openTab: (tab) => 
     set((state) => {
       const exists = state.openTabs.find((t) => t.id === tab.id)
@@ -31,13 +34,15 @@ export const useTabStore = create<TabState>((set) => ({
         activeTabId: tab.id,
       }
     }),
-  setActiveTab: (id) => set({ activeTabId: id }),
+  setActiveTab: (id) => set({ activeTabId: id, selectedNodeId: null }),
   closeTab: (id) =>
     set((state) => {
       const newTabs = state.openTabs.filter((t) => t.id !== id)
       let nextActiveId = state.activeTabId
+      let nextSelectedId = state.selectedNodeId
 
       if (state.activeTabId === id) {
+        nextSelectedId = null
         if (newTabs.length > 0) {
           // Set next active tab to the one at the same index or the last one
           const closedIndex = state.openTabs.findIndex((t) => t.id === id)
@@ -51,9 +56,10 @@ export const useTabStore = create<TabState>((set) => ({
       return {
         openTabs: newTabs,
         activeTabId: nextActiveId,
+        selectedNodeId: nextSelectedId,
       }
     }),
-  closeAllTabs: () => set({ openTabs: [], activeTabId: null }),
+  closeAllTabs: () => set({ openTabs: [], activeTabId: null, selectedNodeId: null }),
   addNode: (tabId, node) =>
     set((state) => ({
       openTabs: state.openTabs.map((tab) =>
@@ -68,4 +74,5 @@ export const useTabStore = create<TabState>((set) => ({
           : tab
       ),
     })),
+  setSelectedNodeId: (id) => set({ selectedNodeId: id }),
 }))

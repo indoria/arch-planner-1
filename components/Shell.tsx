@@ -6,6 +6,7 @@ import { Files, Library, Settings, Search, Box } from 'lucide-react'
 import KnowledgeAccordion from './KnowledgeAccordion'
 import BlankState from './BlankState'
 import ComponentLibrary from './ComponentLibrary'
+import Inspector from './Inspector'
 
 type View = 'explorer' | 'library' | 'components'
 
@@ -112,12 +113,7 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
 
           {/* Right Sidebar (Inspector) */}
           <Panel defaultSize={20} minSize={15} maxSize={30} className="bg-[#252526] border-l border-[#2b2b2b]">
-            <div className="p-3 uppercase text-[11px] font-bold tracking-wider text-[#bbbbbb]">
-              Inspector
-            </div>
-            <div className="p-4 text-sm text-[#858585] italic">
-              Select a component to view properties
-            </div>
+            <Inspector />
           </Panel>
         </PanelGroup>
 

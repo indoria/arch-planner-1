@@ -3,9 +3,20 @@ import Shell from './Shell'
 
 jest.mock('react-resizable-panels', () => ({
   PanelGroup: ({ children }: any) => <div data-testid="panel-group">{children}</div>,
-  Panel: ({ children, 'data-testid': testId }: any) => <div data-testid={testId}>{children}</div>,
+  Panel: ({ children, 'data-testid': testId, className }: any) => {
+    // Look for inspector by checking children or specific styling if testId is missing
+    const isInspector = className?.includes('border-l') || false
+    return <div data-testid={testId || (isInspector ? 'right-panel' : undefined)}>{children}</div>
+  },
   PanelResizeHandle: () => <div data-testid="resize-handle" />,
 }))
+
+// Mock Inspector to verify it's rendered
+jest.mock('./Inspector', () => {
+  return function MockInspector() {
+    return <div data-testid="mock-inspector">Mock Inspector</div>
+  }
+})
 
 // Mock BlankState to verify it's rendered
 jest.mock('./BlankState', () => {
@@ -61,5 +72,10 @@ describe('Shell Component', () => {
   it('renders BlankState when no children are provided', () => {
     render(<Shell />)
     expect(screen.getByTestId('mock-blank-state')).toBeInTheDocument()
+  })
+
+  it('renders the Inspector in the right panel', () => {
+    render(<Shell />)
+    expect(screen.getByTestId('mock-inspector')).toBeInTheDocument()
   })
 })

@@ -7,10 +7,18 @@ export interface Tab {
   content: Architecture
 }
 
+export interface Complaint {
+  id: string
+  message: string
+  timestamp: number
+  type: 'error' | 'warning' | 'info'
+}
+
 interface TabState {
   openTabs: Tab[]
   activeTabId: string | null
   selectedNodeId: string | null
+  complaints: Complaint[]
   openTab: (tab: Tab) => void
   setActiveTab: (id: string | null) => void
   closeTab: (id: string) => void
@@ -18,12 +26,15 @@ interface TabState {
   addNode: (tabId: string, node: Node) => void
   setSelectedNodeId: (id: string | null) => void
   replaceComponent: (tabId: string, nodeId: string, newComponentData: Partial<Node>) => void
+  addComplaint: (message: string, type?: 'error' | 'warning' | 'info') => void
+  clearComplaints: () => void
 }
 
 export const useTabStore = create<TabState>((set) => ({
   openTabs: [],
   activeTabId: null,
   selectedNodeId: null,
+  complaints: [],
   openTab: (tab) => 
     set((state) => {
       const exists = state.openTabs.find((t) => t.id === tab.id)
@@ -60,7 +71,7 @@ export const useTabStore = create<TabState>((set) => ({
         selectedNodeId: nextSelectedId,
       }
     }),
-  closeAllTabs: () => set({ openTabs: [], activeTabId: null, selectedNodeId: null }),
+  closeAllTabs: () => set({ openTabs: [], activeTabId: null, selectedNodeId: null, complaints: [] }),
   addNode: (tabId, node) =>
     set((state) => ({
       openTabs: state.openTabs.map((tab) =>
@@ -77,8 +88,9 @@ export const useTabStore = create<TabState>((set) => ({
     })),
   setSelectedNodeId: (id) => set({ selectedNodeId: id }),
   replaceComponent: (tabId, nodeId, newComponentData) =>
-    set((state) => ({
-      openTabs: state.openTabs.map((tab) => {
+    set((state) => {
+      let removedCount = 0
+      const newOpenTabs = state.openTabs.map((tab) => {
         if (tab.id !== tabId) return tab
 
         const nodeToReplace = tab.content.nodes.find((n) => n.id === nodeId)
@@ -93,16 +105,17 @@ export const useTabStore = create<TabState>((set) => ({
         const newSockets = newComponentData.sockets || []
         
         const updatedConnections = tab.content.connections.filter((conn) => {
+          let keep = true
           if (conn.sourceNodeId === nodeId) {
             const socket = newSockets.find((s) => s.id === conn.sourceSocketId)
-            // Check if socket exists and has same type (simplified validation)
-            return socket && socket.type === tab.content.nodes.find(n => n.id === nodeId)?.sockets.find(s => s.id === conn.sourceSocketId)?.type
-          }
-          if (conn.targetNodeId === nodeId) {
+            keep = !!(socket && socket.type === tab.content.nodes.find(n => n.id === nodeId)?.sockets.find(s => s.id === conn.sourceSocketId)?.type)
+          } else if (conn.targetNodeId === nodeId) {
             const socket = newSockets.find((s) => s.id === conn.targetSocketId)
-            return socket && socket.type === tab.content.nodes.find(n => n.id === nodeId)?.sockets.find(s => s.id === conn.targetSocketId)?.type
+            keep = !!(socket && socket.type === tab.content.nodes.find(n => n.id === nodeId)?.sockets.find(s => s.id === conn.targetSocketId)?.type)
           }
-          return true
+          
+          if (!keep) removedCount++
+          return keep
         })
 
         return {
@@ -113,6 +126,34 @@ export const useTabStore = create<TabState>((set) => ({
             connections: updatedConnections,
           },
         }
-      }),
+      })
+
+      const newState: Partial<TabState> = { openTabs: newOpenTabs }
+      if (removedCount > 0) {
+        newState.complaints = [
+          {
+            id: `complaint-${Date.now()}`,
+            message: `Swapping component removed ${removedCount} incompatible connection(s).`,
+            timestamp: Date.now(),
+            type: 'warning'
+          },
+          ...state.complaints
+        ]
+      }
+
+      return newState
+    }),
+  addComplaint: (message, type = 'error') => 
+    set((state) => ({
+      complaints: [
+        {
+          id: `complaint-${Date.now()}`,
+          message,
+          timestamp: Date.now(),
+          type
+        },
+        ...state.complaints
+      ]
     })),
+  clearComplaints: () => set({ complaints: [] }),
 }))

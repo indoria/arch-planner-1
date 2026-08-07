@@ -17,6 +17,7 @@ export default function ArchitectureCanvas() {
   const openTabs = useTabStore((state) => state.openTabs)
   const addNode = useTabStore((state) => state.addNode)
   const setSelectedNodeId = useTabStore((state) => state.setSelectedNodeId)
+  const addComplaint = useTabStore((state) => state.addComplaint)
   
   const reactFlowWrapper = useRef<HTMLDivElement>(null)
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null)
@@ -104,8 +105,24 @@ export default function ArchitectureCanvas() {
     
     if (!sourceNode || !targetNode || !connection.sourceHandle || !connection.targetHandle) return false
     
-    return canConnect(sourceNode, connection.sourceHandle, targetNode, connection.targetHandle)
-  }, [activeTab])
+    const valid = canConnect(sourceNode, connection.sourceHandle, targetNode, connection.targetHandle)
+    
+    if (!valid) {
+      // Find the sockets to provide detailed feedback
+      const sourceSocket = sourceNode.sockets.find(s => s.id === connection.sourceHandle)
+      const targetSocket = targetNode.sockets.find(s => s.id === connection.targetHandle)
+      
+      if (sourceSocket && targetSocket) {
+        if (sourceSocket.direction === targetSocket.direction) {
+          addComplaint(`Cannot connect two ${sourceSocket.direction}s. Must be output to input.`, 'error')
+        } else if (sourceSocket.type !== targetSocket.type) {
+          addComplaint(`Incompatible types: ${sourceSocket.type} cannot connect to ${targetSocket.type}.`, 'error')
+        }
+      }
+    }
+    
+    return valid
+  }, [activeTab, addComplaint])
 
   const onConnect = useCallback((params: Connection) => {
     // This is where we would normally call a store action to add a connection

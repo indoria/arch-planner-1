@@ -2,16 +2,21 @@
 
 import React, { useState } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
-import { Files, Library, Settings, Search, Box } from 'lucide-react'
+import { Files, Library, Settings, Search, Box, Terminal, MessageSquare, Bug } from 'lucide-react'
 import KnowledgeAccordion from './KnowledgeAccordion'
 import BlankState from './BlankState'
 import ComponentLibrary from './ComponentLibrary'
 import Inspector from './Inspector'
+import ComplaintsLog from './ComplaintsLog'
+import { useTabStore } from '@/store/useTabStore'
 
 type View = 'explorer' | 'library' | 'components'
+type BottomTab = 'output' | 'complaints' | 'debug'
 
 export default function Shell({ children }: { children?: React.ReactNode }) {
   const [activeView, setActiveView] = useState<View>('explorer')
+  const [activeBottomTab, setActiveBottomTab] = useState<BottomTab>('output')
+  const complaintsCount = useTabStore((state) => state.complaints.length)
 
   return (
     <div className="flex h-screen w-screen bg-[#1e1e1e] text-[#cccccc] overflow-hidden" data-testid="shell">
@@ -94,16 +99,44 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
               
               <PanelResizeHandle className="h-1 bg-[#1e1e1e] hover:bg-[#007acc] transition-colors" />
               
-              <Panel defaultSize={30} minSize={10} className="bg-[#1e1e1e] border-t border-[#2b2b2b]">
-                <div className="flex items-center h-9 px-4 border-b border-[#2b2b2b] bg-[#252526]">
+              <Panel defaultSize={30} minSize={10} className="bg-[#1e1e1e] border-t border-[#2b2b2b] flex flex-col overflow-hidden">
+                <div className="flex items-center h-9 px-4 border-b border-[#2b2b2b] bg-[#252526] flex-shrink-0">
                   <div className="flex gap-4 h-full">
-                    <button className="text-[11px] uppercase tracking-wider font-bold text-white border-b border-white h-full">Output</button>
-                    <button className="text-[11px] uppercase tracking-wider font-bold text-[#858585] hover:text-[#cccccc] h-full">Call Log</button>
-                    <button className="text-[11px] uppercase tracking-wider font-bold text-[#858585] hover:text-[#cccccc] h-full">Debug Console</button>
+                    <button 
+                      onClick={() => setActiveBottomTab('output')}
+                      className={`text-[11px] uppercase tracking-wider font-bold h-full border-b-2 transition-colors ${activeBottomTab === 'output' ? 'text-white border-white' : 'text-[#858585] border-transparent hover:text-[#cccccc]'}`}
+                    >
+                      Output
+                    </button>
+                    <button 
+                      onClick={() => setActiveBottomTab('complaints')}
+                      className={`text-[11px] uppercase tracking-wider font-bold h-full border-b-2 transition-colors flex items-center gap-1.5 ${activeBottomTab === 'complaints' ? 'text-white border-white' : 'text-[#858585] border-transparent hover:text-[#cccccc]'}`}
+                    >
+                      Complaints
+                      {complaintsCount > 0 && (
+                        <span className="bg-[#444] text-white px-1.5 rounded-full text-[9px]">{complaintsCount}</span>
+                      )}
+                    </button>
+                    <button 
+                      onClick={() => setActiveBottomTab('debug')}
+                      className={`text-[11px] uppercase tracking-wider font-bold h-full border-b-2 transition-colors ${activeBottomTab === 'debug' ? 'text-white border-white' : 'text-[#858585] border-transparent hover:text-[#cccccc]'}`}
+                    >
+                      Debug Console
+                    </button>
                   </div>
                 </div>
-                <div className="p-4 text-[13px] font-mono text-[#858585] italic">
-                  Waiting for simulation...
+                <div className="flex-1 overflow-hidden">
+                  {activeBottomTab === 'output' && (
+                    <div className="p-4 text-[13px] font-mono text-[#858585] italic">
+                      Waiting for simulation...
+                    </div>
+                  )}
+                  {activeBottomTab === 'complaints' && <ComplaintsLog />}
+                  {activeBottomTab === 'debug' && (
+                    <div className="p-4 text-[13px] font-mono text-[#858585] italic">
+                      No debug sessions active.
+                    </div>
+                  )}
                 </div>
               </Panel>
             </PanelGroup>

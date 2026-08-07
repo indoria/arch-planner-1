@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Architecture, Node, Socket } from './architecture'
+import { Architecture, Node, Socket, TypedConnection } from './architecture'
 
 export interface Tab {
   id: string
@@ -24,8 +24,10 @@ interface TabState {
   closeTab: (id: string) => void
   closeAllTabs: () => void
   addNode: (tabId: string, node: Node) => void
+  updateNodePosition: (tabId: string, nodeId: string, position: { x: number, y: number }) => void
   setSelectedNodeId: (id: string | null) => void
   replaceComponent: (tabId: string, nodeId: string, newComponentData: Partial<Node>) => void
+  addConnection: (tabId: string, connection: TypedConnection) => void
   addComplaint: (message: string, type?: 'error' | 'warning' | 'info') => void
   clearComplaints: () => void
 }
@@ -81,6 +83,22 @@ export const useTabStore = create<TabState>((set) => ({
               content: {
                 ...tab.content,
                 nodes: [...tab.content.nodes, node],
+              },
+            }
+          : tab
+      ),
+    })),
+  updateNodePosition: (tabId, nodeId, position) =>
+    set((state) => ({
+      openTabs: state.openTabs.map((tab) =>
+        tab.id === tabId
+          ? {
+              ...tab,
+              content: {
+                ...tab.content,
+                nodes: tab.content.nodes.map((node) =>
+                  node.id === nodeId ? { ...node, position } : node
+                ),
               },
             }
           : tab
@@ -143,17 +161,39 @@ export const useTabStore = create<TabState>((set) => ({
 
       return newState
     }),
-  addComplaint: (message, type = 'error') => 
+  addConnection: (tabId, connection) =>
     set((state) => ({
-      complaints: [
-        {
-          id: `complaint-${Date.now()}`,
-          message,
-          timestamp: Date.now(),
-          type
-        },
-        ...state.complaints
-      ]
+      openTabs: state.openTabs.map((tab) =>
+        tab.id === tabId
+          ? {
+              ...tab,
+              content: {
+                ...tab.content,
+                connections: [...tab.content.connections, connection],
+              },
+            }
+          : tab
+      ),
     })),
+  addComplaint: (message, type = 'error') => 
+    set((state) => {
+      // Basic debounce/duplicate prevention: don't add if the last complaint is identical and recent
+      const lastComplaint = state.complaints[0]
+      if (lastComplaint && lastComplaint.message === message && Date.now() - lastComplaint.timestamp < 1000) {
+        return state
+      }
+
+      return {
+        complaints: [
+          {
+            id: `complaint-${Date.now()}`,
+            message,
+            timestamp: Date.now(),
+            type
+          },
+          ...state.complaints
+        ]
+      }
+    }),
   clearComplaints: () => set({ complaints: [] }),
 }))

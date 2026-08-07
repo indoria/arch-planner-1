@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo, useCallback, useRef, useState } from 'react'
-import ReactFlow, { ReactFlowInstance, OnSelectionChangeParams, Connection, addEdge, Edge } from 'reactflow'
+import ReactFlow, { ReactFlowInstance, OnSelectionChangeParams, Connection, addEdge, Edge, NodeDragHandler } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { useTabStore } from '@/store/useTabStore'
 import ArchitectureNode from './ArchitectureNode'
@@ -16,7 +16,9 @@ export default function ArchitectureCanvas() {
   const activeTabId = useTabStore((state) => state.activeTabId)
   const openTabs = useTabStore((state) => state.openTabs)
   const addNode = useTabStore((state) => state.addNode)
+  const updateNodePosition = useTabStore((state) => state.updateNodePosition)
   const setSelectedNodeId = useTabStore((state) => state.setSelectedNodeId)
+  const addConnection = useTabStore((state) => state.addConnection)
   const addComplaint = useTabStore((state) => state.addComplaint)
   
   const reactFlowWrapper = useRef<HTMLDivElement>(null)
@@ -125,10 +127,21 @@ export default function ArchitectureCanvas() {
   }, [activeTab, addComplaint])
 
   const onConnect = useCallback((params: Connection) => {
-    // This is where we would normally call a store action to add a connection
-    // For now, we just log it as the store doesn't have an addConnection action yet
-    console.log('New connection:', params)
-  }, [])
+    if (!activeTabId || !params.source || !params.target || !params.sourceHandle || !params.targetHandle) return
+    
+    addConnection(activeTabId, {
+      id: `conn-${Date.now()}`,
+      sourceNodeId: params.source,
+      sourceSocketId: params.sourceHandle,
+      targetNodeId: params.target,
+      targetSocketId: params.targetHandle
+    })
+  }, [activeTabId, addConnection])
+
+  const onNodeDragStop: NodeDragHandler = useCallback((event, node) => {
+    if (!activeTabId) return
+    updateNodePosition(activeTabId, node.id, node.position)
+  }, [activeTabId, updateNodePosition])
 
   return (
     <div className="w-full h-full bg-[#1e1e1e]" data-testid="architecture-canvas" ref={reactFlowWrapper}>
@@ -142,6 +155,7 @@ export default function ArchitectureCanvas() {
         onSelectionChange={onSelectionChange}
         isValidConnection={isValidConnection}
         onConnect={onConnect}
+        onNodeDragStop={onNodeDragStop}
       />
     </div>
   )

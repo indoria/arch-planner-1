@@ -1,4 +1,5 @@
 # Implementation Plan - Simulation Engine
+# Implementation Plan - Simulation Engine
 
 This plan builds the script-driven simulation engine and ripple-effect logic using a strict TDD approach.
 
@@ -6,9 +7,9 @@ This plan builds the script-driven simulation engine and ripple-effect logic usi
 - [x] Task: Component Script Runner [03cea98]
     - [x] **Write failing tests** for executing a basic JS script within a node context.
     - [x] Implement the `ScriptRuntime` to evaluate component behavior.
-- [ ] Task: Parameter-Script Binding
-    - [ ] **Write failing tests** for passing parameters (latency, range) into the script context.
-    - [ ] Implement the data binding between the schema and the runtime.
+- [x] Task: Parameter-Script Binding [07e12ad]
+    - [x] **Write failing tests** for passing parameters (latency, range) into the script context.
+    - [x] Implement the data binding between the schema and the runtime.
 ...
 ## Phase 2: Ripple Effects & Error Handling
 - [ ] Task: Error Propagation Logic
@@ -30,3 +31,4 @@ This plan builds the script-driven simulation engine and ripple-effect logic usi
 - [ ] Task: Time-Travel Verification
     - [ ] Verify that script state is correctly captured in the history for time-travel.
 - [ ] Task: Conductor - User Manual Verification 'Simulation Engine' (Protocol in workflow.md)
+

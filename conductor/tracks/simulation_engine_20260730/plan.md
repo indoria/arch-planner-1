@@ -12,12 +12,12 @@ This plan builds the script-driven simulation engine and ripple-effect logic usi
     - [x] Implement the data binding between the schema and the runtime.
 ...
 ## Phase 2: Ripple Effects & Error Handling
-- [ ] Task: Error Propagation Logic
-    - [ ] **Write failing tests** for downstream failure when a parent node errors out.
-    - [ ] Implement the propagation algorithm to update downstream state.
-- [ ] Task: Congestion & Back-pressure Modeling
-    - [ ] **Write failing tests** for increased latency in downstream nodes when a parent is slow.
-    - [ ] Implement the "Ripple" logic for performance degradation.
+- [x] Task: Error Propagation Logic [99819a0]
+    - [x] **Write failing tests** for downstream failure when a parent node errors out.
+    - [x] Implement the propagation algorithm to update downstream state.
+- [x] Task: Congestion & Back-pressure Modeling [99819a0]
+    - [x] **Write failing tests** for increased latency in downstream nodes when a parent is slow.
+    - [x] Implement the "Ripple" logic for performance degradation.
 
 ## Phase 3: High-Density Simulation & Visualization Hooks
 - [ ] Task: Parallel Channel Execution

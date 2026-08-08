@@ -14,7 +14,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [ ] Track: Build the Simulation Engine: Event loop, latency modeling, and parallel channels
+## [x] Track: Build the Simulation Engine: Event loop, latency modeling, and parallel channels
 *Link: [./tracks/simulation_engine_20260730/](./tracks/simulation_engine_20260730/)*
 
 ---

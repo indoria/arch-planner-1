@@ -19,7 +19,7 @@ This plan builds the script-driven simulation engine and ripple-effect logic usi
     - [x] **Write failing tests** for increased latency in downstream nodes when a parent is slow.
     - [x] Implement the "Ripple" logic for performance degradation.
 
-## Phase 3: High-Density Simulation & Visualization Hooks
+## Phase 3: High-Density Simulation & Visualization Hooks [checkpoint: 5905c2f]
 - [x] Task: Parallel Channel Execution [020e71f]
     - [x] **Write failing tests** for handling 100+ concurrent parallel scripts.
     - [x] Implement the multi-channel simulation coordinator.

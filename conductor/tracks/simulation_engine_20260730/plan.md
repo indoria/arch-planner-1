@@ -3,7 +3,7 @@
 
 This plan builds the script-driven simulation engine and ripple-effect logic using a strict TDD approach.
 
-## Phase 1: Script Execution Foundation
+## Phase 1: Script Execution Foundation [checkpoint: 1a15cae]
 - [x] Task: Component Script Runner [03cea98]
     - [x] **Write failing tests** for executing a basic JS script within a node context.
     - [x] Implement the `ScriptRuntime` to evaluate component behavior.

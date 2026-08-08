@@ -20,12 +20,12 @@ This plan builds the script-driven simulation engine and ripple-effect logic usi
     - [x] Implement the "Ripple" logic for performance degradation.
 
 ## Phase 3: High-Density Simulation & Visualization Hooks
-- [ ] Task: Parallel Channel Execution
-    - [ ] **Write failing tests** for handling 100+ concurrent parallel scripts.
-    - [ ] Implement the multi-channel simulation coordinator.
-- [ ] Task: Congestion Visualization Hooks
-    - [ ] **Write failing tests** for emitting "Congestion" telemetry events.
-    - [ ] Create hooks for the UI to trigger "slowing" animations in the SVG diagram.
+- [x] Task: Parallel Channel Execution [020e71f]
+    - [x] **Write failing tests** for handling 100+ concurrent parallel scripts.
+    - [x] Implement the multi-channel simulation coordinator.
+- [x] Task: Congestion Visualization Hooks [020e71f]
+    - [x] **Write failing tests** for emitting "Congestion" telemetry events.
+    - [x] Create hooks for the UI to trigger "slowing" animations in the SVG diagram.
 
 ## Phase 4: Verification & Integration
 - [ ] Task: Time-Travel Verification

@@ -11,7 +11,7 @@ This plan builds the script-driven simulation engine and ripple-effect logic usi
     - [x] **Write failing tests** for passing parameters (latency, range) into the script context.
     - [x] Implement the data binding between the schema and the runtime.
 ...
-## Phase 2: Ripple Effects & Error Handling
+## Phase 2: Ripple Effects & Error Handling [checkpoint: 75cc3cc]
 - [x] Task: Error Propagation Logic [99819a0]
     - [x] **Write failing tests** for downstream failure when a parent node errors out.
     - [x] Implement the propagation algorithm to update downstream state.

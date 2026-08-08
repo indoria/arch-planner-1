@@ -27,8 +27,8 @@ This plan builds the script-driven simulation engine and ripple-effect logic usi
     - [x] **Write failing tests** for emitting "Congestion" telemetry events.
     - [x] Create hooks for the UI to trigger "slowing" animations in the SVG diagram.
 
-## Phase 4: Verification & Integration
+## Phase 4: Verification & Integration [checkpoint: e2a7bef]
 - [x] Task: Time-Travel Verification [29464e5]
     - [x] Verify that script state is correctly captured in the history for time-travel.
-- [~] Task: Conductor - User Manual Verification 'Simulation Engine' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Simulation Engine' (Protocol in workflow.md)
 

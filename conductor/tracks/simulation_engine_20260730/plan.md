@@ -28,7 +28,7 @@ This plan builds the script-driven simulation engine and ripple-effect logic usi
     - [x] Create hooks for the UI to trigger "slowing" animations in the SVG diagram.
 
 ## Phase 4: Verification & Integration
-- [ ] Task: Time-Travel Verification
-    - [ ] Verify that script state is correctly captured in the history for time-travel.
-- [ ] Task: Conductor - User Manual Verification 'Simulation Engine' (Protocol in workflow.md)
+- [x] Task: Time-Travel Verification [29464e5]
+    - [x] Verify that script state is correctly captured in the history for time-travel.
+- [~] Task: Conductor - User Manual Verification 'Simulation Engine' (Protocol in workflow.md)
 

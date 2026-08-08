@@ -30,4 +30,12 @@ describe('ScriptRuntime', () => {
     const result = await runtime.execute(script);
     expect(result).toBe('undefined');
   });
+
+  it('should support node parameters in the script', async () => {
+    const script = 'return parameters.latencyRange.max > input.latency;';
+    const context = { latency: 50 };
+    const parameters = { latencyRange: { min: 0, max: 100 } };
+    const result = await runtime.execute(script, context, parameters);
+    expect(result).toBe(true);
+  });
 });

@@ -3,13 +3,15 @@ export class ScriptRuntime {
    * Executes a JavaScript script in a restricted environment.
    * @param script The JS script to execute.
    * @param input The input data for the script.
+   * @param parameters The node parameters (latency, range, etc.)
    * @returns The result of the script execution.
    */
-  async execute(script: string, input: any = {}): Promise<any> {
+  async execute(script: string, input: any = {}, parameters: any = {}): Promise<any> {
     try {
       // Create a restricted context
       const context = {
         input,
+        parameters,
         console: {
           log: (...args: any[]) => { /* Optional: capture logs */ },
           error: (...args: any[]) => { /* Optional: capture errors */ },

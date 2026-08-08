@@ -96,4 +96,19 @@ describe('SimulationEngine', () => {
     // node-2 latency should be its own (30) + parent's (50) = 80
     expect(results['node-2'].latency).toBe(80);
   });
+
+  it('should trigger telemetry hooks on node status changes', async () => {
+    const telemetryEvents: any[] = [];
+    const onTelemetry = (nodeId: string, telemetry: any) => {
+      telemetryEvents.push({ nodeId, ...telemetry });
+    };
+
+    const engineWithHook = new SimulationEngine(mockArch, runtime, { onTelemetry });
+    await engineWithHook.run();
+
+    // Should have events for both nodes (running and success/error)
+    expect(telemetryEvents.length).toBeGreaterThanOrEqual(4);
+    expect(telemetryEvents.find(e => e.nodeId === 'node-1' && e.status === 'running')).toBeDefined();
+    expect(telemetryEvents.find(e => e.nodeId === 'node-1' && e.status === 'success')).toBeDefined();
+  });
 });

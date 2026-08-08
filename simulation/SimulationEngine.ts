@@ -8,13 +8,25 @@ export interface NodeTelemetry {
   error?: string;
 }
 
+export interface SimulationOptions {
+  onTelemetry?: (nodeId: string, telemetry: NodeTelemetry) => void;
+}
+
 export class SimulationEngine {
   private results: Record<string, NodeTelemetry> = {};
 
   constructor(
     private architecture: Architecture,
-    private runtime: ScriptRuntime
+    private runtime: ScriptRuntime,
+    private options: SimulationOptions = {}
   ) {}
+
+  private updateTelemetry(nodeId: string, telemetry: NodeTelemetry) {
+    this.results[nodeId] = telemetry;
+    if (this.options.onTelemetry) {
+      this.options.onTelemetry(nodeId, telemetry);
+    }
+  }
 
   async run(): Promise<Record<string, NodeTelemetry>> {
     this.results = {};
@@ -36,7 +48,7 @@ export class SimulationEngine {
       if (readyToExecute.length === 0 && executing.size === 0 && pendingNodes.size > 0) {
         // We have a deadlock or cycle
         pendingNodes.forEach(id => {
-          this.results[id] = { status: 'error', error: 'Deadlock or Cycle detected', latency: 0 };
+          this.updateTelemetry(id, { status: 'error', error: 'Deadlock or Cycle detected', latency: 0 });
         });
         break;
       }
@@ -45,7 +57,7 @@ export class SimulationEngine {
       const promises = readyToExecute.map(async (node) => {
         pendingNodes.delete(node.id);
         executing.add(node.id);
-        this.results[node.id] = { status: 'running', latency: 0 };
+        this.updateTelemetry(node.id, { status: 'running', latency: 0 });
 
         try {
           // Check for upstream failures and calculate max upstream latency
@@ -82,9 +94,9 @@ export class SimulationEngine {
           const script = node.data?.script || 'return input.data;';
           const output = await this.runtime.execute(script, { data: input.data, ...input }, node.data);
           
-          this.results[node.id] = { status: 'success', output, latency: totalLatency };
+          this.updateTelemetry(node.id, { status: 'success', output, latency: totalLatency });
         } catch (error: any) {
-          this.results[node.id] = { status: 'error', error: error.message, latency: 0 };
+          this.updateTelemetry(node.id, { status: 'error', error: error.message, latency: 0 });
         } finally {
           executing.delete(node.id);
         }

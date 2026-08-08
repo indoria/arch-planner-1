@@ -9,7 +9,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Implement the Edit State: Parameter tuning, component swapping, and persistence
+## [x] Track: Implement the Edit State: Parameter tuning, component swapping, and persistence
 *Link: [./tracks/edit_state_20260730/](./tracks/edit_state_20260730/)*
 
 ---

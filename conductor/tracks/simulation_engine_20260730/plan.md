@@ -3,13 +3,13 @@
 This plan builds the script-driven simulation engine and ripple-effect logic using a strict TDD approach.
 
 ## Phase 1: Script Execution Foundation
-- [ ] Task: Component Script Runner
-    - [ ] **Write failing tests** for executing a basic JS script within a node context.
-    - [ ] Implement the `ScriptRuntime` to evaluate component behavior.
+- [x] Task: Component Script Runner [03cea98]
+    - [x] **Write failing tests** for executing a basic JS script within a node context.
+    - [x] Implement the `ScriptRuntime` to evaluate component behavior.
 - [ ] Task: Parameter-Script Binding
     - [ ] **Write failing tests** for passing parameters (latency, range) into the script context.
     - [ ] Implement the data binding between the schema and the runtime.
-
+...
 ## Phase 2: Ripple Effects & Error Handling
 - [ ] Task: Error Propagation Logic
     - [ ] **Write failing tests** for downstream failure when a parent node errors out.

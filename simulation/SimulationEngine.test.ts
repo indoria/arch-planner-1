@@ -111,4 +111,16 @@ describe('SimulationEngine', () => {
     expect(telemetryEvents.find(e => e.nodeId === 'node-1' && e.status === 'running')).toBeDefined();
     expect(telemetryEvents.find(e => e.nodeId === 'node-1' && e.status === 'success')).toBeDefined();
   });
+
+  it('should produce a serializable snapshot of the simulation state', async () => {
+    const results = await engine.run();
+    
+    // Verify that results can be converted to JSON (for storage in HistoryService)
+    const snapshot = JSON.parse(JSON.stringify(results));
+    
+    expect(snapshot['node-1'].status).toBe('success');
+    expect(snapshot['node-1'].output).toBe('hello');
+    expect(snapshot['node-2'].status).toBe('success');
+    expect(snapshot['node-2'].output).toBe('HELLO');
+  });
 });

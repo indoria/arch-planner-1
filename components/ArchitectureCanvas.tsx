@@ -14,41 +14,38 @@ const nodeTypes = {
 
 export default function ArchitectureCanvas() {
   const activeTabId = useTabStore((state) => state.activeTabId)
+  const activeArchitecture = useTabStore((state) => state.activeArchitecture)
   const openTabs = useTabStore((state) => state.openTabs)
   const addNode = useTabStore((state) => state.addNode)
   const updateNodePosition = useTabStore((state) => state.updateNodePosition)
   const setSelectedNodeId = useTabStore((state) => state.setSelectedNodeId)
   const addConnection = useTabStore((state) => state.addConnection)
   const addComplaint = useTabStore((state) => state.addComplaint)
+  const drillDown = useTabStore((state) => state.drillDown)
   
   const reactFlowWrapper = useRef<HTMLDivElement>(null)
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null)
 
-  const activeTab = useMemo(() => 
-    openTabs.find((t) => t.id === activeTabId),
-    [openTabs, activeTabId]
-  )
-
   const nodes = useMemo(() => {
-    if (!activeTab) return []
-    return activeTab.content.nodes.map((node) => ({
+    if (!activeArchitecture) return []
+    return activeArchitecture.nodes.map((node) => ({
       id: node.id,
       type: 'architectureNode',
       position: node.position,
-      data: { label: node.label, sockets: node.sockets }
+      data: { label: node.label, sockets: node.sockets, subArchitecture: node.subArchitecture }
     }))
-  }, [activeTab])
+  }, [activeArchitecture])
 
   const edges = useMemo(() => {
-    if (!activeTab) return []
-    return activeTab.content.connections.map((conn) => ({
+    if (!activeArchitecture) return []
+    return activeArchitecture.connections.map((conn) => ({
       id: conn.id,
       source: conn.sourceNodeId,
       sourceHandle: conn.sourceSocketId,
       target: conn.targetNodeId,
       targetHandle: conn.targetSocketId
     }))
-  }, [activeTab])
+  }, [activeArchitecture])
 
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault()
@@ -76,7 +73,7 @@ export default function ArchitectureCanvas() {
         
         const newNode = {
           id: `${component.type}-${Date.now()}`,
-          type: component.type, // Store the component type correctly
+          type: component.type, 
           label: component.label,
           sockets: component.sockets,
           position,
@@ -100,17 +97,16 @@ export default function ArchitectureCanvas() {
   }, [setSelectedNodeId])
 
   const isValidConnection = useCallback((connection: Connection) => {
-    if (!activeTab) return false
+    if (!activeArchitecture) return false
     
-    const sourceNode = activeTab.content.nodes.find(n => n.id === connection.source)
-    const targetNode = activeTab.content.nodes.find(n => n.id === connection.target)
+    const sourceNode = activeArchitecture.nodes.find(n => n.id === connection.source)
+    const targetNode = activeArchitecture.nodes.find(n => n.id === connection.target)
     
     if (!sourceNode || !targetNode || !connection.sourceHandle || !connection.targetHandle) return false
     
     const valid = canConnect(sourceNode, connection.sourceHandle, targetNode, connection.targetHandle)
     
     if (!valid) {
-      // Find the sockets to provide detailed feedback
       const sourceSocket = sourceNode.sockets.find(s => s.id === connection.sourceHandle)
       const targetSocket = targetNode.sockets.find(s => s.id === connection.targetHandle)
       
@@ -124,7 +120,7 @@ export default function ArchitectureCanvas() {
     }
     
     return valid
-  }, [activeTab, addComplaint])
+  }, [activeArchitecture, addComplaint])
 
   const onConnect = useCallback((params: Connection) => {
     if (!activeTabId || !params.source || !params.target || !params.sourceHandle || !params.targetHandle) return
@@ -143,6 +139,13 @@ export default function ArchitectureCanvas() {
     updateNodePosition(activeTabId, node.id, node.position)
   }, [activeTabId, updateNodePosition])
 
+  const onNodeDoubleClick = useCallback((_: React.MouseEvent, node: any) => {
+      const archNode = activeArchitecture?.nodes.find(n => n.id === node.id)
+      if (archNode && archNode.subArchitecture) {
+          drillDown(archNode)
+      }
+  }, [activeArchitecture, drillDown])
+
   return (
     <div className="w-full h-full bg-[#1e1e1e]" data-testid="architecture-canvas" ref={reactFlowWrapper}>
       <ReactFlow
@@ -156,6 +159,7 @@ export default function ArchitectureCanvas() {
         isValidConnection={isValidConnection}
         onConnect={onConnect}
         onNodeDragStop={onNodeDragStop}
+        onNodeDoubleClick={onNodeDoubleClick}
       />
     </div>
   )

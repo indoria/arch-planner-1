@@ -36,6 +36,48 @@ export default function ComponentLibrary() {
             onDragStart={(e) => {
               e.dataTransfer.setData('application/reactflow', JSON.stringify(comp))
               e.dataTransfer.effectAllowed = 'move'
+
+              // Create a ghost element that looks like a simplified node
+              const ghost = document.createElement('div')
+              ghost.style.width = '160px'
+              ghost.style.backgroundColor = '#252526'
+              ghost.style.border = '1px solid #007acc'
+              ghost.style.borderRadius = '4px'
+              ghost.style.padding = '8px'
+              ghost.style.color = '#cccccc'
+              ghost.style.fontSize = '12px'
+              ghost.style.fontFamily = 'ui-sans-serif, system-ui, sans-serif'
+              ghost.style.position = 'absolute'
+              ghost.style.top = '-1000px'
+              ghost.style.left = '-1000px'
+              ghost.style.zIndex = '-1'
+              ghost.style.pointerEvents = 'none'
+              
+              // Header-like area
+              const header = document.createElement('div')
+              header.style.fontWeight = 'bold'
+              header.style.marginBottom = '4px'
+              header.style.borderBottom = '1px solid #454545'
+              header.style.paddingBottom = '4px'
+              header.textContent = comp.label
+              ghost.appendChild(header)
+
+              // Type label
+              const typeLabel = document.createElement('div')
+              typeLabel.style.fontSize = '10px'
+              typeLabel.style.color = '#858585'
+              typeLabel.textContent = comp.type.toUpperCase()
+              ghost.appendChild(typeLabel)
+
+              document.body.appendChild(ghost)
+              
+              // Set the drag image with some offset to center it under the cursor
+              e.dataTransfer.setDragImage(ghost, 80, 20)
+              
+              // Remove the ghost element after it's captured by the browser
+              setTimeout(() => {
+                document.body.removeChild(ghost)
+              }, 0)
             }}
           >
             <div className="p-2 bg-[#333333] rounded text-[#007acc] group-hover:text-white transition-colors">

@@ -25,4 +25,23 @@ describe('ComponentLibrary Component', () => {
     expect(screen.queryByText(/Standard ASR/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/Standard TTS/i)).not.toBeInTheDocument()
   })
+
+  it('sets dataTransfer on drag start', () => {
+    render(<ComponentLibrary />)
+    const comp = screen.getByText('Standard LLM').closest('[draggable="true"]')
+    
+    if (!comp) throw new Error('Draggable component not found')
+
+    const dataTransfer = {
+      setData: jest.fn(),
+      setDragImage: jest.fn(),
+      effectAllowed: '',
+    }
+
+    fireEvent.dragStart(comp, { dataTransfer })
+
+    expect(dataTransfer.setData).toHaveBeenCalledWith('application/reactflow', expect.stringContaining('LLM'))
+    expect(dataTransfer.effectAllowed).toBe('move')
+    expect(dataTransfer.setDragImage).toHaveBeenCalled()
+  })
 })

@@ -1,7 +1,18 @@
 'use client'
 
 import React, { useMemo, useCallback, useRef, useState } from 'react'
-import ReactFlow, { ReactFlowInstance, OnSelectionChangeParams, Connection, addEdge, Edge, NodeDragHandler } from 'reactflow'
+import ReactFlow, { 
+  ReactFlowInstance, 
+  OnSelectionChangeParams, 
+  Connection, 
+  addEdge, 
+  Edge, 
+  NodeDragHandler,
+  applyNodeChanges,
+  applyEdgeChanges,
+  NodeChange,
+  EdgeChange
+} from 'reactflow'
 import 'reactflow/dist/style.css'
 import { useTabStore } from '@/store/useTabStore'
 import ArchitectureNode from './ArchitectureNode'
@@ -46,6 +57,23 @@ export default function ArchitectureCanvas() {
       targetHandle: conn.targetSocketId
     }))
   }, [activeArchitecture])
+
+  const onNodesChange = useCallback(
+    (changes: NodeChange[]) => {
+      // For selection changes, we don't need to update the store's architecture nodes
+      // because the store only cares about persisted state (position, data).
+      // React Flow handles the internal visual state (selection) automatically
+      // when we don't fully control the nodes.
+    },
+    []
+  )
+
+  const onEdgesChange = useCallback(
+    (changes: EdgeChange[]) => {
+      // Same as onNodesChange
+    },
+    []
+  )
 
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault()
@@ -153,6 +181,8 @@ export default function ArchitectureCanvas() {
         edges={edges}
         nodeTypes={nodeTypes}
         onInit={setReactFlowInstance}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
         onDrop={onDrop}
         onDragOver={onDragOver}
         onSelectionChange={onSelectionChange}

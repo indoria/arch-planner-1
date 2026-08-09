@@ -3,11 +3,13 @@
 import React, { memo } from 'react'
 import { Handle, Position } from 'reactflow'
 import { Socket } from '@/store/architecture'
+import { Layers } from 'lucide-react'
 
 interface ArchitectureNodeProps {
   data: {
     label: string
     sockets: Socket[]
+    subArchitecture?: any
   }
 }
 
@@ -36,8 +38,11 @@ function ArchitectureNode({ data }: ArchitectureNodeProps) {
   return (
     <div className="min-w-[150px] bg-[#252526] border border-[#454545] rounded shadow-xl overflow-hidden">
       {/* Header */}
-      <div className="bg-[#333333] p-2 text-xs font-medium border-b border-[#454545] text-[#cccccc]">
-        {data.label}
+      <div className="bg-[#333333] p-2 text-xs font-medium border-b border-[#454545] text-[#cccccc] flex justify-between items-center">
+        <span>{data.label}</span>
+        {data.subArchitecture && (
+            <Layers size={12} className="text-[#007acc]" />
+        )}
       </div>
       
       {/* Sockets Container */}

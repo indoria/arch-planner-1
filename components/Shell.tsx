@@ -96,7 +96,7 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
           <Panel defaultSize={65} minSize={40} className="flex flex-col h-full overflow-hidden" data-testid="editor-area">
             <PanelGroup direction="vertical">
               <Panel defaultSize={70} minSize={20} className="flex flex-col overflow-hidden bg-[#1e1e1e]">
-                {activeTab && <Breadcrumbs rootArch={activeTab.content} activeArch={activeTab.content} onNavigate={() => {}} />}
+                {activeTab && <Breadcrumbs />}
                 {children || <BlankState />}
               </Panel>
               

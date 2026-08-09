@@ -3,22 +3,21 @@
 import React, { useMemo } from 'react'
 import { useTabStore } from '@/store/useTabStore'
 import { AVAILABLE_COMPONENTS, ComponentDef } from '@/store/components'
+import { ChevronRight, PlusSquare } from 'lucide-react'
 
 export default function Inspector() {
   const activeTabId = useTabStore((state) => state.activeTabId)
   const openTabs = useTabStore((state) => state.openTabs)
   const selectedNodeId = useTabStore((state) => state.selectedNodeId)
   const replaceComponent = useTabStore((state) => state.replaceComponent)
-
-  const activeTab = useMemo(() => 
-    openTabs.find((t) => t.id === activeTabId),
-    [openTabs, activeTabId]
-  )
+  const createSubArchitecture = useTabStore((state) => state.createSubArchitecture)
+  const drillDown = useTabStore((state) => state.drillDown)
+  const activeArchitecture = useTabStore((state) => state.activeArchitecture)
 
   const selectedNode = useMemo(() => {
-    if (!activeTab || !selectedNodeId) return null
-    return activeTab.content.nodes.find((n) => n.id === selectedNodeId) || null
-  }, [activeTab, selectedNodeId])
+    if (!activeArchitecture || !selectedNodeId) return null
+    return activeArchitecture.nodes.find((n) => n.id === selectedNodeId) || null
+  }, [activeArchitecture, selectedNodeId])
 
   const componentDef = useMemo(() => {
     if (!selectedNode) return null
@@ -27,7 +26,6 @@ export default function Inspector() {
 
   const alternatives = useMemo(() => {
     if (!selectedNode) return []
-    // Show components of the same type or all other components as potential swaps
     return AVAILABLE_COMPONENTS.filter((c) => c.type !== selectedNode.type)
   }, [selectedNode])
 
@@ -39,6 +37,16 @@ export default function Inspector() {
       sockets: newComp.sockets,
       data: { label: newComp.label, sockets: newComp.sockets }
     })
+  }
+
+  const handleCreateSubArch = () => {
+      if (!activeTabId || !selectedNodeId) return
+      createSubArchitecture(activeTabId, selectedNodeId)
+  }
+
+  const handleDrillDown = () => {
+      if (!selectedNode) return
+      drillDown(selectedNode)
   }
 
   if (!selectedNode) {
@@ -57,6 +65,26 @@ export default function Inspector() {
       <div className="flex flex-col gap-2">
         <div className="text-lg font-bold text-white">{selectedNode.label}</div>
         <div className="text-xs text-[#888] font-mono uppercase">{selectedNode.type}</div>
+      </div>
+
+      <div className="flex flex-col gap-2 mt-2">
+        {selectedNode.subArchitecture ? (
+            <button
+                onClick={handleDrillDown}
+                className="flex items-center justify-center gap-2 w-full p-2 bg-[#007acc] hover:bg-[#0062a3] text-white text-xs font-bold rounded transition-colors"
+            >
+                <ChevronRight size={14} />
+                Drill Down into Sub-Graph
+            </button>
+        ) : (
+            <button
+                onClick={handleCreateSubArch}
+                className="flex items-center justify-center gap-2 w-full p-2 bg-[#333] hover:bg-[#444] text-[#ccc] hover:text-white text-xs font-bold rounded border border-[#444] transition-colors"
+            >
+                <PlusSquare size={14} />
+                Create Sub-Graph
+            </button>
+        )}
       </div>
 
       {componentDef && (

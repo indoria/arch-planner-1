@@ -9,6 +9,7 @@ import ComponentLibrary from './ComponentLibrary'
 import Inspector from './Inspector'
 import ComplaintsLog from './ComplaintsLog'
 import { useTabStore } from '@/store/useTabStore'
+import Breadcrumbs from './Breadcrumbs'
 
 type View = 'explorer' | 'library' | 'components'
 type BottomTab = 'output' | 'complaints' | 'debug'
@@ -17,6 +18,7 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
   const [activeView, setActiveView] = useState<View>('explorer')
   const [activeBottomTab, setActiveBottomTab] = useState<BottomTab>('output')
   const complaintsCount = useTabStore((state) => state.complaints.length)
+  const activeTab = useTabStore((state) => state.openTabs.find(t => t.id === state.activeTabId))
 
   return (
     <div className="flex h-screen w-screen bg-[#1e1e1e] text-[#cccccc] overflow-hidden" data-testid="shell">
@@ -94,6 +96,7 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
           <Panel defaultSize={65} minSize={40} className="flex flex-col h-full overflow-hidden" data-testid="editor-area">
             <PanelGroup direction="vertical">
               <Panel defaultSize={70} minSize={20} className="flex flex-col overflow-hidden bg-[#1e1e1e]">
+                {activeTab && <Breadcrumbs rootArch={activeTab.content} activeArch={activeTab.content} onNavigate={() => {}} />}
                 {children || <BlankState />}
               </Panel>
               

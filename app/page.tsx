@@ -1,5 +1,6 @@
 'use client'
 
+import React, { useEffect } from 'react'
 import Shell from "@/components/Shell";
 import TabBar from "@/components/TabBar";
 import ArchitectureCanvas from "@/components/ArchitectureCanvas";
@@ -8,6 +9,11 @@ import { useTabStore } from "@/store/useTabStore";
 export default function Home() {
   const openTabs = useTabStore((state) => state.openTabs);
   const activeTabId = useTabStore((state) => state.activeTabId);
+  const initStore = useTabStore((state) => state.init);
+
+  useEffect(() => {
+    initStore();
+  }, [initStore]);
 
   return (
     <Shell>

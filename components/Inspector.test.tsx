@@ -10,7 +10,7 @@ describe('Inspector', () => {
 
   it('renders a blank state when no node is selected', () => {
     render(<Inspector />)
-    expect(screen.getByText(/Select a node to view details/i)).toBeInTheDocument()
+    expect(screen.getByText(/Select a node on the canvas to view and edit its properties/i)).toBeInTheDocument()
   })
 
   it('renders node details when a node is selected', () => {

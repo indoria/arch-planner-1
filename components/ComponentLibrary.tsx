@@ -37,55 +37,36 @@ export default function ComponentLibrary() {
               e.dataTransfer.setData('application/reactflow', JSON.stringify(comp))
               e.dataTransfer.effectAllowed = 'move'
 
-              // Create a ghost element that looks like a simplified node
+              // Create a very simple ghost element to ensure visibility
               const ghost = document.createElement('div')
-              ghost.style.width = '160px'
-              ghost.style.backgroundColor = '#252526'
-              ghost.style.border = '2px solid #007acc'
+              ghost.id = 'drag-ghost'
+              ghost.style.width = '140px'
+              ghost.style.height = '40px'
+              ghost.style.backgroundColor = '#007acc'
+              ghost.style.color = 'white'
               ghost.style.borderRadius = '4px'
-              ghost.style.padding = '12px'
-              ghost.style.color = '#cccccc'
+              ghost.style.display = 'flex'
+              ghost.style.alignItems = 'center'
+              ghost.style.justifyContent = 'center'
               ghost.style.fontSize = '12px'
-              ghost.style.fontWeight = '500'
-              ghost.style.fontFamily = 'ui-sans-serif, system-ui, sans-serif'
+              ghost.style.fontWeight = 'bold'
               ghost.style.position = 'fixed'
-              ghost.style.top = '0'
-              ghost.style.left = '0'
-              ghost.style.transform = 'translate(-100%, -100%)' // Move off-screen but keep in layout
+              ghost.style.top = '-100px' // Keep it accessible but out of view
+              ghost.style.left = '-100px'
               ghost.style.zIndex = '9999'
-              ghost.style.pointerEvents = 'none'
-              ghost.style.boxShadow = '0 10px 15px -3px rgb(0 0 0 / 0.5)'
+              ghost.textContent = comp.label
               
-              // Header-like area
-              const header = document.createElement('div')
-              header.style.fontWeight = 'bold'
-              header.style.marginBottom = '6px'
-              header.style.borderBottom = '1px solid #454545'
-              header.style.paddingBottom = '6px'
-              header.textContent = comp.label
-              ghost.appendChild(header)
-
-              // Type label
-              const typeLabel = document.createElement('div')
-              typeLabel.style.fontSize = '10px'
-              typeLabel.style.color = '#858585'
-              typeLabel.style.textTransform = 'uppercase'
-              typeLabel.textContent = comp.type
-              ghost.appendChild(typeLabel)
-
               document.body.appendChild(ghost)
               
-              // Set the drag image. The offset (80, 20) centers it.
-              e.dataTransfer.setDragImage(ghost, 80, 20)
+              // Use a standard offset
+              e.dataTransfer.setDragImage(ghost, 70, 20)
               
-              // Use a slightly longer timeout or requestAnimationFrame to ensure browser capture
-              requestAnimationFrame(() => {
-                setTimeout(() => {
-                  if (document.body.contains(ghost)) {
-                    document.body.removeChild(ghost)
-                  }
-                }, 0)
-              })
+              // Clean up immediately after the drag starts (standard practice)
+              setTimeout(() => {
+                if (document.body.contains(ghost)) {
+                  document.body.removeChild(ghost)
+                }
+              }, 0)
             }}
           >
             <div className="p-2 bg-[#333333] rounded text-[#007acc] group-hover:text-white transition-colors">

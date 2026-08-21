@@ -3,9 +3,9 @@
 This plan builds the analytical dashboard and the VS Code-style Call Log pane using a strict TDD approach.
 
 ## Phase 1: Call Log & Transcript Pane
-- [ ] Task: Call Log Component
-    - [ ] **Write failing tests** for real-time log appending and virtualization logic.
-    - [ ] Build the `CallLogPane` with auto-scroll and filtering support.
+- [x] Task: Call Log Component (84894d4)
+    - [x] **Write failing tests** for real-time log appending and virtualization logic.
+    - [x] Build the `CallLogPane` with auto-scroll and filtering support.
 - [ ] Task: Transcript Mapping
     - [ ] **Write failing tests** for mapping simulation data (e.g., ASR text) to the log view.
     - [ ] Implement the data transformation logic from simulation events to log entries.

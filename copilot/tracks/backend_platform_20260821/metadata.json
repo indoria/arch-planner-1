@@ -1,0 +1,1 @@
+{"track_id":"backend_platform_20260821","type":"infrastructure","status":"planned","stack":"nestjs-mongodb","description":"API modules, remote MongoDB repositories, tenant scoping, and deployment mode"}

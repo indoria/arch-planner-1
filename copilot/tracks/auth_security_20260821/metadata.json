@@ -1,0 +1,1 @@
+{"track_id":"auth_security_20260821","type":"security","status":"planned","stack":"nestjs-oidc-mongodb","description":"Authentication, RBAC, audit logging, and security hardening"}

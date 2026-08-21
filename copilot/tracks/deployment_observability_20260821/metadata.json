@@ -1,0 +1,1 @@
+{"track_id":"deployment_observability_20260821","type":"infrastructure","status":"planned","stack":"nestjs-docker-mongodb-prometheus","description":"Containerization, structured logging, metrics, alerting, and self-hosted guidance"}

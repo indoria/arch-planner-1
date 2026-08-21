@@ -1,0 +1,8 @@
+{
+  "track_id": "edit_state_20260730",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-07-30T21:00:00Z",
+  "updated_at": "2026-07-30T21:00:00Z",
+  "description": "Implement the Edit State: Parameter tuning, component swapping, and persistence"
+}

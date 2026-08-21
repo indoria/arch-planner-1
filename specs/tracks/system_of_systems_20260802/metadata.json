@@ -1,0 +1,8 @@
+{
+  "track_id": "system_of_systems_20260802",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-08-02T10:00:00Z",
+  "updated_at": "2026-08-02T10:00:00Z",
+  "description": "Hierarchical architecture support (System of Systems) with drill-down capabilities and recursive simulation."
+}

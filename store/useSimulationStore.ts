@@ -17,11 +17,19 @@ export interface NodeTelemetry {
   error?: string;
 }
 
+export interface AggregatedMetrics {
+  totalLatency: number
+  totalCost: number
+  nodeCount: number
+}
+
 interface SimulationStore {
   logs: LogEntry[]
   nodeTelemetry: Record<string, NodeTelemetry>
+  aggregatedMetrics: AggregatedMetrics
   addLog: (log: Omit<LogEntry, 'id' | 'timestamp'>) => void
   setNodeTelemetry: (nodeId: string, telemetry: NodeTelemetry) => void
+  setAggregatedMetrics: (metrics: AggregatedMetrics) => void
   clearLogs: () => void
   resetTelemetry: () => void
 }
@@ -29,6 +37,7 @@ interface SimulationStore {
 export const useSimulationStore = create<SimulationStore>((set) => ({
   logs: [],
   nodeTelemetry: {},
+  aggregatedMetrics: { totalLatency: 0, totalCost: 0, nodeCount: 0 },
   addLog: (log) => set((state) => ({
     logs: [{ ...log, id: `log-${Date.now()}-${Math.random()}`, timestamp: Date.now() }, ...state.logs]
   })),
@@ -38,6 +47,10 @@ export const useSimulationStore = create<SimulationStore>((set) => ({
       [nodeId]: telemetry
     }
   })),
+  setAggregatedMetrics: (metrics) => set({ aggregatedMetrics: metrics }),
   clearLogs: () => set({ logs: [] }),
-  resetTelemetry: () => set({ nodeTelemetry: {} })
+  resetTelemetry: () => set({ 
+    nodeTelemetry: {}, 
+    aggregatedMetrics: { totalLatency: 0, totalCost: 0, nodeCount: 0 } 
+  })
 }))

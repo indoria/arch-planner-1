@@ -3,12 +3,14 @@ import { useTabStore } from './useTabStore';
 import { SimulationEngine } from '../simulation/SimulationEngine';
 import { ScriptRuntime } from '../simulation/ScriptRuntime';
 import { TranscriptMapper } from '../simulation/TranscriptMapper';
+import { KPIEngine } from '../simulation/KPIEngine';
 
 const runtime = new ScriptRuntime();
+const kpiEngine = new KPIEngine();
 
 export const runSimulation = async () => {
   const { activeArchitecture } = useTabStore.getState();
-  const { addLog, setNodeTelemetry, resetTelemetry } = useSimulationStore.getState();
+  const { addLog, setNodeTelemetry, resetTelemetry, setAggregatedMetrics } = useSimulationStore.getState();
 
   if (!activeArchitecture) return;
 
@@ -26,5 +28,9 @@ export const runSimulation = async () => {
     }
   });
 
-  await engine.run();
+  const results = await engine.run();
+  
+  // Calculate aggregated metrics
+  const metrics = kpiEngine.calculate(activeArchitecture, results);
+  setAggregatedMetrics(metrics);
 };

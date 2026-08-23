@@ -6,9 +6,9 @@ This plan builds the analytical dashboard and the VS Code-style Call Log pane us
 - [x] Task: Call Log Component (84894d4)
     - [x] **Write failing tests** for real-time log appending and virtualization logic.
     - [x] Build the `CallLogPane` with auto-scroll and filtering support.
-- [ ] Task: Transcript Mapping
-    - [ ] **Write failing tests** for mapping simulation data (e.g., ASR text) to the log view.
-    - [ ] Implement the data transformation logic from simulation events to log entries.
+- [x] Task: Transcript Mapping (4d336d9)
+    - [x] **Write failing tests** for mapping simulation data (e.g., ASR text) to the log view.
+    - [x] Implement the data transformation logic from simulation events to log entries.
 
 ## Phase 2: Telemetry & Overlay
 - [ ] Task: SVG Telemetry Overlay

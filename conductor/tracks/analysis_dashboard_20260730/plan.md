@@ -10,10 +10,10 @@ This plan builds the analytical dashboard and the VS Code-style Call Log pane us
     - [x] **Write failing tests** for mapping simulation data (e.g., ASR text) to the log view.
     - [x] Implement the data transformation logic from simulation events to log entries.
 
-## Phase 2: Telemetry & Overlay
-- [ ] Task: SVG Telemetry Overlay
-    - [ ] **Write failing tests** for dynamic node/edge label updates.
-    - [ ] Implement the React Flow overlay for real-time latency and status.
+## Phase 2: Telemetry & Overlay [checkpoint: d9bf05a]
+- [x] Task: SVG Telemetry Overlay (d9bf05a)
+    - [x] **Write failing tests** for dynamic node/edge label updates.
+    - [x] Implement the React Flow overlay for real-time latency and status.
 
 ## Phase 3: Metrics Dashboard
 - [ ] Task: KPI Calculation Engine

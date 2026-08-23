@@ -18,7 +18,8 @@ export class SimulationEngine {
   constructor(
     private architecture: Architecture,
     private runtime: ScriptRuntime,
-    private options: SimulationOptions = {}
+    private options: SimulationOptions = {},
+    private parentInputs: Record<string, any> = {}
   ) {}
 
   private updateTelemetry(nodeId: string, telemetry: NodeTelemetry) {
@@ -60,6 +61,14 @@ export class SimulationEngine {
         this.updateTelemetry(node.id, { status: 'running', latency: 0 });
 
         try {
+          // Special handling for sub-input nodes
+          if (node.type === 'sub-input') {
+            const parentSocketId = node.data?.parentSocketId;
+            const output = this.parentInputs[parentSocketId];
+            this.updateTelemetry(node.id, { status: 'success', output, latency: 0 });
+            return;
+          }
+
           // Check for upstream failures and calculate max upstream latency
           const upstreamConnections = this.architecture.connections.filter(c => c.targetNodeId === node.id);
           let maxUpstreamLatency = 0;
@@ -82,18 +91,52 @@ export class SimulationEngine {
           upstreamConnections.forEach(c => {
             const sourceResult = this.results[c.sourceNodeId];
             input[c.targetSocketId] = sourceResult.output;
-            // Also provide a flat 'data' for simple scripts
             if (input.data === undefined) {
                 input.data = sourceResult.output;
             }
           });
 
-          const nodeOwnLatency = node.data?.latency || 0;
-          const totalLatency = maxUpstreamLatency + nodeOwnLatency;
+          let output: any;
+          let nodeOwnLatency = node.data?.latency || 0;
 
-          const script = node.data?.script || 'return input.data;';
-          const output = await this.runtime.execute(script, { data: input.data, ...input }, node.data);
+          if (node.subArchitecture) {
+            // Recursive simulation
+            const subEngine = new SimulationEngine(
+              node.subArchitecture,
+              this.runtime,
+              { onTelemetry: this.options.onTelemetry },
+              input
+            );
+            const subResults = await subEngine.run();
+            
+            // Collect output from sub-output nodes
+            const subOutputNodes = node.subArchitecture.nodes.filter(n => n.type === 'sub-output');
+            
+            // For simplicity, if there's only one output socket, we take the first sub-output node result
+            // In a more complex scenario, we'd map subOutputNodes to parent sockets.
+            const primaryOutputNode = subOutputNodes[0];
+            if (primaryOutputNode) {
+              const res = subResults[primaryOutputNode.id];
+              if (res.status === 'error') throw new Error(res.error);
+              output = res.output;
+            }
+
+            // Latency aggregation: max latency of any sub-output node
+            let maxSubLatency = 0;
+            subOutputNodes.forEach(n => {
+                maxSubLatency = Math.max(maxSubLatency, subResults[n.id].latency);
+            });
+            nodeOwnLatency = maxSubLatency;
+          } else if (node.type === 'sub-output') {
+            // Just pass through the input to the output
+            output = input.data;
+            nodeOwnLatency = 0; // Bridges don't add latency usually
+          } else {
+            const script = node.data?.script || 'return input.data;';
+            output = await this.runtime.execute(script, { data: input.data, ...input }, node.data);
+          }
           
+          const totalLatency = maxUpstreamLatency + nodeOwnLatency;
           this.updateTelemetry(node.id, { status: 'success', output, latency: totalLatency });
         } catch (error: any) {
           this.updateTelemetry(node.id, { status: 'error', error: error.message, latency: 0 });

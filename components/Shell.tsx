@@ -8,6 +8,7 @@ import BlankState from './BlankState'
 import ComponentLibrary from './ComponentLibrary'
 import Inspector from './Inspector'
 import ComplaintsLog from './ComplaintsLog'
+import CallLogPane from './CallLogPane'
 import { useTabStore } from '@/store/useTabStore'
 import Breadcrumbs from './Breadcrumbs'
 
@@ -129,11 +130,7 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
                   </div>
                 </div>
                 <div className="flex-1 overflow-hidden">
-                  {activeBottomTab === 'output' && (
-                    <div className="p-4 text-[13px] font-mono text-[#858585] italic">
-                      Waiting for simulation...
-                    </div>
-                  )}
+                  {activeBottomTab === 'output' && <CallLogPane />}
                   {activeBottomTab === 'complaints' && <ComplaintsLog />}
                   {activeBottomTab === 'debug' && (
                     <div className="p-4 text-[13px] font-mono text-[#858585] italic">

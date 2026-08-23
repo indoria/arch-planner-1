@@ -7,41 +7,75 @@
       "position": { "x": 100, "y": 100 },
       "sockets": [
         { "id": "g-in-1", "type": "audio", "direction": "input", "label": "Phone Line" },
-        { "id": "g-out-1", "type": "audio", "direction": "output", "label": "Processed Audio" }
+        { "id": "g-out-1", "type": "text", "direction": "output", "label": "Transcript" }
       ],
       "data": {},
       "subArchitecture": {
         "nodes": [
           {
+            "id": "sub-in-1",
+            "type": "sub-input",
+            "label": "Input Proxy",
+            "position": { "x": 10, "y": 50 },
+            "sockets": [
+              { "id": "p-out-1", "type": "audio", "direction": "output", "label": "From Parent" }
+            ],
+            "data": { "parentSocketId": "g-in-1" }
+          },
+          {
             "id": "vad-1",
             "type": "architectureNode",
             "label": "VAD Engine",
-            "position": { "x": 50, "y": 50 },
+            "position": { "x": 150, "y": 50 },
             "sockets": [
               { "id": "v-in-1", "type": "audio", "direction": "input", "label": "Raw" },
               { "id": "v-out-1", "type": "audio", "direction": "output", "label": "Speech Only" }
             ],
-            "data": {}
+            "data": { "latency": 10, "script": "return input['v-in-1'];" }
           },
           {
             "id": "asr-1",
             "type": "architectureNode",
             "label": "ASR Engine",
-            "position": { "x": 250, "y": 50 },
+            "position": { "x": 350, "y": 50 },
             "sockets": [
               { "id": "a-in-1", "type": "audio", "direction": "input", "label": "Speech" },
               { "id": "a-out-1", "type": "text", "direction": "output", "label": "Transcript" }
             ],
-            "data": {}
+            "data": { "latency": 150, "script": "return 'Hello from ASR';" }
+          },
+          {
+            "id": "sub-out-1",
+            "type": "sub-output",
+            "label": "Output Proxy",
+            "position": { "x": 550, "y": 50 },
+            "sockets": [
+              { "id": "p-in-1", "type": "text", "direction": "input", "label": "To Parent" }
+            ],
+            "data": { "parentSocketId": "g-out-1" }
           }
         ],
         "connections": [
           {
             "id": "c-sub-1",
+            "sourceNodeId": "sub-in-1",
+            "sourceSocketId": "p-out-1",
+            "targetNodeId": "vad-1",
+            "targetSocketId": "v-in-1"
+          },
+          {
+            "id": "c-sub-2",
             "sourceNodeId": "vad-1",
             "sourceSocketId": "v-out-1",
             "targetNodeId": "asr-1",
             "targetSocketId": "a-in-1"
+          },
+          {
+            "id": "c-sub-3",
+            "sourceNodeId": "asr-1",
+            "sourceSocketId": "a-out-1",
+            "targetNodeId": "sub-out-1",
+            "targetSocketId": "p-in-1"
           }
         ]
       }
@@ -55,7 +89,7 @@
         { "id": "l-in-1", "type": "text", "direction": "input", "label": "User Text" },
         { "id": "l-out-1", "type": "text", "direction": "output", "label": "Bot Response" }
       ],
-      "data": {}
+      "data": { "latency": 500, "script": "return 'LLM: ' + input['l-in-1'];" }
     }
   ],
   "connections": [

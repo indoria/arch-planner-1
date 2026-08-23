@@ -8,8 +8,6 @@ import ReactFlow, {
   addEdge, 
   Edge, 
   NodeDragHandler,
-  applyNodeChanges,
-  applyEdgeChanges,
   NodeChange,
   EdgeChange
 } from 'reactflow'
@@ -29,6 +27,7 @@ export default function ArchitectureCanvas() {
   const openTabs = useTabStore((state) => state.openTabs)
   const addNode = useTabStore((state) => state.addNode)
   const updateNodePosition = useTabStore((state) => state.updateNodePosition)
+  const selectedNodeId = useTabStore((state) => state.selectedNodeId)
   const setSelectedNodeId = useTabStore((state) => state.setSelectedNodeId)
   const addConnection = useTabStore((state) => state.addConnection)
   const addComplaint = useTabStore((state) => state.addComplaint)
@@ -43,9 +42,10 @@ export default function ArchitectureCanvas() {
       id: node.id,
       type: 'architectureNode',
       position: node.position,
-      data: { label: node.label, sockets: node.sockets, subArchitecture: node.subArchitecture }
+      data: { label: node.label, sockets: node.sockets, subArchitecture: node.subArchitecture },
+      selected: node.id === selectedNodeId
     }))
-  }, [activeArchitecture])
+  }, [activeArchitecture, selectedNodeId])
 
   const edges = useMemo(() => {
     if (!activeArchitecture) return []
@@ -60,17 +60,14 @@ export default function ArchitectureCanvas() {
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) => {
-      // For selection changes, we don't need to update the store's architecture nodes
-      // because the store only cares about persisted state (position, data).
-      // React Flow handles the internal visual state (selection) automatically
-      // when we don't fully control the nodes.
+      // Selection and position changes are handled via onSelectionChange and onNodeDragStop
     },
     []
   )
 
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) => {
-      // Same as onNodesChange
+      // Handled via store sync
     },
     []
   )

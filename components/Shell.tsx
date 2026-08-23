@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
-import { Files, Library, Settings, Search, Box, Terminal, MessageSquare, Bug } from 'lucide-react'
+import { Files, Library, Settings, Search, Box, Terminal, MessageSquare, Bug, Play } from 'lucide-react'
 import KnowledgeAccordion from './KnowledgeAccordion'
 import BlankState from './BlankState'
 import ComponentLibrary from './ComponentLibrary'
@@ -11,6 +11,7 @@ import ComplaintsLog from './ComplaintsLog'
 import CallLogPane from './CallLogPane'
 import { useTabStore } from '@/store/useTabStore'
 import Breadcrumbs from './Breadcrumbs'
+import { runSimulation } from '@/store/simulationActions'
 
 type View = 'explorer' | 'library' | 'components'
 type BottomTab = 'output' | 'complaints' | 'debug'
@@ -20,6 +21,14 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
   const [activeBottomTab, setActiveBottomTab] = useState<BottomTab>('output')
   const complaintsCount = useTabStore((state) => state.complaints.length)
   const activeTab = useTabStore((state) => state.openTabs.find(t => t.id === state.activeTabId))
+  const [isSimulating, setIsSimulating] = useState(false)
+
+  const handleRunSimulation = async () => {
+    setIsSimulating(true)
+    setActiveBottomTab('output')
+    await runSimulation()
+    setIsSimulating(false)
+  }
 
   return (
     <div className="flex h-screen w-screen bg-[#1e1e1e] text-[#cccccc] overflow-hidden" data-testid="shell">
@@ -49,6 +58,20 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
         >
           <Library size={24} />
         </button>
+        
+        <div className="h-px w-6 bg-[#444] my-2" />
+        
+        <button
+          onClick={handleRunSimulation}
+          disabled={!activeTab || isSimulating}
+          className={`p-2 mb-2 transition-colors rounded-full ${isSimulating ? 'text-orange-500 animate-pulse' : 'text-green-500 hover:text-green-400 hover:bg-[#444]'} disabled:text-[#444] disabled:cursor-not-allowed`}
+          data-testid="icon-play"
+          aria-label="Run Simulation"
+          title="Run Simulation"
+        >
+          <Play size={24} fill={isSimulating ? "currentColor" : "none"} />
+        </button>
+
         <div className="mt-auto">
           <button className="p-2 text-[#858585] hover:text-white">
             <Settings size={24} />

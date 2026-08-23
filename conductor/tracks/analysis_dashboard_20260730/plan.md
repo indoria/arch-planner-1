@@ -2,7 +2,7 @@
 
 This plan builds the analytical dashboard and the VS Code-style Call Log pane using a strict TDD approach.
 
-## Phase 1: Call Log & Transcript Pane
+## Phase 1: Call Log & Transcript Pane [checkpoint: 06e9a79]
 - [x] Task: Call Log Component (84894d4)
     - [x] **Write failing tests** for real-time log appending and virtualization logic.
     - [x] Build the `CallLogPane` with auto-scroll and filtering support.

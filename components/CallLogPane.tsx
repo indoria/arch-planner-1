@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useSimulationStore, LogEntry } from '@/store/useSimulationStore'
-import { Search, Trash2, Info, CheckCircle, AlertTriangle, XCircle } from 'lucide-react'
+import { Search, Trash2, Info, CheckCircle, AlertTriangle, XCircle, Download } from 'lucide-react'
+import { exportToJson } from '@/utils/exportUtils'
 
 const LogIcon: React.FC<{ type: LogEntry['type'] }> = ({ type }) => {
   switch (type) {
@@ -35,6 +36,10 @@ const CallLogPane: React.FC = () => {
     }
   }, [logs.length])
 
+  const handleExport = () => {
+    exportToJson(logs, `simulation_logs_${new Date().toISOString()}.json`)
+  }
+
   return (
     <div className="flex flex-col h-full bg-[#1e1e1e] text-[#cccccc] font-mono text-xs border-l border-[#333333]">
       <div className="flex items-center justify-between p-2 border-b border-[#333333] bg-[#252526]">
@@ -48,13 +53,22 @@ const CallLogPane: React.FC = () => {
             onChange={(e) => setFilter(e.target.value)}
           />
         </div>
-        <button 
-          onClick={clearLogs}
-          title="Clear logs"
-          className="ml-2 p-1 hover:bg-[#333333] rounded text-[#858585] hover:text-white"
-        >
-          <Trash2 size={14} />
-        </button>
+        <div className="flex items-center gap-1">
+            <button 
+                onClick={handleExport}
+                title="Export logs as JSON"
+                className="ml-2 p-1 hover:bg-[#333333] rounded text-[#858585] hover:text-white"
+            >
+                <Download size={14} />
+            </button>
+            <button 
+                onClick={clearLogs}
+                title="Clear logs"
+                className="p-1 hover:bg-[#333333] rounded text-[#858585] hover:text-white"
+            >
+                <Trash2 size={14} />
+            </button>
+        </div>
       </div>
       <div 
         ref={scrollRef}

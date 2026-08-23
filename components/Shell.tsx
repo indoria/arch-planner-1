@@ -2,19 +2,20 @@
 
 import React, { useState } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
-import { Files, Library, Settings, Search, Box, Terminal, MessageSquare, Bug, Play } from 'lucide-react'
+import { Files, Library, Settings, Search, Box, Terminal, MessageSquare, Bug, Play, BarChart3 } from 'lucide-react'
 import KnowledgeAccordion from './KnowledgeAccordion'
 import BlankState from './BlankState'
 import ComponentLibrary from './ComponentLibrary'
 import Inspector from './Inspector'
 import ComplaintsLog from './ComplaintsLog'
 import CallLogPane from './CallLogPane'
+import MetricsDashboard from './MetricsDashboard'
 import { useTabStore } from '@/store/useTabStore'
 import Breadcrumbs from './Breadcrumbs'
 import { runSimulation } from '@/store/simulationActions'
 
 type View = 'explorer' | 'library' | 'components'
-type BottomTab = 'output' | 'complaints' | 'debug'
+type BottomTab = 'output' | 'complaints' | 'debug' | 'metrics'
 
 export default function Shell({ children }: { children?: React.ReactNode }) {
   const [activeView, setActiveView] = useState<View>('explorer')
@@ -136,6 +137,12 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
                       Output
                     </button>
                     <button 
+                      onClick={() => setActiveBottomTab('metrics')}
+                      className={`text-[11px] uppercase tracking-wider font-bold h-full border-b-2 transition-colors flex items-center gap-1.5 ${activeBottomTab === 'metrics' ? 'text-white border-white' : 'text-[#858585] border-transparent hover:text-[#cccccc]'}`}
+                    >
+                      Metrics
+                    </button>
+                    <button 
                       onClick={() => setActiveBottomTab('complaints')}
                       className={`text-[11px] uppercase tracking-wider font-bold h-full border-b-2 transition-colors flex items-center gap-1.5 ${activeBottomTab === 'complaints' ? 'text-white border-white' : 'text-[#858585] border-transparent hover:text-[#cccccc]'}`}
                     >
@@ -154,6 +161,7 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
                 </div>
                 <div className="flex-1 overflow-hidden">
                   {activeBottomTab === 'output' && <CallLogPane />}
+                  {activeBottomTab === 'metrics' && <MetricsDashboard />}
                   {activeBottomTab === 'complaints' && <ComplaintsLog />}
                   {activeBottomTab === 'debug' && (
                     <div className="p-4 text-[13px] font-mono text-[#858585] italic">

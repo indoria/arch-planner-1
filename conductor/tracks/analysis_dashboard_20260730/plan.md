@@ -16,9 +16,9 @@ This plan builds the analytical dashboard and the VS Code-style Call Log pane us
     - [x] Implement the React Flow overlay for real-time latency and status.
 
 ## Phase 3: Metrics Dashboard
-- [ ] Task: KPI Calculation Engine
-    - [ ] **Write failing tests** for cost and latency aggregation.
-    - [ ] Build the metrics aggregation logic.
+- [x] Task: KPI Calculation Engine (0b6a9c8)
+    - [x] **Write failing tests** for cost and latency aggregation.
+    - [x] Build the metrics aggregation logic.
 - [ ] Task: Metrics Dashboard UI
     - [ ] **Write failing tests** for dashboard layout and chart rendering.
     - [ ] Implement the metrics pane in the VS Code shell.

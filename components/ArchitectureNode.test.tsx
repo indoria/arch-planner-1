@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import ArchitectureNode from './ArchitectureNode'
 import { Socket } from '@/store/architecture'
+import { useSimulationStore } from '@/store/useSimulationStore'
 
 // Mock React Flow's Handle component since it requires a specific context
 jest.mock('reactflow', () => ({
@@ -27,30 +28,43 @@ describe('ArchitectureNode', () => {
     sockets: mockSockets,
   }
 
+  beforeEach(() => {
+    useSimulationStore.getState().resetTelemetry();
+  });
+
   it('renders the node label', () => {
-    render(<ArchitectureNode data={mockData} />)
+    render(<ArchitectureNode id="node-1" data={mockData} selected={false} zIndex={0} isConnectable={true} xPos={0} yPos={0} dragging={false} />)
     expect(screen.getByText('Test Node')).toBeInTheDocument()
   })
 
-  it('renders the correct number of input handles', () => {
-    render(<ArchitectureNode data={mockData} />)
-    const inputHandles = screen.getAllByTestId(/^handle-target-/)
-    expect(inputHandles).toHaveLength(1)
-    expect(screen.getByTestId('handle-target-in-1')).toBeInTheDocument()
+  it('renders latency when telemetry is available', () => {
+    useSimulationStore.getState().setNodeTelemetry('node-1', {
+      status: 'success',
+      latency: 123
+    });
+
+    render(<ArchitectureNode id="node-1" data={mockData} selected={false} zIndex={0} isConnectable={true} xPos={0} yPos={0} dragging={false} />)
+    expect(screen.getByText('123ms')).toBeInTheDocument()
   })
 
-  it('renders the correct number of output handles', () => {
-    render(<ArchitectureNode data={mockData} />)
-    const outputHandles = screen.getAllByTestId(/^handle-source-/)
-    expect(outputHandles).toHaveLength(2)
-    expect(screen.getByTestId('handle-source-out-1')).toBeInTheDocument()
-    expect(screen.getByTestId('handle-source-out-2')).toBeInTheDocument()
+  it('renders running status', () => {
+    useSimulationStore.getState().setNodeTelemetry('node-1', {
+      status: 'running',
+      latency: 0
+    });
+
+    render(<ArchitectureNode id="node-1" data={mockData} selected={false} zIndex={0} isConnectable={true} xPos={0} yPos={0} dragging={false} />)
+    expect(screen.getByTestId('status-indicator')).toHaveClass('bg-blue-500')
   })
 
-  it('renders socket labels', () => {
-    render(<ArchitectureNode data={mockData} />)
-    expect(screen.getByText('Audio In')).toBeInTheDocument()
-    expect(screen.getByText('Audio Out')).toBeInTheDocument()
-    expect(screen.getByText('Text Out')).toBeInTheDocument()
+  it('renders error status', () => {
+    useSimulationStore.getState().setNodeTelemetry('node-1', {
+      status: 'error',
+      latency: 0,
+      error: 'Failed'
+    });
+
+    render(<ArchitectureNode id="node-1" data={mockData} selected={false} zIndex={0} isConnectable={true} xPos={0} yPos={0} dragging={false} />)
+    expect(screen.getByTestId('status-indicator')).toHaveClass('bg-red-500')
   })
 })

@@ -1,16 +1,15 @@
 'use client'
 
 import React, { memo } from 'react'
-import { Handle, Position } from 'reactflow'
+import { Handle, Position, NodeProps } from 'reactflow'
 import { Socket } from '@/store/architecture'
-import { Layers } from 'lucide-react'
+import { Layers, Activity } from 'lucide-react'
+import { useSimulationStore } from '@/store/useSimulationStore'
 
-interface ArchitectureNodeProps {
-  data: {
-    label: string
-    sockets: Socket[]
-    subArchitecture?: any
-  }
+interface ArchitectureNodeData {
+  label: string
+  sockets: Socket[]
+  subArchitecture?: any
 }
 
 const SocketItem = ({ socket }: { socket: Socket }) => {
@@ -31,18 +30,42 @@ const SocketItem = ({ socket }: { socket: Socket }) => {
   )
 }
 
-function ArchitectureNode({ data }: ArchitectureNodeProps) {
+function ArchitectureNode({ id, data }: NodeProps<ArchitectureNodeData>) {
   const inputSockets = data.sockets.filter(s => s.direction === 'input')
   const outputSockets = data.sockets.filter(s => s.direction === 'output')
+  const telemetry = useSimulationStore(state => state.nodeTelemetry[id])
+
+  const getStatusColor = () => {
+    if (!telemetry) return 'bg-transparent'
+    switch (telemetry.status) {
+      case 'running': return 'bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]'
+      case 'success': return 'bg-green-500'
+      case 'error': return 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]'
+      default: return 'bg-transparent'
+    }
+  }
 
   return (
-    <div className="min-w-[150px] bg-[#252526] border border-[#454545] rounded shadow-xl overflow-hidden">
+    <div className={`min-w-[150px] bg-[#252526] border rounded shadow-xl overflow-hidden transition-colors ${telemetry?.status === 'error' ? 'border-red-900' : 'border-[#454545]'}`}>
       {/* Header */}
-      <div className="bg-[#333333] p-2 text-xs font-medium border-b border-[#454545] text-[#cccccc] flex justify-between items-center">
-        <span>{data.label}</span>
-        {data.subArchitecture && (
-            <Layers size={12} className="text-[#007acc]" />
-        )}
+      <div className="bg-[#333333] p-2 text-xs font-medium border-b border-[#454545] text-[#cccccc] flex justify-between items-center relative">
+        <div className="flex items-center gap-2">
+            <div 
+              data-testid="status-indicator"
+              className={`w-2 h-2 rounded-full ${getStatusColor()}`} 
+            />
+            <span>{data.label}</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          {telemetry && telemetry.latency > 0 && (
+            <span className="text-[9px] text-[#858585] bg-[#1e1e1e] px-1 rounded border border-[#3c3c3c]">
+              {telemetry.latency}ms
+            </span>
+          )}
+          {data.subArchitecture && (
+              <Layers size={12} className="text-[#007acc]" />
+          )}
+        </div>
       </div>
       
       {/* Sockets Container */}
@@ -63,6 +86,13 @@ function ArchitectureNode({ data }: ArchitectureNodeProps) {
           </div>
         </div>
       </div>
+
+      {/* Progress Bar (Visible only when running) */}
+      {telemetry?.status === 'running' && (
+        <div className="h-0.5 w-full bg-[#3c3c3c] overflow-hidden">
+          <div className="h-full bg-blue-500 animate-[progress_1s_infinite_linear]" />
+        </div>
+      )}
     </div>
   )
 }

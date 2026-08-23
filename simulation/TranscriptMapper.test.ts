@@ -61,7 +61,7 @@ describe('TranscriptMapper', () => {
     expect(logs[0].nodeLabel).toBe('TTS');
   });
 
-  it('handles complex data objects in output', () => {
+  it('handles complex data objects in output by extracting text if present', () => {
     const mapper = new TranscriptMapper(useSimulationStore.getState().addLog);
     
     mapper.handleTelemetry('node-1', { 
@@ -71,6 +71,72 @@ describe('TranscriptMapper', () => {
     }, mockNodeLabels['node-1']);
     
     const logs = useSimulationStore.getState().logs;
-    expect(logs[0].message).toContain('{"confidence":0.95,"text":"hi"}');
+    expect(logs[0].message).toContain('"hi"');
+  });
+
+  it('extracts "text" property for ASR-like components', () => {
+    const mapper = new TranscriptMapper(useSimulationStore.getState().addLog);
+    
+    mapper.handleTelemetry('node-1', { 
+      status: 'success', 
+      latency: 50,
+      output: { text: 'Hello, how are you?' }
+    }, 'ASR');
+    
+    const logs = useSimulationStore.getState().logs;
+    // We expect it to be cleaner than just JSON stringify
+    expect(logs[0].message).toContain('Hello, how are you?');
+    expect(logs[0].message).not.toContain('{"text":');
+  });
+
+  it('extracts "transcript" property', () => {
+    const mapper = new TranscriptMapper(useSimulationStore.getState().addLog);
+    
+    mapper.handleTelemetry('node-1', { 
+      status: 'success', 
+      latency: 50,
+      output: { transcript: 'I would like to order a pizza.' }
+    }, 'STT');
+    
+    const logs = useSimulationStore.getState().logs;
+    expect(logs[0].message).toContain('I would like to order a pizza.');
+  });
+
+  it('extracts "response" property for LLM-like components', () => {
+    const mapper = new TranscriptMapper(useSimulationStore.getState().addLog);
+    
+    mapper.handleTelemetry('node-2', { 
+      status: 'success', 
+      latency: 100,
+      output: { response: 'Sure, what toppings?' }
+    }, 'LLM');
+    
+    const logs = useSimulationStore.getState().logs;
+    expect(logs[0].message).toContain('Sure, what toppings?');
+  });
+
+  it('handles string output directly', () => {
+    const mapper = new TranscriptMapper(useSimulationStore.getState().addLog);
+    
+    mapper.handleTelemetry('node-1', { 
+      status: 'success', 
+      latency: 50,
+      output: 'just a string'
+    }, 'Node');
+    
+    const logs = useSimulationStore.getState().logs;
+    expect(logs[0].message).toContain('Output: just a string');
+  });
+
+  it('handles error without message', () => {
+    const mapper = new TranscriptMapper(useSimulationStore.getState().addLog);
+    
+    mapper.handleTelemetry('node-1', { 
+      status: 'error', 
+      latency: 0
+    }, 'Node');
+    
+    const logs = useSimulationStore.getState().logs;
+    expect(logs[0].message).toContain('Error: Unknown error');
   });
 });

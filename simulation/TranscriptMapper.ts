@@ -18,10 +18,21 @@ export class TranscriptMapper {
       case 'success':
         message = `Completed in ${telemetry.latency}ms.`;
         if (telemetry.output !== undefined) {
-          const outputStr = typeof telemetry.output === 'object' 
-            ? JSON.stringify(telemetry.output) 
-            : String(telemetry.output);
-          message += ` Output: ${outputStr}`;
+          let outputStr = '';
+          if (typeof telemetry.output === 'object' && telemetry.output !== null) {
+            // Specialized extraction for common voicebot data fields
+            const data = telemetry.output;
+            const transcript = data.text || data.transcript || data.response;
+            
+            if (transcript && typeof transcript === 'string') {
+              outputStr = ` "${transcript}"`;
+            } else {
+              outputStr = ` Output: ${JSON.stringify(data)}`;
+            }
+          } else {
+            outputStr = ` Output: ${String(telemetry.output)}`;
+          }
+          message += outputStr;
         }
         type = 'success';
         break;

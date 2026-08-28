@@ -10,15 +10,16 @@ This plan builds the time-travel and parallel simulation features using a strict
     - [x] Build the time-travel UI (scrubber, play/pause).
 
 ## Phase 2: Parallel Split-Screen Simulations
-...
-    - [ ] **Write failing tests** for spawning and managing multiple canvas instances.
-    - [ ] Implement the `SplitViewManager` in the VS Code shell.
+- [x] Task: Multi-Canvas Manager [d3968cf]
+    - [x] **Write failing tests** for spawning and managing multiple canvas instances.
+    - [x] Implement the `SplitViewManager` in the VS Code shell.
 - [ ] Task: Synchronized Playback Logic
     - [ ] **Write failing tests** for sync commands (Play/Pause/Seek) across instances.
     - [ ] Implement the `PlaybackCoordinator` for multi-instance sync.
 
 ## Phase 3: Comparative Analysis UI
-- [ ] Task: Side-by-Side Metrics
+...
+
     - [ ] **Write failing tests** for comparing metrics from two simulation engines.
     - [ ] Build the UI to display comparison delta (e.g., "Arch A is 20ms faster than Arch B").
 

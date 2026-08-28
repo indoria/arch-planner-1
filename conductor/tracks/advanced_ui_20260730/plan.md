@@ -6,8 +6,8 @@ This plan builds the time-travel and parallel simulation features using a strict
 - [x] Task: History Manager & State Snapshots [729868b]
     - [x] **Write failing tests** for state capture and restoration logic.
     - [x] Implement the `HistoryService` to store simulation snapshots.
-- [ ] Task: Playback Controls UI
-    - [ ] Build the time-travel UI (scrubber, play/pause).
+- [x] Task: Playback Controls UI [2d71a07]
+    - [x] Build the time-travel UI (scrubber, play/pause).
 
 ## Phase 2: Parallel Split-Screen Simulations
 ...

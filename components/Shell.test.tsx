@@ -32,6 +32,13 @@ jest.mock('./ComponentLibrary', () => {
   }
 })
 
+// Mock PlaybackControls to verify it's rendered
+jest.mock('./PlaybackControls', () => {
+  return function MockPlaybackControls() {
+    return <div data-testid="mock-playback-controls">Mock Playback Controls</div>
+  }
+})
+
 describe('Shell Component', () => {
   it('renders activity bar with explorer, components, and library icons', () => {
     render(<Shell />)
@@ -77,5 +84,10 @@ describe('Shell Component', () => {
   it('renders the Inspector in the right panel', () => {
     render(<Shell />)
     expect(screen.getByTestId('mock-inspector')).toBeInTheDocument()
+  })
+
+  it('renders PlaybackControls in the editor area', () => {
+    render(<Shell />)
+    expect(screen.getByTestId('mock-playback-controls')).toBeInTheDocument()
   })
 })

@@ -19,12 +19,12 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Analysis & Metrics Dashboard: Real-time telemetry, cost analysis, and reporting
+## [x] Track: Analysis & Metrics Dashboard: Real-time telemetry, cost analysis, and reporting
 *Link: [./tracks/analysis_dashboard_20260730/](./tracks/analysis_dashboard_20260730/)*
 
 ---
 
-## [ ] Track: Advanced UI Features: Simulation Time-Travel and Drag-and-Drop Builder
+## [~] Track: Advanced UI Features: Simulation Time-Travel and Drag-and-Drop Builder
 *Link: [./tracks/advanced_ui_20260730/](./tracks/advanced_ui_20260730/)*
 
 ---

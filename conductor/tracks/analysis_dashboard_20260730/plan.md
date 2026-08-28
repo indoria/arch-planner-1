@@ -23,7 +23,7 @@ This plan builds the analytical dashboard and the VS Code-style Call Log pane us
     - [x] **Write failing tests** for dashboard layout and chart rendering.
     - [x] Implement the metrics pane in the VS Code shell.
 
-## Phase 4: Verification & Integration
-- [ ] Task: Export System
-    - [ ] Implement log and metric export functionality.
-- [ ] Task: Conductor - User Manual Verification 'Analysis & Metrics Dashboard' (Protocol in workflow.md)
+## Phase 4: Verification & Integration [checkpoint: 71c92a3]
+- [x] Task: Export System (71c92a3)
+    - [x] Implement log and metric export functionality.
+- [~] Task: Conductor - User Manual Verification 'Analysis & Metrics Dashboard' (Protocol in workflow.md)

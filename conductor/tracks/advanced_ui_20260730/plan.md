@@ -3,14 +3,14 @@
 This plan builds the time-travel and parallel simulation features using a strict TDD approach.
 
 ## Phase 1: Simulation Time-Travel
-- [ ] Task: History Manager & State Snapshots
-    - [ ] **Write failing tests** for state capture and restoration logic.
-    - [ ] Implement the `HistoryService` to store simulation snapshots.
+- [x] Task: History Manager & State Snapshots [729868b]
+    - [x] **Write failing tests** for state capture and restoration logic.
+    - [x] Implement the `HistoryService` to store simulation snapshots.
 - [ ] Task: Playback Controls UI
     - [ ] Build the time-travel UI (scrubber, play/pause).
 
 ## Phase 2: Parallel Split-Screen Simulations
-- [ ] Task: Multi-Canvas Manager
+...
     - [ ] **Write failing tests** for spawning and managing multiple canvas instances.
     - [ ] Implement the `SplitViewManager` in the VS Code shell.
 - [ ] Task: Synchronized Playback Logic

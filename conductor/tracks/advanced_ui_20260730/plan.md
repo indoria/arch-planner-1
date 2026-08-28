@@ -13,9 +13,9 @@ This plan builds the time-travel and parallel simulation features using a strict
 - [x] Task: Multi-Canvas Manager [d3968cf]
     - [x] **Write failing tests** for spawning and managing multiple canvas instances.
     - [x] Implement the `SplitViewManager` in the VS Code shell.
-- [ ] Task: Synchronized Playback Logic
-    - [ ] **Write failing tests** for sync commands (Play/Pause/Seek) across instances.
-    - [ ] Implement the `PlaybackCoordinator` for multi-instance sync.
+- [x] Task: Synchronized Playback Logic [874ff9c]
+    - [x] **Write failing tests** for sync commands (Play/Pause/Seek) across instances.
+    - [x] Implement the `PlaybackCoordinator` for multi-instance sync.
 
 ## Phase 3: Comparative Analysis UI
 ...

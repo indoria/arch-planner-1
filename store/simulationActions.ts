@@ -10,11 +10,12 @@ const kpiEngine = new KPIEngine();
 
 export const runSimulation = async () => {
   const { activeArchitecture } = useTabStore.getState();
-  const { addLog, setNodeTelemetry, resetTelemetry, setAggregatedMetrics } = useSimulationStore.getState();
+  const { addLog, setNodeTelemetry, resetTelemetry, setAggregatedMetrics, addSnapshot, clearHistory } = useSimulationStore.getState();
 
   if (!activeArchitecture) return;
 
   resetTelemetry();
+  clearHistory();
   const mapper = new TranscriptMapper(addLog);
 
   const engine = new SimulationEngine(activeArchitecture, runtime, {
@@ -25,6 +26,13 @@ export const runSimulation = async () => {
       if (node) {
         mapper.handleTelemetry(nodeId, telemetry, node.label);
       }
+
+      // Capture a snapshot of the current global state
+      const currentState = useSimulationStore.getState().nodeTelemetry;
+      addSnapshot({
+        timestamp: Date.now(),
+        results: { ...currentState }
+      });
     }
   });
 

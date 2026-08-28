@@ -10,6 +10,7 @@ import Inspector from './Inspector'
 import ComplaintsLog from './ComplaintsLog'
 import CallLogPane from './CallLogPane'
 import MetricsDashboard from './MetricsDashboard'
+import PlaybackControls from './PlaybackControls'
 import { useTabStore } from '@/store/useTabStore'
 import Breadcrumbs from './Breadcrumbs'
 import { runSimulation } from '@/store/simulationActions'
@@ -122,7 +123,10 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
             <PanelGroup direction="vertical">
               <Panel defaultSize={70} minSize={20} className="flex flex-col overflow-hidden bg-[#1e1e1e]">
                 {activeTab && <Breadcrumbs />}
-                {children || <BlankState />}
+                <div className="flex-1 relative min-h-0">
+                  {children || <BlankState />}
+                </div>
+                <PlaybackControls />
               </Panel>
               
               <PanelResizeHandle className="h-1 bg-[#1e1e1e] hover:bg-[#007acc] transition-colors" />

@@ -2,7 +2,7 @@
 
 This plan builds the time-travel and parallel simulation features using a strict TDD approach.
 
-## Phase 1: Simulation Time-Travel
+## Phase 1: Simulation Time-Travel [checkpoint: bb3866c]
 - [x] Task: History Manager & State Snapshots [729868b]
     - [x] **Write failing tests** for state capture and restoration logic.
     - [x] Implement the `HistoryService` to store simulation snapshots.

@@ -24,12 +24,17 @@ interface TabState {
   openTabs: Tab[]
   activeTabId: string | null
   activeArchitecture: Architecture | null
+  isSplitView: boolean
+  secondaryActiveTabId: string | null
+  secondaryActiveArchitecture: Architecture | null
   drillDownStack: BreadcrumbStep[]
   selectedNodeId: string | null
   complaints: Complaint[]
   init: () => Promise<void>
   openTab: (tab: Tab) => void
   setActiveTab: (id: string | null) => void
+  setSplitView: (enabled: boolean) => void
+  setSecondaryActiveTab: (id: string | null) => void
   drillDown: (node: Node) => void
   goUp: () => void
   resetView: () => void
@@ -87,6 +92,9 @@ export const useTabStore = create<TabState>((set, get) => {
     openTabs: [],
     activeTabId: null,
     activeArchitecture: null,
+    isSplitView: false,
+    secondaryActiveTabId: null,
+    secondaryActiveArchitecture: null,
     drillDownStack: [],
     selectedNodeId: null,
     complaints: [],
@@ -115,6 +123,25 @@ export const useTabStore = create<TabState>((set, get) => {
       const tab = state.openTabs.find(t => t.id === id)
       return { activeTabId: id, activeArchitecture: tab ? tab.content : null, drillDownStack: [], selectedNodeId: null }
     }),
+    setSplitView: (enabled) => set((state) => {
+      let secondaryId = state.secondaryActiveTabId
+      if (enabled && !secondaryId && state.openTabs.length > 1) {
+        // Auto-pick the next tab as secondary if not set
+        const currentIndex = state.openTabs.findIndex(t => t.id === state.activeTabId)
+        const nextIndex = (currentIndex + 1) % state.openTabs.length
+        secondaryId = state.openTabs[nextIndex].id
+      }
+      const secondaryTab = state.openTabs.find(t => t.id === secondaryId)
+      return { 
+        isSplitView: enabled, 
+        secondaryActiveTabId: secondaryId,
+        secondaryActiveArchitecture: secondaryTab ? secondaryTab.content : null
+      }
+    }),
+    setSecondaryActiveTab: (id) => set((state) => {
+      const tab = state.openTabs.find(t => t.id === id)
+      return { secondaryActiveTabId: id, secondaryActiveArchitecture: tab ? tab.content : null }
+    }),
     drillDown: (node) => set((state) => {
         if (!node.subArchitecture) return state
         const newStep = { label: node.label, arch: node.subArchitecture }
@@ -134,7 +161,13 @@ export const useTabStore = create<TabState>((set, get) => {
     }),
     resetView: () => set((state) => {
       const activeTab = state.openTabs.find(t => t.id === state.activeTabId)
-      return { activeArchitecture: activeTab ? activeTab.content : null, drillDownStack: [] }
+      return { 
+        activeArchitecture: activeTab ? activeTab.content : null, 
+        drillDownStack: [],
+        isSplitView: false,
+        secondaryActiveTabId: null,
+        secondaryActiveArchitecture: null
+      }
     }),
     closeTab: (id) =>
       set((state) => {
@@ -168,7 +201,17 @@ export const useTabStore = create<TabState>((set, get) => {
         }
       }),
     closeAllTabs: () => {
-      set({ openTabs: [], activeTabId: null, activeArchitecture: null, drillDownStack: [], selectedNodeId: null, complaints: [] })
+      set({ 
+        openTabs: [], 
+        activeTabId: null, 
+        activeArchitecture: null, 
+        drillDownStack: [], 
+        selectedNodeId: null, 
+        complaints: [],
+        isSplitView: false,
+        secondaryActiveTabId: null,
+        secondaryActiveArchitecture: null
+      })
       saveTabs([])
     },
     addNode: (tabId, node) =>
@@ -295,4 +338,3 @@ export const useTabStore = create<TabState>((set, get) => {
     clearComplaints: () => set({ complaints: [] }),
   }
 })
-

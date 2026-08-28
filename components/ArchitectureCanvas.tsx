@@ -21,10 +21,16 @@ const nodeTypes = {
   architectureNode: ArchitectureNode,
 }
 
-export default function ArchitectureCanvas() {
-  const activeTabId = useTabStore((state) => state.activeTabId)
-  const activeArchitecture = useTabStore((state) => state.activeArchitecture)
-  const openTabs = useTabStore((state) => state.openTabs)
+export default function ArchitectureCanvas({ tabId }: { tabId?: string }) {
+  const storeActiveTabId = useTabStore((state) => state.activeTabId)
+  const storeActiveArchitecture = useTabStore((state) => state.activeArchitecture)
+  const secondaryActiveTabId = useTabStore((state) => state.secondaryActiveTabId)
+  const secondaryActiveArchitecture = useTabStore((state) => state.secondaryActiveArchitecture)
+  
+  const isSecondary = tabId !== undefined && tabId === secondaryActiveTabId
+  const activeTabId = tabId || storeActiveTabId
+  const activeArchitecture = isSecondary ? secondaryActiveArchitecture : storeActiveArchitecture
+  
   const addNode = useTabStore((state) => state.addNode)
   const updateNodePosition = useTabStore((state) => state.updateNodePosition)
   const selectedNodeId = useTabStore((state) => state.selectedNodeId)
@@ -81,7 +87,7 @@ export default function ArchitectureCanvas() {
     (event: React.DragEvent) => {
       event.preventDefault()
 
-      if (!activeTabId || !reactFlowInstance || !reactFlowWrapper.current) return
+      if (!activeTabId || isSecondary || !reactFlowInstance || !reactFlowWrapper.current) return
 
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect()
       const data = event.dataTransfer.getData('application/reactflow')
@@ -110,19 +116,20 @@ export default function ArchitectureCanvas() {
         console.error('Failed to parse dropped component data', err)
       }
     },
-    [reactFlowInstance, activeTabId, addNode]
+    [reactFlowInstance, activeTabId, addNode, isSecondary]
   )
 
   const onSelectionChange = useCallback((params: OnSelectionChangeParams) => {
+    if (isSecondary) return
     if (params.nodes.length === 1) {
       setSelectedNodeId(params.nodes[0].id)
     } else if (params.nodes.length === 0) {
       setSelectedNodeId(null)
     }
-  }, [setSelectedNodeId])
+  }, [setSelectedNodeId, isSecondary])
 
   const isValidConnection = useCallback((connection: Connection) => {
-    if (!activeArchitecture) return false
+    if (!activeArchitecture || isSecondary) return false
     
     const sourceNode = activeArchitecture.nodes.find(n => n.id === connection.source)
     const targetNode = activeArchitecture.nodes.find(n => n.id === connection.target)
@@ -145,10 +152,10 @@ export default function ArchitectureCanvas() {
     }
     
     return valid
-  }, [activeArchitecture, addComplaint])
+  }, [activeArchitecture, addComplaint, isSecondary])
 
   const onConnect = useCallback((params: Connection) => {
-    if (!activeTabId || !params.source || !params.target || !params.sourceHandle || !params.targetHandle) return
+    if (!activeTabId || isSecondary || !params.source || !params.target || !params.sourceHandle || !params.targetHandle) return
     
     addConnection(activeTabId, {
       id: `conn-${Date.now()}`,
@@ -157,12 +164,12 @@ export default function ArchitectureCanvas() {
       targetNodeId: params.target,
       targetSocketId: params.targetHandle
     })
-  }, [activeTabId, addConnection])
+  }, [activeTabId, addConnection, isSecondary])
 
   const onNodeDragStop: NodeDragHandler = useCallback((event, node) => {
-    if (!activeTabId) return
+    if (!activeTabId || isSecondary) return
     updateNodePosition(activeTabId, node.id, node.position)
-  }, [activeTabId, updateNodePosition])
+  }, [activeTabId, updateNodePosition, isSecondary])
 
   const onNodeDoubleClick = useCallback((_: React.MouseEvent, node: any) => {
       const archNode = activeArchitecture?.nodes.find(n => n.id === node.id)

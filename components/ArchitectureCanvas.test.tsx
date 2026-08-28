@@ -61,19 +61,24 @@ describe('ArchitectureCanvas', () => {
     expect(screen.getByTestId('rf-edges')).toHaveTextContent('1')
   })
 
-  it('should handle drop events', () => {
-    // This is a minimal test to verify the onDrop handler exists and can be called.
-    // Full drop testing would require mocking getBoundingClientRect and project()
-    useTabStore.getState().openTab({ id: '1', title: 'Arch 1', content: { nodes: [], connections: [] } })
+  it('renders nodes from the secondary tab state when tabId is provided', () => {
+    const mockArch1 = {
+      nodes: [{ id: 'n1', label: 'Node 1', sockets: [], position: { x: 0, y: 0 } }],
+      connections: []
+    }
+    const mockArch2 = {
+      nodes: [{ id: 'n2', label: 'Node 2', sockets: [], position: { x: 0, y: 0 } }],
+      connections: []
+    }
     
-    render(<ArchitectureCanvas />)
-    const canvas = screen.getByTestId('rf-mock')
+    useTabStore.getState().openTab({ id: '1', title: 'Arch 1', content: mockArch1 as any })
+    useTabStore.getState().openTab({ id: '2', title: 'Arch 2', content: mockArch2 as any })
+    useTabStore.getState().setActiveTab('1')
+    useTabStore.getState().setSplitView(true)
+    useTabStore.getState().setSecondaryActiveTab('2')
     
-    // We expect it not to crash when dropped
-    fireEvent.drop(canvas, {
-      dataTransfer: {
-        getData: () => JSON.stringify({ type: 'asr', label: 'ASR', sockets: [] })
-      }
-    })
+    // Render only the secondary canvas
+    render(<ArchitectureCanvas tabId="2" />)
+    expect(screen.getByTestId('rf-nodes')).toHaveTextContent('1')
   })
 })

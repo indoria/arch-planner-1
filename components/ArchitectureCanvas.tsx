@@ -13,6 +13,7 @@ import ReactFlow, {
 } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { useTabStore } from '@/store/useTabStore'
+import { useSimulationStore } from '@/store/useSimulationStore'
 import ArchitectureNode from './ArchitectureNode'
 import { ComponentDef } from '@/store/components'
 import { canConnect } from '@/store/architecture'
@@ -31,6 +32,10 @@ export default function ArchitectureCanvas({ tabId }: { tabId?: string }) {
   const activeTabId = tabId || storeActiveTabId
   const activeArchitecture = isSecondary ? secondaryActiveArchitecture : storeActiveArchitecture
   
+  const primaryTelemetry = useSimulationStore((state) => state.nodeTelemetry)
+  const secondaryTelemetry = useSimulationStore((state) => state.secondaryNodeTelemetry)
+  const nodeTelemetry = isSecondary ? secondaryTelemetry : primaryTelemetry
+
   const addNode = useTabStore((state) => state.addNode)
   const updateNodePosition = useTabStore((state) => state.updateNodePosition)
   const selectedNodeId = useTabStore((state) => state.selectedNodeId)
@@ -48,10 +53,15 @@ export default function ArchitectureCanvas({ tabId }: { tabId?: string }) {
       id: node.id,
       type: 'architectureNode',
       position: node.position,
-      data: { label: node.label, sockets: node.sockets, subArchitecture: node.subArchitecture },
+      data: { 
+        label: node.label, 
+        sockets: node.sockets, 
+        subArchitecture: node.subArchitecture,
+        telemetry: nodeTelemetry[node.id]
+      },
       selected: node.id === selectedNodeId
     }))
-  }, [activeArchitecture, selectedNodeId])
+  }, [activeArchitecture, selectedNodeId, nodeTelemetry])
 
   const edges = useMemo(() => {
     if (!activeArchitecture) return []

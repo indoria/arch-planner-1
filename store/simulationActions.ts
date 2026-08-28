@@ -9,7 +9,7 @@ const runtime = new ScriptRuntime();
 const kpiEngine = new KPIEngine();
 
 export const runSimulation = async () => {
-  const { activeArchitecture } = useTabStore.getState();
+  const { activeArchitecture, isSplitView, secondaryActiveArchitecture } = useTabStore.getState();
   const { addLog, setNodeTelemetry, resetTelemetry, setAggregatedMetrics, addSnapshot, clearHistory } = useSimulationStore.getState();
 
   if (!activeArchitecture) return;
@@ -18,27 +18,46 @@ export const runSimulation = async () => {
   clearHistory();
   const mapper = new TranscriptMapper(addLog);
 
-  const engine = new SimulationEngine(activeArchitecture, runtime, {
-    onTelemetry: (nodeId, telemetry) => {
-      setNodeTelemetry(nodeId, telemetry);
-      
-      const node = activeArchitecture.nodes.find(n => n.id === nodeId);
-      if (node) {
-        mapper.handleTelemetry(nodeId, telemetry, node.label);
+  // Helper to create an engine and run it
+  const createEngine = (arch: Architecture, isSecondary: boolean) => {
+    return new SimulationEngine(arch, runtime, {
+      onTelemetry: (nodeId, telemetry) => {
+        setNodeTelemetry(nodeId, telemetry, isSecondary);
+        
+        const node = arch.nodes.find(n => n.id === nodeId);
+        if (node) {
+          mapper.handleTelemetry(nodeId, telemetry, node.label);
+        }
+
+        // Capture a snapshot for this specific instance
+        const currentTelemetry = isSecondary 
+          ? useSimulationStore.getState().secondaryNodeTelemetry 
+          : useSimulationStore.getState().nodeTelemetry;
+          
+        addSnapshot({
+          timestamp: Date.now(),
+          results: { ...currentTelemetry }
+        }, isSecondary);
       }
+    });
+  };
 
-      // Capture a snapshot of the current global state
-      const currentState = useSimulationStore.getState().nodeTelemetry;
-      addSnapshot({
-        timestamp: Date.now(),
-        results: { ...currentState }
-      });
-    }
-  });
+  const primaryEngine = createEngine(activeArchitecture, false);
+  const promises: Promise<any>[] = [primaryEngine.run()];
 
-  const results = await engine.run();
+  if (isSplitView && secondaryActiveArchitecture) {
+    const secondaryEngine = createEngine(secondaryActiveArchitecture, true);
+    promises.push(secondaryEngine.run());
+  }
+
+  const [primaryResults, secondaryResults] = await Promise.all(promises);
   
   // Calculate aggregated metrics
-  const metrics = kpiEngine.calculate(activeArchitecture, results);
-  setAggregatedMetrics(metrics);
+  const primaryMetrics = kpiEngine.calculate(activeArchitecture, primaryResults);
+  setAggregatedMetrics(primaryMetrics, false);
+
+  if (secondaryResults) {
+    const secondaryMetrics = kpiEngine.calculate(secondaryActiveArchitecture!, secondaryResults);
+    setAggregatedMetrics(secondaryMetrics, true);
+  }
 };

@@ -9,7 +9,7 @@ This plan builds the time-travel and parallel simulation features using a strict
 - [x] Task: Playback Controls UI [2d71a07]
     - [x] Build the time-travel UI (scrubber, play/pause).
 
-## Phase 2: Parallel Split-Screen Simulations
+## Phase 2: Parallel Split-Screen Simulations [checkpoint: 9edb7f4]
 - [x] Task: Multi-Canvas Manager [d3968cf]
     - [x] **Write failing tests** for spawning and managing multiple canvas instances.
     - [x] Implement the `SplitViewManager` in the VS Code shell.

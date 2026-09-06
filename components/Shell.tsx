@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
-import { Files, Library, Settings, Search, Box, Terminal, MessageSquare, Bug, Play, BarChart3 } from 'lucide-react'
+import { Files, Library, Settings, Search, Box, Terminal, MessageSquare, Bug, Play, BarChart3, Plus } from 'lucide-react'
 import KnowledgeAccordion from './KnowledgeAccordion'
 import BlankState from './BlankState'
 import ComponentLibrary from './ComponentLibrary'
@@ -23,6 +23,7 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
   const [activeBottomTab, setActiveBottomTab] = useState<BottomTab>('output')
   const complaintsCount = useTabStore((state) => state.complaints.length)
   const activeTab = useTabStore((state) => state.openTabs.find(t => t.id === state.activeTabId))
+  const openTab = useTabStore((state) => state.openTab)
   const [isSimulating, setIsSimulating] = useState(false)
 
   const handleRunSimulation = async () => {
@@ -30,6 +31,17 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
     setActiveBottomTab('output')
     await runSimulation()
     setIsSimulating(false)
+  }
+
+  const handleNewArchitecture = () => {
+    openTab({
+      id: `new-${Date.now()}`,
+      title: 'Untitled Architecture',
+      content: {
+        nodes: [],
+        connections: []
+      }
+    })
   }
 
   return (
@@ -92,6 +104,15 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
                 {activeView === 'components' && 'Components'}
                 {activeView === 'library' && 'Interactive Library'}
               </span>
+              {activeView === 'explorer' && (
+                <button 
+                  onClick={handleNewArchitecture}
+                  className="p-1 hover:bg-[#333] rounded transition-colors text-[#858585] hover:text-white"
+                  title="New Architecture"
+                >
+                  <Plus size={14} />
+                </button>
+              )}
             </div>
             <div className="overflow-y-auto h-full">
               {activeView === 'explorer' && (

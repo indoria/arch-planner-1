@@ -86,6 +86,11 @@ describe('Shell Component', () => {
     expect(screen.getByTestId('mock-inspector')).toBeInTheDocument()
   })
 
+  it('renders "New Architecture" button in explorer sidebar', () => {
+    render(<Shell />)
+    expect(screen.getByTitle('New Architecture')).toBeInTheDocument()
+  })
+
   it('renders PlaybackControls in the editor area', () => {
     render(<Shell />)
     expect(screen.getByTestId('mock-playback-controls')).toBeInTheDocument()

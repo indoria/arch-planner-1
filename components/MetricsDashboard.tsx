@@ -8,7 +8,12 @@ import { exportToJson } from '@/utils/exportUtils'
 
 const MetricsDashboard: React.FC = () => {
   const { aggregatedMetrics, secondaryAggregatedMetrics } = useSimulationStore()
-  const isSplitView = useTabStore((state) => state.isSplitView)
+  const { isSplitView, openTabs, activeTabId, secondaryActiveTabId } = useTabStore()
+  
+  const activeTab = openTabs.find(t => t.id === activeTabId)
+  const secondaryTab = openTabs.find(t => t.id === secondaryActiveTabId)
+  const activeTitle = activeTab?.title || 'Primary'
+  const secondaryTitle = secondaryTab?.title || 'Secondary'
 
   const handleExport = () => {
     const data = isSplitView 
@@ -32,11 +37,22 @@ const MetricsDashboard: React.FC = () => {
     secondaryValue: string | number | null, 
     icon: React.ReactNode, 
     colorClass: string,
-    delta?: string | number | null,
+    delta?: number | null,
     deltaInverted?: boolean
   ) => {
     const hasComparison = isSplitView && secondaryValue !== null
     
+    let descriptiveText = ''
+    if (hasComparison && delta !== undefined && delta !== null) {
+      if (delta === 0) {
+        descriptiveText = 'Identical performance'
+      } else if (label === "E2E Latency") {
+        descriptiveText = `${secondaryTitle} is ${Math.abs(delta)}ms ${delta > 0 ? 'slower' : 'faster'} than ${activeTitle}`
+      } else if (label === "Total Cost") {
+        descriptiveText = `${secondaryTitle} is $${Math.abs(delta).toFixed(3)} ${delta > 0 ? 'more expensive' : 'cheaper'} than ${activeTitle}`
+      }
+    }
+
     return (
       <div className="bg-[#252526] p-4 rounded border border-[#333] flex flex-col gap-2 shadow-lg">
         <div className="flex items-center gap-4">
@@ -52,16 +68,23 @@ const MetricsDashboard: React.FC = () => {
         {hasComparison && (
           <div className="mt-2 pt-2 border-t border-[#333] flex flex-col gap-1">
             <div className="text-[11px] text-[#858585]">
-              Secondary: <span className="text-[#ccc]">{secondaryValue}</span>
+              {secondaryTitle}: <span className="text-[#ccc]">{secondaryValue}</span>
             </div>
             {delta !== undefined && delta !== null && (
-              <div className={`text-[11px] font-bold flex items-center gap-1 ${
-                (typeof delta === 'number' ? delta > 0 : delta.toString().startsWith('+')) 
+              <div className={`text-[11px] font-bold flex flex-col gap-0.5 ${
+                delta > 0 
                   ? (deltaInverted ? 'text-green-400' : 'text-red-400')
                   : (deltaInverted ? 'text-red-400' : 'text-green-400')
               }`}>
-                {typeof delta === 'number' && delta > 0 ? <TrendingUp size={12}/> : <TrendingDown size={12}/>}
-                Delta: {typeof delta === 'number' && delta > 0 ? `+${delta}` : delta}
+                <div className="flex items-center gap-1">
+                  {delta > 0 ? <TrendingUp size={12}/> : <TrendingDown size={12}/>}
+                  Delta: {delta > 0 ? `+${delta}` : delta}
+                </div>
+                {descriptiveText && (
+                  <div className="text-[10px] opacity-80 italic font-normal">
+                    {descriptiveText}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -95,7 +118,7 @@ const MetricsDashboard: React.FC = () => {
           `${secondaryAggregatedMetrics.totalLatency}ms`, 
           <Clock size={20} />, 
           "text-blue-400",
-          `${latencyDelta > 0 ? '+' : ''}${latencyDelta}ms`,
+          latencyDelta,
           true // Inverted: lower is better
         )}
 
@@ -105,7 +128,7 @@ const MetricsDashboard: React.FC = () => {
           `$${secondaryAggregatedMetrics.totalCost.toFixed(3)}`, 
           <DollarSign size={20} />, 
           "text-green-400",
-          `${costDelta > 0 ? '+' : ''}$${costDelta.toFixed(3)}`,
+          costDelta,
           true // Inverted: lower is better
         )}
 

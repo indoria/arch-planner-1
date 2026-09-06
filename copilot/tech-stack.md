@@ -10,7 +10,7 @@
   links, overlays, transitions, and telemetry. Do not introduce a UI framework.
 - **3D/WebGL:** Three.js and WebGL for optional spatial/system-of-systems views,
   not for ordinary 2D editor interactions.
-- **Motion:** GSAP for timeline playback and deliberate UI transitions.
+- **Motion:** GSAP for timeline playback and deliberate UI transitions.  Handle complex sequencing, smooth property tweening, staggers, and ScrollTrigger interactions
 - **Icons:** Inline accessible SVG icon primitives or a framework-free icon set.
 
 ## Backend

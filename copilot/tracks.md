@@ -1,6 +1,6 @@
 # Project Tracks
 
-This registry mirrors `PLANNER-2.md` and tracks the Vanilla JS/NestJS delivery.
+This registry mirrors `PLANNER-2.md` and tracks the delivery.
 The dated source folders are retained where they exist; new tracks use the
 same naming convention.
 

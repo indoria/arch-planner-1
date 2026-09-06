@@ -17,7 +17,7 @@ This plan builds the time-travel and parallel simulation features using a strict
     - [x] **Write failing tests** for sync commands (Play/Pause/Seek) across instances.
     - [x] Implement the `PlaybackCoordinator` for multi-instance sync.
 
-## Phase 3: Comparative Analysis UI
+## Phase 3: Comparative Analysis UI [checkpoint: 4a35849]
 - [x] Task: Side-by-Side Metrics [9aaff22]
     - [x] **Write failing tests** for comparing metrics from two simulation engines.
     - [x] Build the UI to display comparison delta (e.g., "Arch A is 20ms faster than Arch B").

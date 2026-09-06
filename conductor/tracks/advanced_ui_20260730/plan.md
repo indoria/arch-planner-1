@@ -23,6 +23,6 @@ This plan builds the time-travel and parallel simulation features using a strict
     - [x] Build the UI to display comparison delta (e.g., "Arch A is 20ms faster than Arch B").
 
 ## Phase 4: Verification & Integration
-- [ ] Task: Stress Test Parallel Sims
-    - [ ] Verify performance stability with two active high-density simulations.
-- [ ] Task: Conductor - User Manual Verification 'Advanced UI Features' (Protocol in workflow.md)
+- [x] Task: Stress Test Parallel Sims [00851ef]
+    - [x] Verify performance stability with two active high-density simulations.
+- [~] Task: Conductor - User Manual Verification 'Advanced UI Features' (Protocol in workflow.md)

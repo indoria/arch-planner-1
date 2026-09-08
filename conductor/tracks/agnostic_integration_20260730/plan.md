@@ -2,18 +2,19 @@
 
 This plan formalizes the architecture schema and builds the import/export engine using a strict TDD approach, specifically addressing the dual-input and repository requirements.
 
-## Phase 1: Schema Formalization & Dual-Input Validation
+## Phase 1: Schema Formalization & Dual-Input Validation [checkpoint: ff1556d]
 - [x] Task: Formalize Multi-Part Schema [ad24fd8]
     - [x] **Write failing tests** for validating standalone "Architecture" definitions (missing models).
     - [x] **Write failing tests** for standalone "Component Definition" models.
     - [x] **Write failing tests** for "Embedded" definitions (Architecture + Models).
     - [x] Define the official schemas for Connections and Component Models.
-- [ ] Task: Diagnostic & Reporting Engine
-    - [ ] **Write failing tests** for the "Complaints" system (verifying specific error messages for missing connectivity vs. missing models).
-    - [ ] Implement the `DiagnosticService` to provide detailed validation feedback.
+- [x] Task: Diagnostic & Reporting Engine [ff1556d]
+    - [x] **Write failing tests** for the "Complaints" system (verifying specific error messages for missing connectivity vs. missing models).
+    - [x] Implement the `DiagnosticService` to provide detailed validation feedback.
 
 ## Phase 2: Agnostic Loading & Repository Management
-- [ ] Task: Flexible Arch Loader
+...
+
     - [ ] **Write failing tests** for loading independent files and merging them into the state.
     - [ ] **Write failing tests** for loading an embedded file.
     - [ ] Implement the `UnifiedLoader` to handle independent or merged inputs.

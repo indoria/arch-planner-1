@@ -25,4 +25,4 @@ This plan builds the time-travel and parallel simulation features using a strict
 ## Phase 4: Verification & Integration
 - [x] Task: Stress Test Parallel Sims [00851ef]
     - [x] Verify performance stability with two active high-density simulations.
-- [~] Task: Conductor - User Manual Verification 'Advanced UI Features' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Advanced UI Features' (Protocol in workflow.md) [9d3d610]

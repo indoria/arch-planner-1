@@ -22,7 +22,7 @@ This plan builds the time-travel and parallel simulation features using a strict
     - [x] **Write failing tests** for comparing metrics from two simulation engines.
     - [x] Build the UI to display comparison delta (e.g., "Arch A is 20ms faster than Arch B").
 
-## Phase 4: Verification & Integration
+## Phase 4: Verification & Integration [checkpoint: bf29815]
 - [x] Task: Stress Test Parallel Sims [00851ef]
     - [x] Verify performance stability with two active high-density simulations.
 - [x] Task: Conductor - User Manual Verification 'Advanced UI Features' (Protocol in workflow.md) [9d3d610]

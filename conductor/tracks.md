@@ -24,7 +24,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Advanced UI Features: Simulation Time-Travel and Drag-and-Drop Builder
+## [x] Track: Advanced UI Features: Simulation Time-Travel and Drag-and-Drop Builder
 *Link: [./tracks/advanced_ui_20260730/](./tracks/advanced_ui_20260730/)*
 
 ---

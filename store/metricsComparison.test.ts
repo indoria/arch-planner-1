@@ -17,7 +17,7 @@ describe('Metrics Comparison Utility', () => {
   it('calculates deltas correctly', () => {
     const comparison = compareMetrics(primary, secondary);
     expect(comparison.latencyDelta).toBe(-30);
-    expect(comparison.costDelta).toBe(0.02);
+    expect(comparison.costDelta).toBeCloseTo(0.02, 5);
     expect(comparison.nodeCountDelta).toBe(0);
   });
 

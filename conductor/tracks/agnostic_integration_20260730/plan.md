@@ -3,11 +3,11 @@
 This plan formalizes the architecture schema and builds the import/export engine using a strict TDD approach, specifically addressing the dual-input and repository requirements.
 
 ## Phase 1: Schema Formalization & Dual-Input Validation
-- [ ] Task: Formalize Multi-Part Schema
-    - [ ] **Write failing tests** for validating standalone "Architecture" definitions (missing models).
-    - [ ] **Write failing tests** for standalone "Component Definition" models.
-    - [ ] **Write failing tests** for "Embedded" definitions (Architecture + Models).
-    - [ ] Define the official schemas for Connections and Component Models.
+- [x] Task: Formalize Multi-Part Schema [ad24fd8]
+    - [x] **Write failing tests** for validating standalone "Architecture" definitions (missing models).
+    - [x] **Write failing tests** for standalone "Component Definition" models.
+    - [x] **Write failing tests** for "Embedded" definitions (Architecture + Models).
+    - [x] Define the official schemas for Connections and Component Models.
 - [ ] Task: Diagnostic & Reporting Engine
     - [ ] **Write failing tests** for the "Complaints" system (verifying specific error messages for missing connectivity vs. missing models).
     - [ ] Implement the `DiagnosticService` to provide detailed validation feedback.

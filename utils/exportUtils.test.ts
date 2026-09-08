@@ -1,6 +1,6 @@
-import { exportToJson } from './exportUtils';
+import { exportToJson, exportToYaml } from './exportUtils';
 
-describe('exportToJson', () => {
+describe('exportUtils', () => {
   let originalCreateObjectURL: any;
   let originalRevokeObjectURL: any;
 
@@ -21,23 +21,45 @@ describe('exportToJson', () => {
     jest.restoreAllMocks();
   });
 
-  it('creates a download link and clicks it', () => {
-    const mockData = { test: 'data' };
-    const mockFilename = 'test.json';
-    
-    // Mock createElement for <a> tag
-    const mockLink = {
-      href: '',
-      download: '',
-      click: jest.fn(),
-    } as any;
-    jest.spyOn(document, 'createElement').mockReturnValue(mockLink);
+  describe('exportToJson', () => {
+    it('creates a download link and clicks it', () => {
+      const mockData = { test: 'data' };
+      const mockFilename = 'test.json';
+      
+      const mockLink = {
+        href: '',
+        download: '',
+        click: jest.fn(),
+      } as any;
+      jest.spyOn(document, 'createElement').mockReturnValue(mockLink);
 
-    exportToJson(mockData, mockFilename);
+      exportToJson(mockData, mockFilename);
 
-    expect(URL.createObjectURL).toHaveBeenCalled();
-    expect(mockLink.href).toBe('mock-url');
-    expect(mockLink.download).toBe(mockFilename);
-    expect(mockLink.click).toHaveBeenCalled();
+      expect(URL.createObjectURL).toHaveBeenCalled();
+      expect(mockLink.href).toBe('mock-url');
+      expect(mockLink.download).toBe(mockFilename);
+      expect(mockLink.click).toHaveBeenCalled();
+    });
+  });
+
+  describe('exportToYaml', () => {
+    it('creates a download link and clicks it for YAML', () => {
+      const mockYaml = 'test: data';
+      const mockFilename = 'test.yaml';
+      
+      const mockLink = {
+        href: '',
+        download: '',
+        click: jest.fn(),
+      } as any;
+      jest.spyOn(document, 'createElement').mockReturnValue(mockLink);
+
+      exportToYaml(mockYaml, mockFilename);
+
+      expect(URL.createObjectURL).toHaveBeenCalled();
+      expect(mockLink.href).toBe('mock-url');
+      expect(mockLink.download).toBe(mockFilename);
+      expect(mockLink.click).toHaveBeenCalled();
+    });
   });
 });

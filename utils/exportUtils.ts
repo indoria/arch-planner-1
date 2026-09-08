@@ -9,3 +9,15 @@ export const exportToJson = (data: any, filename: string) => {
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 };
+
+export const exportToYaml = (yamlString: string, filename: string) => {
+  const blob = new Blob([yamlString], { type: 'text/yaml' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};

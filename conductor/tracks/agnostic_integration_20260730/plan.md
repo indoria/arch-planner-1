@@ -13,12 +13,11 @@ This plan formalizes the architecture schema and builds the import/export engine
     - [x] Implement the `DiagnosticService` to provide detailed validation feedback.
 
 ## Phase 2: Agnostic Loading & Repository Management
-...
-
-    - [ ] **Write failing tests** for loading independent files and merging them into the state.
-    - [ ] **Write failing tests** for loading an embedded file.
-    - [ ] Implement the `UnifiedLoader` to handle independent or merged inputs.
-- [ ] Task: Component Repository (Registry)
+- [x] Task: Flexible Arch Loader [47693a3]
+    - [x] **Write failing tests** for loading independent files and merging them into the state.
+    - [x] **Write failing tests** for loading an embedded file.
+    - [x] Implement the `UnifiedLoader` to handle independent or merged inputs.
+- [~] Task: Component Repository (Registry)
     - [ ] **Write failing tests** for forming a repository from provided component models.
     - [ ] **Write failing tests** for searching and retrieving models from the repository.
     - [ ] Implement the `ComponentRepository` store and management logic.

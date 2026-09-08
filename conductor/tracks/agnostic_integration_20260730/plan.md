@@ -2,7 +2,7 @@
 
 This plan formalizes the architecture schema and builds the import/export engine using a strict TDD approach, specifically addressing the dual-input and repository requirements.
 
-## Phase 1: Schema Formalization & Dual-Input Validation [checkpoint: ff1556d]
+## Phase 1: Schema Formalization & Dual-Input Validation [checkpoint: 0464b8b]
 - [x] Task: Formalize Multi-Part Schema [ad24fd8]
     - [x] **Write failing tests** for validating standalone "Architecture" definitions (missing models).
     - [x] **Write failing tests** for standalone "Component Definition" models.

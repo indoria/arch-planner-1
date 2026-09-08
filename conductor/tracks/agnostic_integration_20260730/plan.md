@@ -12,15 +12,15 @@ This plan formalizes the architecture schema and builds the import/export engine
     - [x] **Write failing tests** for the "Complaints" system (verifying specific error messages for missing connectivity vs. missing models).
     - [x] Implement the `DiagnosticService` to provide detailed validation feedback.
 
-## Phase 2: Agnostic Loading & Repository Management
+## Phase 2: Agnostic Loading & Repository Management [checkpoint: 7fa764c]
 - [x] Task: Flexible Arch Loader [47693a3]
     - [x] **Write failing tests** for loading independent files and merging them into the state.
     - [x] **Write failing tests** for loading an embedded file.
     - [x] Implement the `UnifiedLoader` to handle independent or merged inputs.
-- [~] Task: Component Repository (Registry)
-    - [ ] **Write failing tests** for forming a repository from provided component models.
-    - [ ] **Write failing tests** for searching and retrieving models from the repository.
-    - [ ] Implement the `ComponentRepository` store and management logic.
+- [x] Task: Component Repository (Registry) [7fa764c]
+    - [x] **Write failing tests** for forming a repository from provided component models.
+    - [x] **Write failing tests** for searching and retrieving models from the repository.
+    - [x] Implement the `ComponentRepository` store and management logic.
 
 ## Phase 3: External Integration & Export
 - [ ] Task: Import/Export Service

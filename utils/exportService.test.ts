@@ -54,4 +54,82 @@ describe('ExportService', () => {
     expect(yaml).toContain('type: embedded');
     expect(yaml).toContain('components:');
   });
+
+  it('exports to JSON string', () => {
+    const json = ExportService.toJson(mockArch);
+    expect(typeof json).toBe('string');
+    const parsed = JSON.parse(json);
+    expect(parsed.type).toBe('architecture');
+  });
+
+  it('exports embedded to JSON string', () => {
+    const json = ExportService.toJson(mockArch, mockComponents);
+    expect(typeof json).toBe('string');
+    const parsed = JSON.parse(json);
+    expect(parsed.type).toBe('embedded');
+    expect(parsed.components).toHaveLength(1);
+  });
+
+  describe('Git-friendly formatting', () => {
+    it('sorts nodes by ID for deterministic output', () => {
+      const arch: Architecture = {
+        nodes: [
+          { id: 'z1', type: 'asr', label: 'Z', position: { x: 0, y: 0 }, sockets: [], data: {} },
+          { id: 'a1', type: 'asr', label: 'A', position: { x: 0, y: 0 }, sockets: [], data: {} }
+        ],
+        connections: []
+      };
+      const exported = ExportService.prepareStandalone(arch);
+      expect(exported.nodes[0].id).toBe('a1');
+      expect(exported.nodes[1].id).toBe('z1');
+    });
+
+    it('sorts connections by source-target for deterministic output', () => {
+      const arch: Architecture = {
+        nodes: [],
+        connections: [
+          { source: 'b', target: 'c' },
+          { source: 'a', target: 'b' }
+        ] as any
+      };
+      const exported = ExportService.prepareStandalone(arch);
+      expect(exported.connections[0].source).toBe('a');
+      expect(exported.connections[1].source).toBe('b');
+    });
+
+    it('adds a trailing newline to JSON exports', () => {
+      const json = ExportService.toJson(mockArch);
+      expect(json.endsWith('\n')).toBe(true);
+    });
+
+    it('adds a trailing newline to YAML exports', () => {
+      const yaml = ExportService.toYaml(mockArch);
+      expect(yaml.endsWith('\n')).toBe(true);
+    });
+  });
+
+  describe('Unified generation', () => {
+    it('generates JSON standalone by default', () => {
+      const output = ExportService.export(mockArch);
+      expect(output.format).toBe('json');
+      expect(output.data).toContain('"type": "architecture"');
+    });
+
+    it('generates YAML embedded when requested', () => {
+      const output = ExportService.export(mockArch, { 
+        components: mockComponents, 
+        format: 'yaml' 
+      });
+      expect(output.format).toBe('yaml');
+      expect(output.data).toContain('type: embedded');
+    });
+
+    it('suggests a valid filename', () => {
+      const output = ExportService.export(mockArch, { filename: 'my-bot' });
+      expect(output.filename).toBe('my-bot.json');
+      
+      const outputYaml = ExportService.export(mockArch, { filename: 'my-bot', format: 'yaml' });
+      expect(outputYaml.filename).toBe('my-bot.yaml');
+    });
+  });
 });

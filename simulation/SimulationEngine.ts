@@ -90,9 +90,17 @@ export class SimulationEngine {
           const input: Record<string, any> = {};
           upstreamConnections.forEach(c => {
             const sourceResult = this.results[c.sourceNodeId];
-            input[c.targetSocketId] = sourceResult.output;
+            const sourceNode = this.architecture.nodes.find(n => n.id === c.sourceNodeId);
+            
+            // If source node has sub-architecture, its output is a map of socket outputs
+            if (sourceNode?.subArchitecture && typeof sourceResult.output === 'object' && sourceResult.output !== null) {
+                input[c.targetSocketId] = sourceResult.output[c.sourceSocketId];
+            } else {
+                input[c.targetSocketId] = sourceResult.output;
+            }
+
             if (input.data === undefined) {
-                input.data = sourceResult.output;
+                input.data = input[c.targetSocketId];
             }
           });
 
@@ -109,17 +117,20 @@ export class SimulationEngine {
             );
             const subResults = await subEngine.run();
             
-            // Collect output from sub-output nodes
+            // Collect outputs from all sub-output nodes and map to parent sockets
             const subOutputNodes = node.subArchitecture.nodes.filter(n => n.type === 'sub-output');
+            const socketOutputs: Record<string, any> = {};
             
-            // For simplicity, if there's only one output socket, we take the first sub-output node result
-            // In a more complex scenario, we'd map subOutputNodes to parent sockets.
-            const primaryOutputNode = subOutputNodes[0];
-            if (primaryOutputNode) {
-              const res = subResults[primaryOutputNode.id];
-              if (res.status === 'error') throw new Error(res.error);
-              output = res.output;
-            }
+            subOutputNodes.forEach(subOutNode => {
+              const parentSocketId = subOutNode.data?.parentSocketId;
+              if (parentSocketId) {
+                const res = subResults[subOutNode.id];
+                if (res.status === 'error') throw new Error(res.error);
+                socketOutputs[parentSocketId] = res.output;
+              }
+            });
+
+            output = socketOutputs;
 
             // Latency aggregation: max latency of any sub-output node
             let maxSubLatency = 0;

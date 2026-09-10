@@ -19,8 +19,8 @@ describe('Hierarchical Simulation', () => {
     // Gateway-1 should have run successfully
     expect(results['gateway-1'].status).toBe('success');
     
-    // Gateway-1 output should be from ASR inside it
-    expect(results['gateway-1'].output).toBe('Hello from ASR');
+    // Gateway-1 output should be from ASR inside it (now a map of socket outputs)
+    expect(results['gateway-1'].output).toEqual({ 'g-out-1': 'Hello from ASR' });
     
     // LLM-1 should have received the output from Gateway-1
     expect(results['llm-1'].output).toBe('LLM: Hello from ASR');

@@ -18,9 +18,9 @@ This plan outlines the steps to implement hierarchical architectures and drill-d
     - [x] Implement double-click handler on React Flow nodes to navigate into sub-architectures.
 
 ## Phase 3: Recursive Simulation Engine
-- [ ] Task: Hierarchical Event Propagation
-    - [ ] **Write failing tests** for event passing between parent nodes and internal sub-system sockets.
-    - [ ] Update `SimulationEngine` to resolve sub-architectures during the event loop.
+- [x] Task: Hierarchical Event Propagation [7554b06]
+    - [x] **Write failing tests** for event passing between parent nodes and internal sub-system sockets.
+    - [x] Update `SimulationEngine` to resolve sub-architectures during the event loop.
 - [ ] Task: Aggregate Telemetry
     - [ ] **Write failing tests** for latency aggregation (bubbling up sub-system latency to parent).
     - [ ] Implement metric collectors that aggregate internal node states.

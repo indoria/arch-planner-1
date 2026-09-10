@@ -57,3 +57,21 @@ Manage multiple architectures simultaneously using the top **Tab Bar**:
 2.  Use the **"X"** icon on a tab to close it.
 3.  Click **"Close All"** to clear your workspace.
 4.  The application saves your open tabs automatically to local storage.
+
+## Importing & Exporting
+The application supports a flexible, architecture-agnostic schema for sharing and versioning your designs.
+
+### Exporting
+You can export your work in several formats using the **Export** button in the breadcrumbs bar:
+*   **JSON**: A Git-friendly, machine-readable format.
+*   **YAML**: A human-readable format, ideal for manual editing.
+*   **High-Res SVG**: A clean, high-resolution vector image of your architecture, suitable for documentation and presentations.
+
+### Loading Strategies
+The system supports three primary ways to load data:
+1.  **Architecture Only**: Defines the nodes and their connections. If the required component models are missing, the system will flag them in the Complaints Log.
+2.  **Components Only**: A library of behavioral models (e.g., specific LLM configurations, cost/latency profiles). Loading this populates your Component Library.
+3.  **Embedded Definition**: A single file containing both the architecture (connections) and the component models. This is the recommended format for full portability.
+
+### Validation & Diagnostics
+When you load a file, the **Unified Loader** performs strict schema validation. If the file is malformed, you will receive specific error messages. Additionally, the **Diagnostic Engine** checks for consistency between your connections and your component models, alerting you to any missing or mismatched definitions.

@@ -23,9 +23,9 @@ This plan formalizes the architecture schema and builds the import/export engine
     - [x] Implement the `ComponentRepository` store and management logic.
 
 ## Phase 3: External Integration & Export
-- [ ] Task: Import/Export Service
-    - [ ] **Write failing tests** for exporting architectures with and without embedded models.
-    - [ ] Implement the `ExportService` for multi-format generation.
+- [x] Task: Import/Export Service [a325182]
+    - [x] **Write failing tests** for exporting architectures with and without embedded models.
+    - [x] Implement the `ExportService` for multi-format generation.
 - [ ] Task: High-Res SVG Export
     - [ ] **Write failing tests** for SVG serialization and cleanup.
     - [ ] Implement a utility to export the current diagram as a high-resolution SVG.

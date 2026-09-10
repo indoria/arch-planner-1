@@ -1,4 +1,4 @@
-import { exportToJson, exportToYaml } from './exportUtils';
+import { exportToJson, exportToYaml, exportToSvg } from './exportUtils';
 
 describe('exportUtils', () => {
   let originalCreateObjectURL: any;
@@ -77,8 +77,6 @@ describe('exportUtils', () => {
       } as any;
       jest.spyOn(document, 'createElement').mockReturnValue(mockLink);
 
-      // @ts-ignore - function not yet implemented
-      const { exportToSvg } = require('./exportUtils');
       exportToSvg(mockSvg, mockFilename);
 
       expect(URL.createObjectURL).toHaveBeenCalled();

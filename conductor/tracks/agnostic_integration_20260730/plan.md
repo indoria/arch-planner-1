@@ -26,9 +26,9 @@ This plan formalizes the architecture schema and builds the import/export engine
 - [x] Task: Import/Export Service [a325182]
     - [x] **Write failing tests** for exporting architectures with and without embedded models.
     - [x] Implement the `ExportService` for multi-format generation.
-- [ ] Task: High-Res SVG Export
-    - [ ] **Write failing tests** for SVG serialization and cleanup.
-    - [ ] Implement a utility to export the current diagram as a high-resolution SVG.
+- [x] Task: High-Res SVG Export [93b13e0]
+    - [x] **Write failing tests** for SVG serialization and cleanup.
+    - [x] Implement a utility to export the current diagram as a high-resolution SVG.
 
 ## Phase 4: Verification & Documentation
 - [ ] Task: Schema Documentation

@@ -131,5 +131,26 @@ describe('ExportService', () => {
       const outputYaml = ExportService.export(mockArch, { filename: 'my-bot', format: 'yaml' });
       expect(outputYaml.filename).toBe('my-bot.yaml');
     });
+
+    it('exports to SVG when requested', () => {
+      const mockContainer = document.createElement('div');
+      const mockSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      mockSvg.classList.add('react-flow__renderer');
+      mockContainer.appendChild(mockSvg);
+
+      const output = ExportService.export(mockArch, { 
+        format: 'svg',
+        svgContainer: mockContainer
+      });
+      expect(output.format).toBe('svg');
+      expect(output.data).toContain('<svg');
+      expect(output.filename).toBe('voice-architecture.svg');
+    });
+
+    it('throws error if svgContainer is missing for SVG export', () => {
+      expect(() => {
+        ExportService.export(mockArch, { format: 'svg' });
+      }).toThrow('SVG container is required for SVG export');
+    });
   });
 });

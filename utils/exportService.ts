@@ -2,12 +2,13 @@ import { Architecture } from '../store/architecture';
 import { ComponentDef } from '../store/components';
 import yaml from 'js-yaml';
 
-export type ExportFormat = 'json' | 'yaml';
+export type ExportFormat = 'json' | 'yaml' | 'svg';
 
 export interface ExportOptions {
   components?: ComponentDef[];
   format?: ExportFormat;
   filename?: string;
+  svgContainer?: HTMLElement;
 }
 
 export interface ExportResult {
@@ -51,11 +52,21 @@ export class ExportService {
    * Main entry point for generating exports.
    */
   static export(architecture: Architecture, options: ExportOptions = {}): ExportResult {
-    const { components, format = 'json', filename = 'voice-architecture' } = options;
+    const { components, format = 'json', filename = 'voice-architecture', svgContainer } = options;
     
-    const data = format === 'json' 
-      ? this.toJson(architecture, components)
-      : this.toYaml(architecture, components);
+    let data = '';
+    
+    if (format === 'json') {
+      data = this.toJson(architecture, components);
+    } else if (format === 'yaml') {
+      data = this.toYaml(architecture, components);
+    } else if (format === 'svg') {
+      if (!svgContainer) {
+        throw new Error('SVG container is required for SVG export');
+      }
+      const { serializeReactFlowSvg } = require('./svgExport');
+      data = serializeReactFlowSvg(svgContainer);
+    }
     
     return {
       data,

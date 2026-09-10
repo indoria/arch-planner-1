@@ -30,7 +30,7 @@ This plan formalizes the architecture schema and builds the import/export engine
     - [x] **Write failing tests** for SVG serialization and cleanup.
     - [x] Implement a utility to export the current diagram as a high-resolution SVG.
 
-## Phase 4: Verification & Documentation
-- [ ] Task: Schema Documentation
-    - [ ] Generate documentation explaining the independent vs. embedded loading strategy.
-- [ ] Task: Conductor - User Manual Verification 'Agnostic Loader & External Integration' (Protocol in workflow.md)
+## Phase 4: Verification & Documentation [checkpoint: cd09bd1]
+- [x] Task: Schema Documentation [36b5172]
+    - [x] Generate documentation explaining the independent vs. embedded loading strategy.
+- [x] Task: Conductor - User Manual Verification 'Agnostic Loader & External Integration' (Protocol in workflow.md) [cd09bd1]

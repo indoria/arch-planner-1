@@ -62,4 +62,29 @@ describe('exportUtils', () => {
       expect(mockLink.click).toHaveBeenCalled();
     });
   });
+
+  describe('exportToSvg', () => {
+    it('serializes SVG element and triggers download', () => {
+      const mockSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      mockSvg.setAttribute('width', '100');
+      mockSvg.setAttribute('height', '100');
+      const mockFilename = 'architecture.svg';
+      
+      const mockLink = {
+        href: '',
+        download: '',
+        click: jest.fn(),
+      } as any;
+      jest.spyOn(document, 'createElement').mockReturnValue(mockLink);
+
+      // @ts-ignore - function not yet implemented
+      const { exportToSvg } = require('./exportUtils');
+      exportToSvg(mockSvg, mockFilename);
+
+      expect(URL.createObjectURL).toHaveBeenCalled();
+      expect(mockLink.href).toBe('mock-url');
+      expect(mockLink.download).toBe(mockFilename);
+      expect(mockLink.click).toHaveBeenCalled();
+    });
+  });
 });

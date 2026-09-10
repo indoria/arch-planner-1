@@ -9,6 +9,7 @@
 ## Visualization & Diagramming
 - **Node-Based Editor:** **React Flow** for building and manipulating the architecture diagrams (nodes and edges).
 - **Data Visualization:** **D3.js** for custom SVG transitions, latency modeling charts, and complex data-driven overlays.
+- **Serialization:** **js-yaml** for YAML import/export support.
 - **Icons:** **Lucide React** for minimalist, IDE-consistent iconography.
 - **Utility:** **SVG.js** for lightweight, ad-hoc SVG manipulations within custom nodes.
 

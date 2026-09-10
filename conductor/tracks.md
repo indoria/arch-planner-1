@@ -29,7 +29,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [ ] Track: Agnostic Loader & External Integration: Schema validation and import/export
+## [x] Track: Agnostic Loader & External Integration: Schema validation and import/export
 *Link: [./tracks/agnostic_integration_20260730/](./tracks/agnostic_integration_20260730/)*
 
 ---

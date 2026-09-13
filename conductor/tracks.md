@@ -34,7 +34,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: System of Systems: Hierarchical architecture support and drill-down simulation
+## [x] Track: System of Systems: Hierarchical architecture support and drill-down simulation
 *Link: [./tracks/system_of_systems_20260802/](./tracks/system_of_systems_20260802/)*
 
 ---

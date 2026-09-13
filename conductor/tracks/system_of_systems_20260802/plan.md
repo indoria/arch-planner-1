@@ -28,4 +28,4 @@ This plan outlines the steps to implement hierarchical architectures and drill-d
 ## Phase 4: Verification & Polish
 - [x] Task: Visual Cues for Sub-systems [8cc8d15]
     - [x] Add visual indicators (e.g., a "sub-system" icon or miniature preview) to nodes that contain sub-architectures.
-- [ ] Task: Conductor - User Manual Verification 'System of Systems'
+- [x] Task: Conductor - User Manual Verification 'System of Systems' [bef703b]

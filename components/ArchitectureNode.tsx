@@ -63,7 +63,13 @@ function ArchitectureNode({ id, data }: NodeProps<ArchitectureNodeData>) {
             </span>
           )}
           {data.subArchitecture && (
-              <Layers size={12} className="text-[#007acc]" />
+            <div 
+              data-testid="sub-architecture-indicator"
+              className="flex items-center gap-1 bg-[#1e1e1e] px-1 rounded border border-[#007acc]/30"
+            >
+              <Layers size={10} className="text-[#007acc]" />
+              <span className="text-[8px] text-[#007acc] uppercase font-bold tracking-tighter">Sub</span>
+            </div>
           )}
         </div>
       </div>

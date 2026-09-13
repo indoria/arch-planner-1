@@ -67,4 +67,18 @@ describe('ArchitectureNode', () => {
     render(<ArchitectureNode id="node-1" data={mockData} selected={false} zIndex={0} isConnectable={true} xPos={0} yPos={0} dragging={false} />)
     expect(screen.getByTestId('status-indicator')).toHaveClass('bg-red-500')
   })
+
+  it('renders sub-architecture indicator when subArchitecture is present', () => {
+    const dataWithSub = {
+      ...mockData,
+      subArchitecture: { nodes: [], connections: [] }
+    }
+
+    render(<ArchitectureNode id="node-1" data={dataWithSub} selected={false} zIndex={0} isConnectable={true} xPos={0} yPos={0} dragging={false} />)
+    
+    // Lucide icons usually render as SVG or have specific classes. 
+    // Since we didn't mock Lucide, it should render an SVG.
+    // We can add a data-testid to the icon in ArchitectureNode.tsx to be sure.
+    expect(screen.getByTestId('sub-architecture-indicator')).toBeInTheDocument()
+  })
 })

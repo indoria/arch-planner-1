@@ -26,6 +26,6 @@ This plan outlines the steps to implement hierarchical architectures and drill-d
     - [x] Implement metric collectors that aggregate internal node states.
 
 ## Phase 4: Verification & Polish
-- [ ] Task: Visual Cues for Sub-systems
-    - [ ] Add visual indicators (e.g., a "sub-system" icon or miniature preview) to nodes that contain sub-architectures.
+- [x] Task: Visual Cues for Sub-systems [8cc8d15]
+    - [x] Add visual indicators (e.g., a "sub-system" icon or miniature preview) to nodes that contain sub-architectures.
 - [ ] Task: Conductor - User Manual Verification 'System of Systems'

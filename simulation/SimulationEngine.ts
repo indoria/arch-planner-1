@@ -4,6 +4,7 @@ import { ScriptRuntime } from './ScriptRuntime';
 export interface NodeTelemetry {
   status: 'idle' | 'running' | 'error' | 'success';
   latency: number;
+  cost: number;
   output?: any;
   error?: string;
 }
@@ -49,7 +50,7 @@ export class SimulationEngine {
       if (readyToExecute.length === 0 && executing.size === 0 && pendingNodes.size > 0) {
         // We have a deadlock or cycle
         pendingNodes.forEach(id => {
-          this.updateTelemetry(id, { status: 'error', error: 'Deadlock or Cycle detected', latency: 0 });
+          this.updateTelemetry(id, { status: 'error', error: 'Deadlock or Cycle detected', latency: 0, cost: 0 });
         });
         break;
       }
@@ -58,14 +59,14 @@ export class SimulationEngine {
       const promises = readyToExecute.map(async (node) => {
         pendingNodes.delete(node.id);
         executing.add(node.id);
-        this.updateTelemetry(node.id, { status: 'running', latency: 0 });
+        this.updateTelemetry(node.id, { status: 'running', latency: 0, cost: 0 });
 
         try {
           // Special handling for sub-input nodes
           if (node.type === 'sub-input') {
             const parentSocketId = node.data?.parentSocketId;
             const output = this.parentInputs[parentSocketId];
-            this.updateTelemetry(node.id, { status: 'success', output, latency: 0 });
+            this.updateTelemetry(node.id, { status: 'success', output, latency: 0, cost: 0 });
             return;
           }
 
@@ -106,6 +107,7 @@ export class SimulationEngine {
 
           let output: any;
           let nodeOwnLatency = node.data?.latency || 0;
+          let totalNodeCost = node.data?.cost || 0;
 
           if (node.subArchitecture) {
             // Recursive simulation
@@ -117,6 +119,12 @@ export class SimulationEngine {
             );
             const subResults = await subEngine.run();
             
+            // Check if ANY internal node failed
+            const internalFailure = Object.values(subResults).find(res => res.status === 'error');
+            if (internalFailure) {
+              throw new Error(internalFailure.error);
+            }
+
             // Collect outputs from all sub-output nodes and map to parent sockets
             const subOutputNodes = node.subArchitecture.nodes.filter(n => n.type === 'sub-output');
             const socketOutputs: Record<string, any> = {};
@@ -125,7 +133,6 @@ export class SimulationEngine {
               const parentSocketId = subOutNode.data?.parentSocketId;
               if (parentSocketId) {
                 const res = subResults[subOutNode.id];
-                if (res.status === 'error') throw new Error(res.error);
                 socketOutputs[parentSocketId] = res.output;
               }
             });
@@ -138,6 +145,14 @@ export class SimulationEngine {
                 maxSubLatency = Math.max(maxSubLatency, subResults[n.id].latency);
             });
             nodeOwnLatency = maxSubLatency;
+
+            // Cost aggregation: sum of all node costs in sub-architecture
+            let subSystemCost = 0;
+            Object.values(subResults).forEach(res => {
+                subSystemCost += (res.cost || 0);
+            });
+            totalNodeCost += subSystemCost;
+
           } else if (node.type === 'sub-output') {
             // Just pass through the input to the output
             output = input.data;
@@ -148,9 +163,9 @@ export class SimulationEngine {
           }
           
           const totalLatency = maxUpstreamLatency + nodeOwnLatency;
-          this.updateTelemetry(node.id, { status: 'success', output, latency: totalLatency });
+          this.updateTelemetry(node.id, { status: 'success', output, latency: totalLatency, cost: totalNodeCost });
         } catch (error: any) {
-          this.updateTelemetry(node.id, { status: 'error', error: error.message, latency: 0 });
+          this.updateTelemetry(node.id, { status: 'error', error: error.message, latency: 0, cost: 0 });
         } finally {
           executing.delete(node.id);
         }

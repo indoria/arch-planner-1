@@ -17,7 +17,7 @@ This plan outlines the steps to implement hierarchical architectures and drill-d
     - [x] **Write failing tests** for the "Step Into" action (updating the active view context).
     - [x] Implement double-click handler on React Flow nodes to navigate into sub-architectures.
 
-## Phase 3: Recursive Simulation Engine
+## Phase 3: Recursive Simulation Engine [checkpoint: 8b46245]
 - [x] Task: Hierarchical Event Propagation [7554b06]
     - [x] **Write failing tests** for event passing between parent nodes and internal sub-system sockets.
     - [x] Update `SimulationEngine` to resolve sub-architectures during the event loop.

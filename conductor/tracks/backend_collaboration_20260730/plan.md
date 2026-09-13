@@ -3,10 +3,10 @@
 This plan builds the server-side infrastructure and collaboration features using a strict TDD approach.
 
 ## Phase 1: Backend Foundation & API
-- [ ] Task: Project Scaffolding (Server)
-    - [ ] Initialize Node.js + TypeScript + Express project.
-    - [ ] **Write failing tests** for a basic health-check endpoint.
-    - [ ] Implement the base server and logging infrastructure.
+- [x] Task: Project Scaffolding (Server) [0567656]
+    - [x] Initialize Node.js + TypeScript + Express project.
+    - [x] **Write failing tests** for a basic health-check endpoint.
+    - [x] Implement the base server and logging infrastructure.
 - [ ] Task: Database Integration
     - [ ] **Write failing tests** for the database connection and basic CRUD operations.
     - [ ] Set up Prisma/Mongoose and define the `User`, `Architecture`, and `Component` models.

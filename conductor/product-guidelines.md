@@ -13,6 +13,7 @@
 ## UX Principles
 - **Instant Feedback:** Every interaction (tuning a parameter, dragging a component) must result in immediate visual or data feedback to reinforce the cause-and-effect relationship.
 - **Non-Destructive Design:** Users should feel free to experiment. Implement robust undo/redo functionality and the ability to save/reset simulation "snapshots."
+- **Hierarchical Clarity:** For nested architectures, use breadcrumbs and distinct visual indicators (e.g., badges) to ensure the user always maintains clear context of their current depth and parent system.
 - **Just-in-Time Learning:** Integrate help markers and tooltips that explain *why* a certain architectural choice might impact performance (e.g., "Increasing LLM context length may increase first-token latency").
 
 ## Diagramming & Visualization Standards

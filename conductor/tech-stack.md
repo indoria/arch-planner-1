@@ -16,7 +16,7 @@
 ## Simulation Engine & State Management
 - **State Engine:** **Zustand** (or MobX/Valtio) for high-performance, reactive state management, enabling smooth call simulations and live parameter tuning.
 - **Tab Management:** State-driven tab system handling `openTabs` and `activeTabId`.
-- **Simulation Logic:** Custom TypeScript-based event loop to model component latencies, jitter, and error scenarios.
+- **Simulation Logic:** Recursive TypeScript-based event loop supporting hierarchical sub-architectures, cross-level event propagation, and aggregate telemetry collection.
 
 ## Backend & Storage
 - **Application Server:** **Node.js** with **Express** or **Fastify** (integrated with Next.js API routes where appropriate).

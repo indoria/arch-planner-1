@@ -17,6 +17,7 @@ To provide a highly interactive, architecture-agnostic playground for designing,
 ## Core Features
 - **SVG Architecture Visualizer:** Interactive, high-fidelity SVG diagrams representing system components and their relationships.
 - **End-to-End Call Simulator:** Simulation of full calls with configurable parameters for text, latency, jitter, and error scenarios.
+- **Hierarchical System-of-Systems:** Support for recursive architectures where components can represent entire sub-systems, complete with drill-down navigation and aggregate telemetry.
 - **High-Resolution SVG Export:** Clean, professional vector exports of architectures for documentation and sharing.
 - **Agnostic Import/Export:** Git-friendly JSON and YAML support for architecture definitions and behavioral component models.
 - **Agnostic Architecture Engine:** A plug-and-play system that can ingest architecture definitions (e.g., via JSON/YAML) for any type of software system.

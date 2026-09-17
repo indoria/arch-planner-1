@@ -1,0 +1,33 @@
+// use prisma-8
+model User {
+  id            Int                        @id @default(autoincrement())
+  email         String                     @unique
+  name          String?
+  architectures Architecture[]
+  components    Component[]
+  createdAt     TimestamptzString          @default(now())
+  updatedAt     temporal.updatedAtString()
+}
+
+model Architecture {
+  id          Int                        @id @default(autoincrement())
+  name        String
+  description String?
+  definition  Json
+  owner       User                       @relation(fields:[ownerId], references:[id])
+  ownerId     Int
+  isPublic    Boolean                    @default(false)
+  createdAt   TimestamptzString          @default(now())
+  updatedAt   temporal.updatedAtString()
+}
+
+model Component {
+  id        Int                        @id @default(autoincrement())
+  name      String
+  type      String
+  data      Json
+  owner     User                       @relation(fields:[ownerId], references:[id])
+  ownerId   Int
+  createdAt TimestamptzString          @default(now())
+  updatedAt   temporal.updatedAtString()
+}

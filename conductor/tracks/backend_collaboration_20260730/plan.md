@@ -15,9 +15,9 @@ This plan builds the server-side infrastructure and collaboration features using
 - [x] Task: Auth Integration (Supabase/Firebase) [f20d466]
     - [x] **Write failing tests** for the authentication middleware and route protection.
     - [x] Integrate the chosen auth provider and implement login/signup flows.
-- [~] Task: User Profiles & Permissions
-    - [ ] **Write failing tests** for role-based access control (RBAC) on architecture resources.
-    - [ ] Implement ownership and permission checks for architecture operations.
+- [x] Task: User Profiles & Permissions [b86ecc4]
+    - [x] **Write failing tests** for role-based access control (RBAC) on architecture resources.
+    - [x] Implement ownership and permission checks for architecture operations.
 ...
 
 ## Phase 3: Architecture Management & Collaboration

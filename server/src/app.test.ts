@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals';
 import request from 'supertest';
 
-// Mock the database before importing the app
+// Mock the database
 jest.unstable_mockModule('../prisma/db.js', () => ({
   db: {
     orm: {
@@ -19,7 +19,7 @@ jest.unstable_mockModule('../prisma/db.js', () => ({
   }
 }));
 
-// Dynamically import app so it uses the mock
+// Dynamically import app
 const { default: app } = await import('./app.js');
 
 describe('GET /health', () => {
@@ -31,15 +31,24 @@ describe('GET /health', () => {
 });
 
 describe('GET /users', () => {
-  it('should return 200 and a list of users', async () => {
-    const response = await request(app).get('/users');
+  it('should return 200 and a list of users when authenticated', async () => {
+    const response = await request(app)
+      .get('/users')
+      .set('Authorization', 'Bearer valid-token');
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body[0].email).toBe('test@example.com');
   });
 
-  it('should return 500 if database fails', async () => {
+  it('should return 401 if not authenticated', async () => {
     const response = await request(app).get('/users');
+    expect(response.status).toBe(401);
+  });
+
+  it('should return 500 if database fails and authenticated', async () => {
+    const response = await request(app)
+      .get('/users')
+      .set('Authorization', 'Bearer valid-token');
     expect(response.status).toBe(500);
     expect(response.body).toEqual({ error: 'Failed to fetch users' });
   });

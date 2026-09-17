@@ -13,6 +13,7 @@ export interface LogEntry {
 export interface NodeTelemetry {
   status: 'idle' | 'running' | 'error' | 'success';
   latency: number;
+  cost: number;
   output?: any;
   error?: string;
 }

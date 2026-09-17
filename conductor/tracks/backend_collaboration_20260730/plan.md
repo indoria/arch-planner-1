@@ -2,7 +2,7 @@
 
 This plan builds the server-side infrastructure and collaboration features using a strict TDD approach.
 
-## Phase 1: Backend Foundation & API
+## Phase 1: Backend Foundation & API [checkpoint: 61fd638]
 - [x] Task: Project Scaffolding (Server) [0567656]
     - [x] Initialize Node.js + TypeScript + Express project.
     - [x] **Write failing tests** for a basic health-check endpoint.

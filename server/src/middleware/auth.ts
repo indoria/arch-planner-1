@@ -17,8 +17,13 @@ export const authMiddleware = (req: express.Request, res: express.Response, next
     return;
   }
 
-  // Attach user info to request (mocked for now)
-  (req as any).user = { id: 1, email: 'test@example.com' };
+  // Support multiple users for permission testing
+  if (token === 'valid-token-2') {
+    (req as any).user = { id: 2, email: 'other@example.com' };
+  } else {
+    // Default valid user
+    (req as any).user = { id: 1, email: 'test@example.com' };
+  }
   
   next();
 };

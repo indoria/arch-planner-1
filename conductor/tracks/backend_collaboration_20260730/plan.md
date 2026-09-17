@@ -7,9 +7,9 @@ This plan builds the server-side infrastructure and collaboration features using
     - [x] Initialize Node.js + TypeScript + Express project.
     - [x] **Write failing tests** for a basic health-check endpoint.
     - [x] Implement the base server and logging infrastructure.
-- [ ] Task: Database Integration
-    - [ ] **Write failing tests** for the database connection and basic CRUD operations.
-    - [ ] Set up Prisma/Mongoose and define the `User`, `Architecture`, and `Component` models.
+- [x] Task: Database Integration [e5d5ea2]
+    - [x] **Write failing tests** for the database connection and basic CRUD operations.
+    - [x] Set up Prisma/Mongoose and define the `User`, `Architecture`, and `Component` models.
 
 ## Phase 2: User Authentication
 - [ ] Task: Auth Integration (Supabase/Firebase)

@@ -11,7 +11,7 @@ This plan builds the server-side infrastructure and collaboration features using
     - [x] **Write failing tests** for the database connection and basic CRUD operations.
     - [x] Set up Prisma/Mongoose and define the `User`, `Architecture`, and `Component` models.
 
-## Phase 2: User Authentication
+## Phase 2: User Authentication [checkpoint: a47256d]
 - [x] Task: Auth Integration (Supabase/Firebase) [f20d466]
     - [x] **Write failing tests** for the authentication middleware and route protection.
     - [x] Integrate the chosen auth provider and implement login/signup flows.

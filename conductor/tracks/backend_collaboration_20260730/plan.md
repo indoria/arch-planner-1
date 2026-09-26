@@ -21,9 +21,9 @@ This plan builds the server-side infrastructure and collaboration features using
 ...
 
 ## Phase 3: Architecture Management & Collaboration
-- [ ] Task: Architecture CRUD API
-    - [ ] **Write failing tests** for saving, retrieving, and updating architectures via the API.
-    - [ ] Implement the architecture management endpoints with schema validation.
+- [x] Task: Architecture CRUD API [985fb7b]
+    - [x] **Write failing tests** for saving, retrieving, and updating architectures via the API.
+    - [x] Implement the architecture management endpoints with schema validation.
 - [ ] Task: Collaboration & Sharing
     - [ ] **Write failing tests** for sharing links and "Clone" functionality.
     - [ ] Build the API and UI support for generating shareable architecture URLs.

@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { db } from '../prisma/db.js';
 import { authMiddleware } from './middleware/auth.js';
+import { validateArchitectureDefinition } from './validation.js';
 
 const app = express();
 
@@ -18,6 +19,52 @@ app.get('/users', authMiddleware, async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch users' });
+  }
+});
+
+app.get('/architectures', authMiddleware, async (req, res) => {
+  try {
+    const architectures = await db.orm.public.Architecture.all();
+    res.status(200).json(architectures);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch architectures' });
+  }
+});
+
+app.post('/architectures', authMiddleware, async (req, res) => {
+  try {
+    const user = (req as any).user;
+    const { name, description, definition, isPublic } = req.body;
+
+    if (!name || typeof name !== 'string' || name.trim() === '') {
+      res.status(400).json({ error: 'Name is required' });
+      return;
+    }
+
+    if (!definition) {
+      res.status(400).json({ error: 'Definition is required' });
+      return;
+    }
+
+    const validation = validateArchitectureDefinition(definition);
+    if (!validation.valid) {
+      res.status(400).json({ error: 'Invalid architecture schema', details: validation.errors });
+      return;
+    }
+
+    const arch = await db.orm.public.Architecture.create({
+      data: {
+        name: name.trim(),
+        description: description || null,
+        definition,
+        isPublic: Boolean(isPublic),
+        ownerId: user.id
+      }
+    });
+
+    res.status(201).json(arch);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
@@ -60,6 +107,14 @@ app.put('/architectures/:id', authMiddleware, async (req, res) => {
     if (arch.ownerId !== user.id) {
       res.status(403).json({ error: 'Forbidden' });
       return;
+    }
+
+    if (updateData.definition) {
+      const validation = validateArchitectureDefinition(updateData.definition);
+      if (!validation.valid) {
+        res.status(400).json({ error: 'Invalid architecture schema', details: validation.errors });
+        return;
+      }
     }
 
     const updatedArch = await db.orm.public.Architecture.update({

@@ -6,6 +6,9 @@ const DB_VERSION = 1
 
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
+    if (typeof indexedDB === 'undefined') {
+      return reject(new Error('IndexedDB is not supported'))
+    }
     const request = indexedDB.open(DB_NAME, DB_VERSION)
 
     request.onupgradeneeded = () => {
@@ -21,6 +24,7 @@ function openDB(): Promise<IDBDatabase> {
 }
 
 export async function saveTabs(tabs: Tab[]): Promise<void> {
+  if (typeof indexedDB === 'undefined') return
   const db = await openDB()
   const tx = db.transaction(STORE_NAME, 'readwrite')
   const store = tx.objectStore(STORE_NAME)
@@ -38,6 +42,7 @@ export async function saveTabs(tabs: Tab[]): Promise<void> {
 }
 
 export async function loadTabs(): Promise<Tab[]> {
+  if (typeof indexedDB === 'undefined') return []
   const db = await openDB()
   const tx = db.transaction(STORE_NAME, 'readonly')
   const store = tx.objectStore(STORE_NAME)
@@ -48,3 +53,4 @@ export async function loadTabs(): Promise<Tab[]> {
     request.onerror = () => reject(request.error)
   })
 }
+

@@ -1,6 +1,6 @@
 import { Architecture } from '../store/architecture';
 import { ComponentDef } from '../store/components';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 
 export type ExportFormat = 'json' | 'yaml' | 'svg';
 
@@ -29,8 +29,8 @@ export class ExportService {
       type: 'architecture',
       nodes: [...architecture.nodes].sort((a, b) => a.id.localeCompare(b.id)),
       connections: [...architecture.connections].sort((a, b) => {
-        const aKey = `${a.source}-${a.target}`;
-        const bKey = `${b.source}-${b.target}`;
+        const aKey = `${(a as any).source || a.sourceNodeId}-${(a as any).target || a.targetNodeId}`;
+        const bKey = `${(b as any).source || b.sourceNodeId}-${(b as any).target || b.targetNodeId}`;
         return aKey.localeCompare(bKey);
       })
     };

@@ -3,9 +3,10 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useTabStore } from '@/store/useTabStore'
 import { useComponentStore } from '@/store/useComponentStore'
-import { ChevronRight, Home, Download, FileJson, FileCode, ImageIcon } from 'lucide-react'
+import { ChevronRight, Home, Download, FileJson, FileCode, ImageIcon, Share2, Copy, Check } from 'lucide-react'
 import { ExportService, ExportFormat } from '@/utils/exportService'
 import { exportToJson, exportToYaml, exportToSvg } from '@/utils/exportUtils'
+import { CollaborationService } from '@/utils/collaborationService'
 
 export default function Breadcrumbs() {
   const drillDownStack = useTabStore((state) => state.drillDownStack)
@@ -14,10 +15,13 @@ export default function Breadcrumbs() {
   const activeTabId = useTabStore((state) => state.activeTabId)
   const openTabs = useTabStore((state) => state.openTabs)
   const activeArchitecture = useTabStore((state) => state.activeArchitecture)
-  const components = useComponentStore((state) => state.components)
+  const components = useComponentStore((state) => state.repository)
   
   const [showExportMenu, setShowExportMenu] = useState(false)
+  const [showShareMenu, setShowShareMenu] = useState(false)
+  const [copied, setCopied] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const shareMenuRef = useRef<HTMLDivElement>(null)
   
   const activeTab = openTabs.find(t => t.id === activeTabId)
   
@@ -26,12 +30,29 @@ export default function Breadcrumbs() {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setShowExportMenu(false)
       }
+      if (shareMenuRef.current && !shareMenuRef.current.contains(event.target as Node)) {
+        setShowShareMenu(false)
+      }
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
   if (!activeTab || !activeArchitecture) return null
+
+  const shareUrl = CollaborationService.buildShareUrl(activeTab.id)
+
+  const handleCopyShareLink = async () => {
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareUrl)
+      }
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy share link:', err)
+    }
+  }
 
   const handleExport = (format: ExportFormat) => {
     try {
@@ -112,6 +133,39 @@ export default function Breadcrumbs() {
         
         <div className="h-4 w-px bg-[#444] mx-1" />
         
+        <div className="relative" ref={shareMenuRef}>
+          <button 
+            onClick={() => setShowShareMenu(!showShareMenu)}
+            className="flex items-center gap-1.5 px-2 py-0.5 bg-[#333] hover:bg-[#444] text-[#ccc] hover:text-white rounded border border-[#444] transition-all"
+            title="Share Architecture"
+          >
+            <Share2 size={12} />
+            Share
+          </button>
+          
+          {showShareMenu && (
+            <div className="absolute right-0 top-full mt-1 w-64 bg-[#252526] border border-[#444] rounded shadow-2xl z-[100] p-3 text-left">
+              <div className="text-xs font-semibold text-white mb-1.5">Share Architecture</div>
+              <p className="text-[10px] text-[#858585] mb-2">Anyone with this link can view this architecture:</p>
+              <div className="flex items-center gap-1.5 bg-[#1e1e1e] border border-[#3c3c3c] rounded px-2 py-1 mb-2">
+                <input 
+                  type="text" 
+                  readOnly 
+                  value={shareUrl}
+                  className="bg-transparent text-[10px] text-[#ccc] w-full outline-none select-all"
+                />
+              </div>
+              <button
+                onClick={handleCopyShareLink}
+                className="w-full flex items-center justify-center gap-1.5 px-2 py-1 bg-[#0e639c] hover:bg-[#1177bb] text-white text-xs rounded transition-colors"
+              >
+                {copied ? <Check size={12} /> : <Copy size={12} />}
+                <span>{copied ? 'Copied Link!' : 'Copy Link'}</span>
+              </button>
+            </div>
+          )}
+        </div>
+
         <div className="relative" ref={menuRef}>
           <button 
             onClick={() => setShowExportMenu(!showExportMenu)}

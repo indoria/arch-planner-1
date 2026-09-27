@@ -1,5 +1,6 @@
 import { useSimulationStore } from './useSimulationStore';
 import { useTabStore } from './useTabStore';
+import { Architecture } from './architecture';
 import { SimulationEngine } from '../simulation/SimulationEngine';
 import { ScriptRuntime } from '../simulation/ScriptRuntime';
 import { TranscriptMapper } from '../simulation/TranscriptMapper';

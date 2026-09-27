@@ -68,6 +68,89 @@ app.post('/architectures', authMiddleware, async (req, res) => {
   }
 });
 
+app.get('/architectures/share/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const arch = await db.orm.public.Architecture.where({ id: Number(id) }).first();
+
+    if (!arch || !arch.isPublic) {
+      res.status(404).json({ error: 'Architecture not found' });
+      return;
+    }
+
+    res.status(200).json(arch);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/architectures/:id/share', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = (req as any).user;
+
+    const arch = await db.orm.public.Architecture.where({ id: Number(id) }).first();
+
+    if (!arch) {
+      res.status(404).json({ error: 'Architecture not found' });
+      return;
+    }
+
+    if (arch.ownerId !== user.id) {
+      res.status(403).json({ error: 'Forbidden' });
+      return;
+    }
+
+    const updatedArch = await db.orm.public.Architecture.update({
+      where: { id: Number(id) },
+      data: { isPublic: true }
+    });
+
+    res.status(200).json({
+      ...updatedArch,
+      shareUrl: `/architectures/share/${id}`,
+      isPublic: true
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/architectures/:id/clone', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = (req as any).user;
+
+    const arch = await db.orm.public.Architecture.where({ id: Number(id) }).first();
+
+    if (!arch) {
+      res.status(404).json({ error: 'Architecture not found' });
+      return;
+    }
+
+    if (arch.ownerId !== user.id && !arch.isPublic) {
+      res.status(403).json({ error: 'Forbidden' });
+      return;
+    }
+
+    const clonedName = req.body?.name || `${arch.name} (Clone)`;
+
+    const clonedArch = await db.orm.public.Architecture.create({
+      data: {
+        name: clonedName,
+        description: arch.description,
+        definition: arch.definition,
+        isPublic: false,
+        ownerId: user.id
+      }
+    });
+
+    res.status(201).json(clonedArch);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.get('/architectures/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;

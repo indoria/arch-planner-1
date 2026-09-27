@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, act } from '@testing-library/react'
 import Breadcrumbs from './Breadcrumbs'
 import { useTabStore } from '@/store/useTabStore'
 import { ExportService } from '@/utils/exportService'
@@ -79,6 +79,45 @@ describe('Breadcrumbs', () => {
     expect(ExportService.export).toHaveBeenCalledWith(
       expect.anything(),
       expect.objectContaining({ format: 'json' })
+    )
+  })
+
+  it('renders share button when active tab exists', () => {
+    useTabStore.getState().openTab({ 
+      id: '1', 
+      title: 'My Architecture', 
+      content: { nodes: [], connections: [] } 
+    })
+    
+    render(<Breadcrumbs />)
+    expect(screen.getByText('Share')).toBeInTheDocument()
+  })
+
+  it('shows share menu with link and copies to clipboard', async () => {
+    const mockWriteText = jest.fn().mockResolvedValue(undefined)
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: mockWriteText,
+      },
+    })
+
+    useTabStore.getState().openTab({ 
+      id: '1', 
+      title: 'My Architecture', 
+      content: { nodes: [], connections: [] } 
+    })
+    
+    render(<Breadcrumbs />)
+    fireEvent.click(screen.getByText('Share'))
+    
+    expect(screen.getByText('Share Architecture')).toBeInTheDocument()
+    expect(screen.getByText('Copy Link')).toBeInTheDocument()
+
+    await act(async () => {
+      fireEvent.click(screen.getByText('Copy Link'))
+    })
+    expect(mockWriteText).toHaveBeenCalledWith(
+      expect.stringContaining('/architectures/share/1')
     )
   })
 });

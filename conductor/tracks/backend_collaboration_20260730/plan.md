@@ -24,9 +24,9 @@ This plan builds the server-side infrastructure and collaboration features using
 - [x] Task: Architecture CRUD API [985fb7b]
     - [x] **Write failing tests** for saving, retrieving, and updating architectures via the API.
     - [x] Implement the architecture management endpoints with schema validation.
-- [ ] Task: Collaboration & Sharing
-    - [ ] **Write failing tests** for sharing links and "Clone" functionality.
-    - [ ] Build the API and UI support for generating shareable architecture URLs.
+- [x] Task: Collaboration & Sharing [8bf74f6]
+    - [x] **Write failing tests** for sharing links and "Clone" functionality.
+    - [x] Build the API and UI support for generating shareable architecture URLs.
 
 ## Phase 4: Centralized Component Library
 - [ ] Task: Shared Component Registry

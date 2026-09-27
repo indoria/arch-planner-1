@@ -20,7 +20,7 @@ This plan builds the server-side infrastructure and collaboration features using
     - [x] Implement ownership and permission checks for architecture operations.
 ...
 
-## Phase 3: Architecture Management & Collaboration
+## Phase 3: Architecture Management & Collaboration [checkpoint: e2c888b]
 - [x] Task: Architecture CRUD API [985fb7b]
     - [x] **Write failing tests** for saving, retrieving, and updating architectures via the API.
     - [x] Implement the architecture management endpoints with schema validation.

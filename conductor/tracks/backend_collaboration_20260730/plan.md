@@ -28,8 +28,8 @@ This plan builds the server-side infrastructure and collaboration features using
     - [x] **Write failing tests** for sharing links and "Clone" functionality.
     - [x] Build the API and UI support for generating shareable architecture URLs.
 
-## Phase 4: Centralized Component Library
+## Phase 4: Centralized Component Library [checkpoint: e930b4f]
 - [x] Task: Shared Component Registry [2d5dc1f]
     - [x] **Write failing tests** for publishing and searching components in the central registry.
     - [x] Implement the component library API to allow users to share their custom nodes.
-- [ ] Task: Conductor - User Manual Verification 'Backend & Collaboration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Backend & Collaboration' (Protocol in workflow.md) [e930b4f]

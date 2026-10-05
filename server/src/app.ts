@@ -238,4 +238,137 @@ app.delete('/architectures/:id', authMiddleware, async (req, res) => {
   }
 });
 
+// Component Registry Endpoints
+
+app.get('/components', authMiddleware, async (req, res) => {
+  try {
+    let components = await db.orm.public.Component.all();
+    const { type, search } = req.query;
+
+    if (type && typeof type === 'string') {
+      components = components.filter((c: any) => c.type.toLowerCase() === type.toLowerCase());
+    }
+
+    if (search && typeof search === 'string') {
+      const q = search.toLowerCase();
+      components = components.filter((c: any) =>
+        c.name.toLowerCase().includes(q) ||
+        (c.data?.label && c.data.label.toLowerCase().includes(q)) ||
+        (c.data?.description && c.data.description.toLowerCase().includes(q))
+      );
+    }
+
+    res.status(200).json(components);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch components' });
+  }
+});
+
+app.get('/components/:id', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const component = await db.orm.public.Component.where({ id: Number(id) }).first();
+
+    if (!component) {
+      res.status(404).json({ error: 'Component not found' });
+      return;
+    }
+
+    res.status(200).json(component);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/components', authMiddleware, async (req, res) => {
+  try {
+    const user = (req as any).user;
+    const { name, type, data } = req.body;
+
+    if (!name || typeof name !== 'string' || name.trim() === '') {
+      res.status(400).json({ error: 'Name is required' });
+      return;
+    }
+
+    if (!type || typeof type !== 'string' || type.trim() === '') {
+      res.status(400).json({ error: 'Type is required' });
+      return;
+    }
+
+    if (!data || typeof data !== 'object') {
+      res.status(400).json({ error: 'Component data is required' });
+      return;
+    }
+
+    const component = await db.orm.public.Component.create({
+      data: {
+        name: name.trim(),
+        type: type.trim(),
+        data,
+        ownerId: user.id
+      }
+    });
+
+    res.status(201).json(component);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.put('/components/:id', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = (req as any).user;
+    const updateData = req.body;
+
+    const component = await db.orm.public.Component.where({ id: Number(id) }).first();
+
+    if (!component) {
+      res.status(404).json({ error: 'Component not found' });
+      return;
+    }
+
+    if (component.ownerId !== user.id) {
+      res.status(403).json({ error: 'Forbidden' });
+      return;
+    }
+
+    const updated = await db.orm.public.Component.update({
+      where: { id: Number(id) },
+      data: updateData
+    });
+
+    res.status(200).json(updated);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.delete('/components/:id', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = (req as any).user;
+
+    const component = await db.orm.public.Component.where({ id: Number(id) }).first();
+
+    if (!component) {
+      res.status(404).json({ error: 'Component not found' });
+      return;
+    }
+
+    if (component.ownerId !== user.id) {
+      res.status(403).json({ error: 'Forbidden' });
+      return;
+    }
+
+    await db.orm.public.Component.delete({
+      where: { id: Number(id) }
+    });
+
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 export default app;

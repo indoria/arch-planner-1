@@ -1,7 +1,12 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import ComponentLibrary from './ComponentLibrary'
+import { useComponentStore } from '@/store/useComponentStore'
 
 describe('ComponentLibrary Component', () => {
+  beforeEach(() => {
+    useComponentStore.getState().clearRepository()
+  })
+
   it('renders a search input', () => {
     render(<ComponentLibrary />)
     expect(screen.getByPlaceholderText(/Search components/i)).toBeInTheDocument()
@@ -43,5 +48,37 @@ describe('ComponentLibrary Component', () => {
     expect(dataTransfer.setData).toHaveBeenCalledWith('application/reactflow', expect.stringContaining('LLM'))
     expect(dataTransfer.effectAllowed).toBe('move')
     expect(dataTransfer.setDragImage).toHaveBeenCalled()
+  })
+
+  it('syncs components from the central registry when clicking Sync Registry', async () => {
+    const fetchSpy = jest.spyOn(useComponentStore.getState(), 'fetchFromRegistry').mockImplementation(async () => {
+      useComponentStore.getState().registerComponents([
+        {
+          id: 'registry-101',
+          type: 'stt',
+          label: 'Shared Whisper Hub',
+          description: 'Community shared model',
+          cost: '$0.005/min',
+          numericCost: 0.005,
+          latency: '250ms',
+          numericLatency: 250,
+          sockets: []
+        }
+      ])
+    })
+
+    render(<ComponentLibrary />)
+    const syncButton = screen.getByRole('button', { name: /sync/i })
+    expect(syncButton).toBeInTheDocument()
+
+    fireEvent.click(syncButton)
+
+    await waitFor(() => {
+      expect(fetchSpy).toHaveBeenCalled()
+      expect(screen.getByText('Shared Whisper Hub')).toBeInTheDocument()
+      expect(screen.getByText('Registry')).toBeInTheDocument()
+    })
+
+    fetchSpy.mockRestore()
   })
 })

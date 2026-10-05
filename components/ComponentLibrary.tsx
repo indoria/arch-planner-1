@@ -1,13 +1,30 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Search, Box } from 'lucide-react'
+import { Search, Box, RefreshCw } from 'lucide-react'
 import { AVAILABLE_COMPONENTS, ComponentDef } from '@/store/components'
+import { useComponentStore } from '@/store/useComponentStore'
 
 export default function ComponentLibrary() {
   const [searchTerm, setSearchTerm] = useState('')
+  const [isSyncing, setIsSyncing] = useState(false)
+  const repository = useComponentStore((state) => state.repository)
+  const fetchFromRegistry = useComponentStore((state) => state.fetchFromRegistry)
 
-  const filteredComponents = AVAILABLE_COMPONENTS.filter((comp) =>
+  const handleSync = async () => {
+    setIsSyncing(true)
+    try {
+      await fetchFromRegistry({ token: 'valid-token' })
+    } catch (err) {
+      console.error('Failed to sync with registry', err)
+    } finally {
+      setIsSyncing(false)
+    }
+  }
+
+  const componentsToDisplay = repository && repository.length > 0 ? repository : AVAILABLE_COMPONENTS
+
+  const filteredComponents = componentsToDisplay.filter((comp) =>
     comp.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
     comp.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
     comp.description.toLowerCase().includes(searchTerm.toLowerCase())
@@ -15,7 +32,20 @@ export default function ComponentLibrary() {
 
   return (
     <div className="flex flex-col h-full bg-[#252526] text-[#cccccc]">
-      <div className="p-3">
+      <div className="p-3 border-b border-[#2b2b2b]">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[#858585]">Component Library</span>
+          <button
+            onClick={handleSync}
+            disabled={isSyncing}
+            className="flex items-center gap-1 text-[11px] text-[#007acc] hover:text-[#3794ff] disabled:opacity-50 transition-colors"
+            title="Sync with central registry"
+            aria-label="Sync with registry"
+          >
+            <RefreshCw size={12} className={isSyncing ? 'animate-spin' : ''} />
+            <span>{isSyncing ? 'Syncing...' : 'Sync Registry'}</span>
+          </button>
+        </div>
         <div className="relative">
           <Search className="absolute left-2 top-2.5 text-[#858585]" size={14} />
           <input
@@ -73,7 +103,12 @@ export default function ComponentLibrary() {
               <Box size={20} />
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="text-[13px] font-medium leading-tight">{comp.label}</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[13px] font-medium leading-tight">{comp.label}</span>
+                {comp.id.startsWith('registry-') && (
+                  <span className="text-[9px] bg-[#007acc]/20 text-[#007acc] border border-[#007acc]/40 px-1 rounded">Registry</span>
+                )}
+              </div>
               <span className="text-[11px] text-[#858585] truncate">{comp.type.toUpperCase()}</span>
               <p className="text-[12px] text-[#cccccc] mt-1 line-clamp-2">{comp.description}</p>
             </div>

@@ -2,8 +2,9 @@
 
 import React, { useMemo, useState, useEffect } from 'react'
 import { useTabStore } from '@/store/useTabStore'
+import { useComponentStore } from '@/store/useComponentStore'
 import { AVAILABLE_COMPONENTS, ComponentDef } from '@/store/components'
-import { ChevronRight, PlusSquare, Edit2, Check, X, Info, Settings, Zap } from 'lucide-react'
+import { ChevronRight, PlusSquare, Edit2, Check, X, Info, Settings, Zap, Share2 } from 'lucide-react'
 
 export default function Inspector() {
   const activeTabId = useTabStore((state) => state.activeTabId)
@@ -12,6 +13,10 @@ export default function Inspector() {
   const createSubArchitecture = useTabStore((state) => state.createSubArchitecture)
   const drillDown = useTabStore((state) => state.drillDown)
   const activeArchitecture = useTabStore((state) => state.activeArchitecture)
+
+  const publishToRegistry = useComponentStore((state) => state.publishToRegistry)
+  const [isPublishing, setIsPublishing] = useState(false)
+  const [publishSuccess, setPublishSuccess] = useState(false)
 
   const [isEditingLabel, setIsEditingLabel] = useState(false)
   const [editedLabel, setEditedLabel] = useState('')
@@ -64,6 +69,34 @@ export default function Inspector() {
   const handleDrillDown = () => {
       if (!selectedNode) return
       drillDown(selectedNode)
+  }
+
+  const handlePublishToRegistry = async () => {
+    if (!selectedNode) return
+    setIsPublishing(true)
+    try {
+      await publishToRegistry(
+        {
+          name: selectedNode.label,
+          type: selectedNode.type,
+          data: {
+            label: selectedNode.label,
+            description: componentDef?.description || `${selectedNode.label} component`,
+            type: selectedNode.type,
+            sockets: selectedNode.sockets,
+            cost: componentDef?.cost || '$0.01/min',
+            latency: componentDef?.latency || '200ms'
+          }
+        },
+        { token: 'valid-token' }
+      )
+      setPublishSuccess(true)
+      setTimeout(() => setPublishSuccess(false), 3000)
+    } catch (err) {
+      console.error('Failed to publish node to registry', err)
+    } finally {
+      setIsPublishing(false)
+    }
   }
 
   if (!selectedNode) {
@@ -142,6 +175,14 @@ export default function Inspector() {
                   Create Sub-Graph
               </button>
           )}
+          <button
+              onClick={handlePublishToRegistry}
+              disabled={isPublishing}
+              className="flex items-center justify-center gap-2 w-full p-2.5 bg-[#333] hover:bg-[#444] text-[#ccc] hover:text-white text-xs font-bold rounded border border-[#444] transition-all disabled:opacity-50"
+          >
+              <Share2 size={14} />
+              {isPublishing ? 'Publishing...' : publishSuccess ? 'Published to Registry!' : 'Share Node to Registry'}
+          </button>
         </section>
 
         {/* Component Details */}

@@ -39,7 +39,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Backend & Collaboration: API foundation, Auth, and sharing features
+## [x] Track: Backend & Collaboration: API foundation, Auth, and sharing features
 *Link: [./tracks/backend_collaboration_20260730/](./tracks/backend_collaboration_20260730/)*
 
 ---

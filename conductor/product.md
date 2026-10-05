@@ -23,6 +23,7 @@ To provide a highly interactive, architecture-agnostic playground for designing,
 - **Agnostic Architecture Engine:** A plug-and-play system that can ingest architecture definitions (e.g., via JSON/YAML) for any type of software system.
 - **Component Library & Drag-and-Drop Builder:** A visual interface to construct new architectures from pre-defined or custom components.
 - **Split-Screen Parallel Simulations:** Side-by-side comparison of two architectural configurations with synchronized playback and real-time metric deltas.
+- **Centralized Registry & Collaboration:** Cloud backend with authentication, shareable architecture URLs, cloning, and a centralized registry for publishing and synchronizing custom nodes.
 
 ## Simulation & Analysis Goals
 - **Logic & Flow Visualization:** Deep dive into data movement and error handling strategies within a call.

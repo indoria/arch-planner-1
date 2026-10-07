@@ -11,9 +11,9 @@ This plan focuses on final data bundling, knowledge base population, and UI poli
     - [x] Verify both load correctly into the Tab system.
 
 ## Phase 2: Interactive Guided Tour
-- [ ] Task: VS Code Shell Tour
-    - [ ] **Write failing tests** for the tour step sequence (Activity Bar -> Explorer -> Tabs -> Inspector).
-    - [ ] Implement the interactive tour highlighting the IDE features.
+- [x] Task: VS Code Shell Tour [19f9a28]
+    - [x] **Write failing tests** for the tour step sequence (Activity Bar -> Explorer -> Tabs -> Inspector).
+    - [x] Implement the interactive tour highlighting the IDE features.
 
 ## Phase 3: Final Visual Polish
 - [ ] Task: SVG Animation Fine-tuning

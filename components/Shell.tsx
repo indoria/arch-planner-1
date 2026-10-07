@@ -1,14 +1,15 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
-import { Files, Library, Settings, Search, Box, Terminal, MessageSquare, Bug, Play, BarChart3, Plus } from 'lucide-react'
+import { Files, Library, Settings, Search, Box, Terminal, MessageSquare, Bug, Play, BarChart3, Plus, HelpCircle } from 'lucide-react'
 import KnowledgeAccordion from './KnowledgeAccordion'
 import EnterpriseKnowledgeBase from './EnterpriseKnowledgeBase'
 import BlankState from './BlankState'
 import { BASELINE_ARCHITECTURES } from '@/data/baselineArchitectures'
 import ComponentLibrary from './ComponentLibrary'
 import Inspector from './Inspector'
+import TourGuide from './TourGuide'
 import ComplaintsLog from './ComplaintsLog'
 import CallLogPane from './CallLogPane'
 import MetricsDashboard from './MetricsDashboard'
@@ -27,6 +28,18 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
   const activeTab = useTabStore((state) => state.openTabs.find(t => t.id === state.activeTabId))
   const openTab = useTabStore((state) => state.openTab)
   const [isSimulating, setIsSimulating] = useState(false)
+  const [isTourOpen, setIsTourOpen] = useState(false)
+
+  useEffect(() => {
+    try {
+      const completed = localStorage.getItem('voicebot_tour_completed')
+      if (!completed) {
+        setIsTourOpen(true)
+      }
+    } catch {
+      // Ignore localStorage issues
+    }
+  }, [])
 
   const handleRunSimulation = async () => {
     setIsSimulating(true)
@@ -88,7 +101,15 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
           <Play size={24} fill={isSimulating ? "currentColor" : "none"} />
         </button>
 
-        <div className="mt-auto">
+        <div className="mt-auto flex flex-col items-center gap-1">
+          <button 
+            onClick={() => setIsTourOpen(true)}
+            className="p-2 text-[#858585] hover:text-white transition-colors"
+            title="Start Guided Tour"
+            data-testid="activity-bar-tour-btn"
+          >
+            <HelpCircle size={22} />
+          </button>
           <button className="p-2 text-[#858585] hover:text-white">
             <Settings size={24} />
           </button>
@@ -229,7 +250,7 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
           <PanelResizeHandle className="w-1 bg-[#1e1e1e] hover:bg-[#007acc] transition-colors" />
 
           {/* Right Sidebar (Inspector) */}
-          <Panel defaultSize={20} minSize={15} maxSize={30} className="bg-[#252526] border-l border-[#2b2b2b]">
+          <Panel defaultSize={20} minSize={15} maxSize={30} data-testid="inspector-panel" className="bg-[#252526] border-l border-[#2b2b2b]">
             <Inspector />
           </Panel>
         </PanelGroup>
@@ -245,6 +266,15 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
             <span>0 Warnings</span>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsTourOpen(true)}
+              className="flex items-center gap-1 hover:underline text-white font-medium cursor-pointer"
+              title="Start IDE Guided Tour"
+              data-testid="status-bar-tour-btn"
+            >
+              <HelpCircle size={12} />
+              Take Tour
+            </button>
             <span>UTF-8</span>
             <span>TypeScript JSX</span>
             <span className="flex items-center gap-1">
@@ -253,6 +283,9 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
             </span>
           </div>
         </div>
+
+        {/* Interactive Guided Tour */}
+        <TourGuide isOpen={isTourOpen} onClose={() => setIsTourOpen(false)} />
       </div>
     </div>
   )

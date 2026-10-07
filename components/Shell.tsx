@@ -6,6 +6,7 @@ import { Files, Library, Settings, Search, Box, Terminal, MessageSquare, Bug, Pl
 import KnowledgeAccordion from './KnowledgeAccordion'
 import EnterpriseKnowledgeBase from './EnterpriseKnowledgeBase'
 import BlankState from './BlankState'
+import { BASELINE_ARCHITECTURES } from '@/data/baselineArchitectures'
 import ComponentLibrary from './ComponentLibrary'
 import Inspector from './Inspector'
 import ComplaintsLog from './ComplaintsLog'
@@ -119,6 +120,29 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
               {activeView === 'explorer' && (
                 <div className="flex flex-col">
                   <div className="p-2 text-sm text-[#858585] border-b border-[#2b2b2b]">Architectures Explorer</div>
+                  
+                  <KnowledgeAccordion title="Sample Architectures">
+                    <div className="flex flex-col gap-1.5 p-1">
+                      {BASELINE_ARCHITECTURES.map((arch) => (
+                        <button
+                          key={arch.id}
+                          onClick={() => openTab({ id: arch.id, title: arch.title, content: arch.content })}
+                          className="flex flex-col items-start p-2 rounded bg-[#252526] hover:bg-[#2d2d2d] border border-[#333] transition-colors text-left group w-full"
+                          data-testid={`load-baseline-${arch.id}`}
+                        >
+                          <div className="flex items-center justify-between w-full">
+                            <span className="font-medium text-[11px] text-[#e1e1e1] group-hover:text-white">{arch.title}</span>
+                            <span className="text-[10px] text-[#007acc] font-mono">{arch.targetLatency}ms</span>
+                          </div>
+                          <p className="text-[10px] text-[#858585] mt-0.5 line-clamp-2">{arch.description}</p>
+                          <div className="flex items-center gap-2 mt-1.5 text-[9px] font-mono text-[#a0a0a0]">
+                            <span className="text-[#89d185]">{arch.estimatedCost}</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </KnowledgeAccordion>
+
                   <KnowledgeAccordion title="Architecture Basics">
                     <p className="text-[12px] text-[#858585]">
                       Learn about sockets, connections, and component types.

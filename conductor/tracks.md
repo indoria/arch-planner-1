@@ -44,7 +44,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [ ] Track: Onboarding & Visualization Polish: Samples, tutorials, and final UI refinement
+## [~] Track: Onboarding & Visualization Polish: Samples, tutorials, and final UI refinement
 *Link: [./tracks/onboarding_polish_20260730/](./tracks/onboarding_polish_20260730/)*
 
 ---

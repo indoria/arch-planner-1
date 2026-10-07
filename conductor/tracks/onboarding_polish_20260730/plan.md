@@ -2,7 +2,7 @@
 
 This plan focuses on final data bundling, knowledge base population, and UI polish.
 
-## Phase 1: Knowledge Base & Baselines
+## Phase 1: Knowledge Base & Baselines [checkpoint: 09cd171]
 - [x] Task: Populate Enterprise Knowledge Base [1ab622f]
     - [x] **Write failing tests** for the progressive disclosure component rendering the specific 6 concepts (Endpointing, AEC, etc.).
     - [x] Draft the "Summary" and "Deep Dive" content for each concept.

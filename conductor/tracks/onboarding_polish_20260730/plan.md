@@ -6,9 +6,9 @@ This plan focuses on final data bundling, knowledge base population, and UI poli
 - [x] Task: Populate Enterprise Knowledge Base [1ab622f]
     - [x] **Write failing tests** for the progressive disclosure component rendering the specific 6 concepts (Endpointing, AEC, etc.).
     - [x] Draft the "Summary" and "Deep Dive" content for each concept.
-- [ ] Task: Create Baseline Architectures
-    - [ ] Define the "Cheapest 650ms" and "Ultra-Low Latency 200ms" JSON definitions.
-    - [ ] Verify both load correctly into the Tab system.
+- [x] Task: Create Baseline Architectures [b0c68f6]
+    - [x] Define the "Cheapest 650ms" and "Ultra-Low Latency 200ms" JSON definitions.
+    - [x] Verify both load correctly into the Tab system.
 
 ## Phase 2: Interactive Guided Tour
 - [ ] Task: VS Code Shell Tour

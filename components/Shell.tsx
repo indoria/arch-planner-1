@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 import { Files, Library, Settings, Search, Box, Terminal, MessageSquare, Bug, Play, BarChart3, Plus } from 'lucide-react'
 import KnowledgeAccordion from './KnowledgeAccordion'
+import EnterpriseKnowledgeBase from './EnterpriseKnowledgeBase'
 import BlankState from './BlankState'
 import ComponentLibrary from './ComponentLibrary'
 import Inspector from './Inspector'
@@ -124,15 +125,18 @@ export default function Shell({ children }: { children?: React.ReactNode }) {
                     </p>
                   </KnowledgeAccordion>
                   <KnowledgeAccordion title="Enterprise Knowledge">
-                    <p className="text-[12px] text-[#858585]">
-                      Best practices for voicebot architecture design.
-                    </p>
+                    <div className="pt-1">
+                      <EnterpriseKnowledgeBase />
+                    </div>
                   </KnowledgeAccordion>
                 </div>
               )}
               {activeView === 'components' && <ComponentLibrary />}
               {activeView === 'library' && (
-                <div className="p-2 text-sm text-[#858585]">Library Concepts</div>
+                <div className="flex flex-col h-full">
+                  <div className="p-2 text-sm text-[#858585] border-b border-[#2b2b2b]">Enterprise Concepts Library</div>
+                  <EnterpriseKnowledgeBase />
+                </div>
               )}
             </div>
           </Panel>

@@ -45,20 +45,45 @@ function ArchitectureNode({ id, data }: NodeProps<ArchitectureNodeData>) {
     }
   }
 
+  const isCongested = telemetry && telemetry.latency >= 300
+  const isRunning = telemetry?.status === 'running'
+
   return (
-    <div className={`min-w-[150px] bg-[#252526] border rounded shadow-xl overflow-hidden transition-colors ${telemetry?.status === 'error' ? 'border-red-900' : 'border-[#454545]'}`}>
+    <div className={`min-w-[150px] bg-[#252526] border rounded shadow-xl overflow-hidden transition-colors ${telemetry?.status === 'error' ? 'border-red-900' : isCongested ? 'border-amber-600/70 shadow-[0_0_12px_rgba(245,158,11,0.2)]' : 'border-[#454545]'}`}>
       {/* Header */}
       <div className="bg-[#333333] p-2 text-xs font-medium border-b border-[#454545] text-[#cccccc] flex justify-between items-center relative">
         <div className="flex items-center gap-2">
-            <div 
-              data-testid="status-indicator"
-              className={`w-2 h-2 rounded-full ${getStatusColor()}`} 
-            />
+            <div className="relative flex items-center justify-center">
+              {isRunning && (
+                <span 
+                  data-testid="status-ripple" 
+                  className="absolute w-3 h-3 rounded-full bg-blue-400 opacity-75 animate-ping" 
+                />
+              )}
+              {isCongested && (
+                <span 
+                  data-testid="congestion-ripple" 
+                  className="absolute w-3.5 h-3.5 rounded-full bg-amber-400 opacity-75 animate-ping" 
+                />
+              )}
+              <div 
+                data-testid="status-indicator"
+                className={`w-2 h-2 rounded-full ${getStatusColor()}`} 
+              />
+            </div>
             <span>{data.label}</span>
         </div>
         <div className="flex items-center gap-1.5">
+          {isCongested && (
+            <span 
+              data-testid="congestion-indicator"
+              className="text-[8px] uppercase tracking-wider text-amber-400 bg-amber-950/70 px-1 rounded border border-amber-500/50 font-mono animate-pulse"
+            >
+              Congested
+            </span>
+          )}
           {telemetry && telemetry.latency > 0 && (
-            <span className="text-[9px] text-[#858585] bg-[#1e1e1e] px-1 rounded border border-[#3c3c3c]">
+            <span className={`text-[9px] px-1 rounded border ${isCongested ? 'text-amber-300 bg-amber-950/40 border-amber-600/50' : 'text-[#858585] bg-[#1e1e1e] border-[#3c3c3c]'}`}>
               {telemetry.latency}ms
             </span>
           )}

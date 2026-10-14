@@ -16,7 +16,7 @@ This plan focuses on final data bundling, knowledge base population, and UI poli
     - [x] Implement the interactive tour highlighting the IDE features.
 
 ## Phase 3: Final Visual Polish
-- [ ] Task: SVG Animation Fine-tuning
+- [~] Task: SVG Animation Fine-tuning
     - [ ] Polish the animated data packets and "congestion" ripple effects.
 - [ ] Task: Final CSS Audit
     - [ ] Ensure all monospaced fonts, dark mode colors, and borders match the "VS Code online" aesthetic.

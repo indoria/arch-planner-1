@@ -47,7 +47,7 @@ describe('ArchitectureNode', () => {
     expect(screen.getByText('123ms')).toBeInTheDocument()
   })
 
-  it('renders running status', () => {
+  it('renders running status with ripple animation', () => {
     useSimulationStore.getState().setNodeTelemetry('node-1', {
       status: 'running',
       latency: 0
@@ -55,6 +55,18 @@ describe('ArchitectureNode', () => {
 
     render(<ArchitectureNode id="node-1" data={mockData} selected={false} zIndex={0} isConnectable={true} xPos={0} yPos={0} dragging={false} />)
     expect(screen.getByTestId('status-indicator')).toHaveClass('bg-blue-500')
+    expect(screen.getByTestId('status-ripple')).toBeInTheDocument()
+  })
+
+  it('renders congestion indicator and ripple when latency is high', () => {
+    useSimulationStore.getState().setNodeTelemetry('node-1', {
+      status: 'success',
+      latency: 450
+    });
+
+    render(<ArchitectureNode id="node-1" data={mockData} selected={false} zIndex={0} isConnectable={true} xPos={0} yPos={0} dragging={false} />)
+    expect(screen.getByTestId('congestion-ripple')).toBeInTheDocument()
+    expect(screen.getByTestId('congestion-indicator')).toHaveTextContent('Congested')
   })
 
   it('renders error status', () => {
